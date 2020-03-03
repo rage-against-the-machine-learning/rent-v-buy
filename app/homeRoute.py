@@ -6,8 +6,8 @@ import mydbconfig
 
 
 def getMOTD():
-	msg = "Hi. I'm wimp lo, an awesome fighter!"
-	#msg = "Well, I'm the chosen one"
+	#msg = "Hi. I'm wimp lo, an awesome fighter!"
+	msg = "Well, I'm the chosen one"
 	return msg
 
 
