@@ -1,5 +1,6 @@
 # CSE 6242 Data Visualization and Analytics (DVA)
 
+
 ## Rent vs Buy 
 - Semester: Spring 202020<br>
 - Team: 245 : tufte-love
