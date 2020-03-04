@@ -1,0 +1,31 @@
+Variable,Definition
+AgeOfInventory,"Each Wednesday, age of inventory is calculated as the median number of days all active listings as of that Wednesday have been current. These medians are then aggregated into the number reported by taking the median across weekly values."
+DaysOnZillow,"The median days on market of homes sold within a given month, including foreclosure re-sales. The latest data is for one month prior to the current ZHVI (e.g., if the most current month for ZHVI data is January, the most current month for Days on Zillow data will be December)."
+HomesSoldAsForeclosuresRatio,"The number of homes (per 10,000 homes) that were foreclosed upon in a given month. A foreclosure occurs when a homeowner loses their home to their lending institution or it is sold to a third party at an auction."
+InventorySeasonallyAdjusted,A seasonally adjusted measure of the median of weekly snapshot of for-sale homes within a region for a given month
+InventoryRaw,Median of weekly snapshot of for-sale homes within a region for a given month
+MedianListingPricePerSqft,Median of list prices divided by the square footage of a home
+MedianListingPrice,Median of the list price (or asking price) for homes listed on Zillow
+MedianPctOfPriceReduction,Median of the percentage price reduction for homes with a price reduction during the month
+MedianPriceCutDollar,Median of the price reduction for homes with a price reduction during the month
+MedianRentalPricePerSqft,Median of the rental price per square foot of homes listed for rent on Zillow in a given region
+MedianRentalPrice,Median of the rental price of homes listed for rent on Zillow in a given region
+MedianSoldPricePerSqft,Median of sale prices divided by the square footage of a home
+MedianSoldPrice,Median of the selling price for all homes sold in a given region
+PctOfHomesDecreasingInValues,The percentage of homes in an given region with values that have decreased in the past year
+PctOfHomesIncreasingInValues,The percentage of homes in an given region with values that have increased in the past year
+PctOfHomesSellingForGain,The percentage of homes in an area that sold for a price higher than the previous sale price
+PctOfHomesSellingForLoss,The percentage of homes in an area that sold for a price lower than the previous sale price
+PctOfListingsWithPriceReductionsSeasAdj,A seasonally adjusted measure of the percentage of current listings on Zillow with a price cut during the month
+PctOfListingsWithPriceReductions,The percentage of current listings on Zillow with a price cut during the month
+PctTransactionsThatArePreviouslyForeclosuredHomes,The percentage of home sales in a given month in which the home was foreclosed upon within the previous year (e.g. sales of bank-owned homes after the bank took possession of a home following a foreclosure).
+PriceToRentRatio,"This ratio is first calculated at the individual home level, where the estimated home value is divided by 12 times its estimated monthly rent price. The the median of all home-level price-to-rent ratios for a given region is then calculated."
+SalesSeasonallyAdjusted,"A seasonally adjusted measure of th number of homes sold during a given month in conservatively defined consumer-to-consumer transactions adjusted for latency. Note: ZIP code sales data is not latency adjusted, but is filtered."
+SalesRaw,"The number of homes sold during a given month in conservatively defined consumer-to-consumer transactions adjusted for latency. Note: ZIP code sales data is not latency adjusted, but is filtered."
+SalesUnfilteredTransactions,"The number of homes sold during the given month. This series is latency adjusted, but no transaction-type filtering is done. For example, non-arm’s-length sales, foreclosures and title transfers would be all be included."
+TierShare,"The share of inventory available classified as Bottom, Middle, or Top tier according the asking price. "
+Turnover,The percentage of all homes in a given area that sold in the past 12 months
+ZHVI,A smoothed seasonally adjusted measure of the median estimated home value across a given region and housing type
+ZHVIPerSqft,Median of the value of all homes per square foot. This number is calculated by taking the estimated home value for each home in a given region and dividing it by the home’s square footage.
+ZRI,A smoothed seasonally adjusted measure of the median estimated market rate rent across a given region and housing type
+ZriPerSqft,"Median of the estimated monthly rent price of all homes, per square foot. This is calculated by taking the estimated rent price for a home and dividing it by the homes square footage"
