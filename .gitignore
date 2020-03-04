@@ -1,0 +1,10 @@
+.cache
+.ipython
+.jupyter
+.local
+.config
+.ipynb
+
+venv*
+env*
+
