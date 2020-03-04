@@ -4,7 +4,8 @@
 .local
 .config
 .ipynb
+.DS_Store
 
 venv*
 env*
-
+data/*
