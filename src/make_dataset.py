@@ -23,4 +23,6 @@ for filename in sorted(os.listdir('../data/raw/')):
 for filename in sorted(os.listdir('../data/raw/unzipped/')):
     csv_dfs[filename] = (pd.read_csv(f'../data/raw/unzipped/{filename}/{filename}', engine='python'))
 
-
+# Pickle all of the dataframes so that they can be available for reload in other notebooks
+for table_name, df in csv_dfs.tiems():
+    df.to_pickle(f"../data/interim/{table_name}.pickle")
