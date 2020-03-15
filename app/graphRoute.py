@@ -5,7 +5,7 @@ from wtforms import StringField, SubmitField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired
 import auxFunctions as aux
-
+import financialAnalysis
 
 @app.route('/graph', methods=['GET', 'POST'])
 def graph():
