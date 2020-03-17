@@ -3,9 +3,9 @@ import numpy as np
 
 
 def high_level_inspect_df (df: pd.DataFrame): 
-    display(df.head(3))
-    display(df.info())
-    display(df.describe().T)
+    print(df.head(3))
+    print(df.info())
+    print(df.describe().T)
     
     # Get categorical columns
     category_cols = [col for col in df.columns if df[col].dtype == 'O']
