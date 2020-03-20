@@ -11,4 +11,4 @@ bootstrap = Bootstrap(app)
 #from app import routes, managerRoutes, holidayRoutes, stateVolumeRoutes, manufacturerRoutes, \
 #    homeRoute, assignmentsRoute, populationRoute, store_revenue
 
-from app import homeRoute, graphRoute
+from app import homeRoute, graphRoute, equityRoute
