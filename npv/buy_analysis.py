@@ -4,7 +4,7 @@ def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciati
                        mortgage_years=30.0, mortgage_interest_rate=0.04, property_tax_rate=0.0125,
                        annual_maintenance=1000.0, annual_hoa=2000.0, annual_home_insurance=1500.0,
                        marginal_income_tax_rate=0.30, inflation_rate=0.02, savings_interest_rate=0.04,
-                       closing_costs=0.05, number_of_months=300, debug=True):
+                       closing_costs=0.05, selling_costs=0.05, number_of_months=300, debug=True):
     """
     Purpose:
     Compare equity build-up in two scenarios
@@ -12,8 +12,8 @@ def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciati
         (e.g., HOA, insurance, maintenance)
     (2) Pay rent every month and invest the difference in a savings (or retirement) account
 
-    This function will calculate the equity build-up of both scenarios for <no_months> months
-    and return both as numpy arrays
+    This function will calculate the net equity after sale (buy scenario) and the equity build-up
+    of both scenarios for <no_months> months and return all as numpy arrays
 
     Inputs:
     - purchase_price (US$): Purchase price of the house (buy scenario)
@@ -29,13 +29,14 @@ def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciati
     - marginal_income_tax_rate (1): Depends on the tax bracket (buy scenario)
     - inflation_rate (1): Inflation rate used to estimate increases in annual fees (buy scenario)
     - savings_interest_rate (1): Estimated interest rate for the difference between buy and rent (rent scenario)
-    - closing_costs (1): Ratio of home price that is paid when closing deal (buy scenario)
+    - closing_costs (1): Percentage of home price that is paid when closing purchase financing (buy scenario)
+    - selling_costs (1): Percentage of home price that is paid when closing sale (buy scenario)
     - number_of_months (months): Number of months to plot (buy and rent scenario)
     - debug (Boolean): Whether to print debug information
     """
 
-    monthly_mortgage_payment = ((purchase_price-down_payment)*(1.0-1.0/(1.0+mortgage_interest_rate/12))
-        /(1.0-1.0/(1.0+mortgage_interest_rate/12)**(mortgage_years*12+1)))
+    monthly_mortgage_payment = (purchase_price-down_payment) * (1.0-1.0/(1.0+mortgage_interest_rate/12.0)) \
+        / ((1.0/(1.0+mortgage_interest_rate/12.0)) - (1.0/(1.0+mortgage_interest_rate/12.0)**(mortgage_years*12.0+1.0)))
     if debug:
         print('The monthly mortgage is {:.2f}'.format(monthly_mortgage_payment))
     
@@ -43,6 +44,7 @@ def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciati
     home_value = np.zeros(number_of_months) # Current value of the house
     debt = np.zeros(number_of_months) # Current debt in mortgage account
     equity = np.zeros(number_of_months) # Current equity owned
+    net_equity = np.zeros(number_of_months) # Current asset value after sale
     cash_outflow = np.zeros(number_of_months) # Total outflow of cash at the current month (buy scenario)
     rent = np.zeros(number_of_months) # Current value of rent
     savings = np.zeros(number_of_months) # Savings built up over time when renting
@@ -50,10 +52,14 @@ def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciati
     # Assume that in both scenarios, we start with the money paid as down payment + closing costs
     home_value[0] = purchase_price    
     debt[0] = purchase_price-down_payment    
-    equity[0] = down_payment+closing_costs*purchase_price
-    cash_outflow[0] = down_payment+closing_costs*purchase_price
+    equity[0] = down_payment # closing costs don't add to equity
+    net_equity[0] = purchase_price * (1 - selling_costs)
+    cash_outflow[0] = down_payment + closing_costs*(purchase_price-down_payment) # considering closing_costs
     rent[0] = initial_rent    
-    savings[0] = down_payment+closing_costs*purchase_price
+    savings[0] = cash_outflow[0] - rent[0]  # consider closing_costs and correct cash flow
+    if debug:
+        print('In month 0, the cash outflow was {:.2f}, and the rent was {:.2f}'.format(
+            cash_outflow[0], rent[0]))
 
     for mo in range(1,number_of_months):
         ## Buy scenario
@@ -61,14 +67,11 @@ def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciati
         # Contribution to principal
         interest_on_debt = debt[mo-1]*mortgage_interest_rate/12
         paid_principal = monthly_mortgage_payment-interest_on_debt
-        if debug:
-            print('In month {}, {:.2f} were paid towards interest and {:.2f} towards the principal'.format(
-                mo, interest_on_debt, paid_principal))
         
         # Total cash outflow
-        insurance_payment = annual_home_insurance/12*(1.0+inflation_rate/12)**mo
-        hoa_payment = annual_hoa/12*(1.0+inflation_rate/12)**mo
-        maintenance_payment = annual_maintenance/12*(1.0+inflation_rate/12)**mo
+        insurance_payment = annual_home_insurance/12*(1.0+inflation_rate/12)**(mo-1)
+        hoa_payment = annual_hoa/12*(1.0+inflation_rate/12)**(mo-1)
+        maintenance_payment = annual_maintenance/12*(1.0+inflation_rate/12)**(mo-1)
         property_tax_payment = home_value[mo-1]*property_tax_rate/12
         savings_interest_deduction = (interest_on_debt+property_tax_payment)*marginal_income_tax_rate
         cash_outflow[mo] = (monthly_mortgage_payment+insurance_payment+hoa_payment+
@@ -76,9 +79,10 @@ def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciati
         # Update debt and equity
         debt[mo] = debt[mo-1]-paid_principal
         equity[mo] = home_value[mo]-debt[mo]
+        net_equity[mo] = equity[mo] - selling_costs * home_value[mo]
         if debug:
-            print('In month {}, debt is {:.2f} and equity is {:.2f}'.format(
-                mo, debt[mo], equity[mo]))
+            print('In month {}, home value is {:.2f}, debt is {:.2f}, and equity is {:.2f}'.format(
+                mo, home_value[mo], debt[mo], equity[mo]))
 
         ## Rent scenario
         rent[mo] = (1.0+equity_appreciation_rate/12)*rent[mo-1]
@@ -87,13 +91,13 @@ def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciati
         if debug:
             print('In month {}, current savings are {:.2f}'.format(mo, savings[mo]))
     
-    return (equity, savings, monthly_mortgage_payment, cash_outflow, rent)
+    return (equity, savings, monthly_mortgage_payment, cash_outflow, rent, net_equity)
 
 def approximate_monthly_payments(sale_price, down_payment, initial_rent, equity_appreciation_rate,
                        mortgage_years=30.0, mortgage_interest_rate=0.04, property_tax_rate=0.0125,
                        annual_maintenance=1000.0, annual_hoa=2000.0, annual_home_insurance=1500.0,
                        marginal_income_tax_rate=0.30, inflation_rate=0.02, savings_interest_rate=0.04,
-                       closing_costs=0.05, number_of_months=300, debug=False):
+                       closing_costs=0.05, selling_costs=0.05, number_of_months=300, debug=False):
     """
     Purpose:
     Compare equity build-up in two scenarios
@@ -101,8 +105,8 @@ def approximate_monthly_payments(sale_price, down_payment, initial_rent, equity_
         (e.g., HOA, insurance, maintenance)
     (2) Pay rent every month and invest the difference in a savings (or retirement) account
 
-    This function will calculate the equity build-up of both scenarios for <no_months> months
-    and return both as numpy arrays
+    This function will calculate the average monthly outflow in the buy scenario (averaged up to the current month) and
+    the current month's rent (rent scenario), returning them as numpy arrays
 
     Inputs:
     - purchase_price (US$): Purchase price of the house (buy scenario)
@@ -118,15 +122,16 @@ def approximate_monthly_payments(sale_price, down_payment, initial_rent, equity_
     - marginal_income_tax_rate (1): Depends on the tax bracket (buy scenario)
     - inflation_rate (1): Inflation rate used to estimate increases in annual fees (buy scenario)
     - savings_interest_rate (1): Estimated interest rate for the difference between buy and rent (rent scenario)
-    - closing_costs (1): Ratio of home price that is paid when closing deal (buy scenario)
+    - closing_costs (1): Percentage of home price that is paid when closing purchase financing (buy scenario)
+    - selling_costs (1): Percentage of home price that is paid when closing sale (buy scenario)
     - number_of_months (months): Number of months to plot (buy and rent scenario)
     - debug (Boolean): Whether to print debug information
     """
-    (equity, savings, monthly_mortgage_payment, cash_outflow, rent) = equity_and_savings(
+    (equity, savings, monthly_mortgage_payment, cash_outflow, rent, net_equity) = equity_and_savings(
         sale_price, down_payment, initial_rent, equity_appreciation_rate, mortgage_years,
         mortgage_interest_rate, property_tax_rate, annual_maintenance, annual_hoa,
         annual_home_insurance, marginal_income_tax_rate, inflation_rate, savings_interest_rate,
-        closing_costs, number_of_months, debug)
+        closing_costs, selling_costs, number_of_months, debug)
     
     monthly_buy = np.zeros(number_of_months)
     monthly_rent = np.zeros(number_of_months)
@@ -137,11 +142,11 @@ def approximate_monthly_payments(sale_price, down_payment, initial_rent, equity_
     
     return (monthly_buy, monthly_rent)
 
-def find_payback_time(sale_price, down_payment, initial_rent, equity_appreciation_rate,
+def find_payback_time(sale_price, down_payment, initial_rent, equity_appreciation_rate, number_of_months, 
                        mortgage_years=30.0, mortgage_interest_rate=0.04, property_tax_rate=0.0125,
                        annual_maintenance=1000.0, annual_hoa=2000.0, annual_home_insurance=1500.0,
                        marginal_income_tax_rate=0.30, inflation_rate=0.02, savings_interest_rate=0.04,
-                       closing_costs=0.05, number_of_months=300, debug=False):
+                       closing_costs=0.05, selling_costs=0.05, debug=False):
     """
     Purpose:
     Compare equity build-up in two scenarios
@@ -150,7 +155,8 @@ def find_payback_time(sale_price, down_payment, initial_rent, equity_appreciatio
     (2) Pay rent every month and invest the difference in a savings (or retirement) account
 
     This function will calculate the equity build-up of both scenarios for <no_months> months
-    and return both as numpy arrays
+    and return the number of months it will take for the buy scenario to be favorable, 
+    or -1 if longer than <no_months> months
 
     Inputs:
     - purchase_price (US$): Purchase price of the house (buy scenario)
@@ -166,23 +172,25 @@ def find_payback_time(sale_price, down_payment, initial_rent, equity_appreciatio
     - marginal_income_tax_rate (1): Depends on the tax bracket (buy scenario)
     - inflation_rate (1): Inflation rate used to estimate increases in annual fees (buy scenario)
     - savings_interest_rate (1): Estimated interest rate for the difference between buy and rent (rent scenario)
-    - closing_costs (1): Ratio of home price that is paid when closing deal (buy scenario)
+    - closing_costs (1): Percentage of home price that is paid when closing purchase financing (buy scenario)
+    - selling_costs (1): Percentage of home price that is paid when closing sale (buy scenario)
     - number_of_months (months): Number of months to plot (buy and rent scenario)
     - debug (Boolean): Whether to print debug information
     """
-    (equity, savings, monthly_mortgage_payment, cash_outflow, rent) = equity_and_savings(
-        sale_price, down_payment, initial_rent, equity_appreciation_rate, mortgage_years,
+    (equity, savings, monthly_mortgage_payment, cash_outflow, rent, net_equity) = \
+        equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciation_rate, mortgage_years,
         mortgage_interest_rate, property_tax_rate, annual_maintenance, annual_hoa,
         annual_home_insurance, marginal_income_tax_rate, inflation_rate, savings_interest_rate,
-        closing_costs, number_of_months, debug)
-    estimated_difference = equity-savings
-    payback = len(estimated_difference)
+        closing_costs, selling_costs, number_of_months, debug)
+
+    estimated_difference = net_equity - savings # changed from equity to net_equity 
+    payback = -1
     for ix in range(1, len(estimated_difference)):
         if estimated_difference[ix] >= 0.0:
             payback = ix
             break
     
-    return payback
+    return (payback, number_of_months)
 
 
 if __name__ == "__main__":
@@ -193,8 +201,11 @@ if __name__ == "__main__":
     equity_appreciation_rate = 0.02 # 3.0% -- Assumed the same for buy and rent scenarios
     initial_rent = 1600.0 # Monthly payment
 
-    payback = find_payback_time(purchase_price, down_payment, initial_rent, equity_appreciation_rate)
-    print('Owning is better than renting if staying more than ', payback, ' months')
+    (payback, number_of_months) = find_payback_time(purchase_price, down_payment, initial_rent, equity_appreciation_rate, 120)
+    if (payback < 0):
+        print('It will take more than {} months to payback the investment'.format(number_of_months))
+    else:
+        print('It takes {} months to payback the investment'.format(payback))
 
 else:
     print("Importing as module")
