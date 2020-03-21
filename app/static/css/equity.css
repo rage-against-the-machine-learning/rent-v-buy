@@ -1,0 +1,45 @@
+body { font: 12px Arial;}
+
+path { 
+	stroke-width: 2;
+	fill: none;
+}
+
+#rentLine { 
+	stroke: firebrick;
+}
+
+#rentScatter {
+    stroke: firebrick;
+    fill: firebrick;
+}
+
+#buyLine { 
+	stroke: steelblue;
+}
+
+#buyScatter {
+    stroke: steelblue;
+    fill: steelblue;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: grey;
+	stroke-width: 1;
+	shape-rendering: crispEdges;
+}
+
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 100px;					
+    height: 42px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: lightgray;	
+    border: 0px;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
