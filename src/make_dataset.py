@@ -140,14 +140,21 @@ us_state_abbrev = {
     'Wyoming': 'WY',
 }
 
-fips_map['StateAbbrev'] = [us_state_abbrev[row.StateName] for row in fips_map.iterttuples()]
+fips_map['StateAbbrev'] = [us_state_abbrev[row.StateName] for row in fips_map.itertuples()]
 
 # Merge the city data into the fips_map table
-fips_map = fips_map.merge(city_xwalk,
-                          how='left',
-                          left_on=['CountyName', 'StateName'],
-                          right_on=['County', 'State'])
+merged = fips_map.merge(city_xwalk, 
+                        left_on=['CountyName', 'StateAbbrev'], 
+                        right_on=['County', 'State'],
+                        how='left')
 
-fips_map = fips_map.drop_duplicates()
-fips_map.reset_index(drop=True, inplace=True)
-fips_map.to_pickle('../data/interim/fips-map.pickle')
+merged = fips_map.drop_duplicates()
+merged.reset_index(drop=True, inplace=True)
+merged.to_pickle('../data/interim/fips-map.pickle')
+
+
+## SCOPE DOWN TO CALIFORNIA
+ca_cities = city_ts[city_ts['State'] == 'CA']
+ca_counties = county_ts[county_ts['StateName'] == 'California']
+
+
