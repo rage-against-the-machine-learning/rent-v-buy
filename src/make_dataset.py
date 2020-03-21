@@ -7,6 +7,9 @@ import sys
 import os 
 sys.path.append(str(pathlib.Path().absolute().parent))
 
+import warnings
+warnings.filterwarnings("ignore")
+
 
 # Unzip the files and read the csvs
 csv_dfs = {}
@@ -57,6 +60,8 @@ for row in county_ts.itertuples():
         metroName_column.append(metroname_by_FIPS[row.RegionName])
     else:
         countyName_column.append(np.nan)
+        stateName_column.append(np.nan)
+        metroName_column.append(np.nan)
         
 assert len(countyName_column) == len(county_ts) == len(stateName_column) == len(metroName_column)
 
@@ -75,9 +80,6 @@ for row in county_ts.itertuples():
     
 assert len(census_region_column) == len(county_ts), 'rework the for-loop'
 county_ts['CensusRegion'] = census_region_column        
-
-# Save the file in data/interim/ directory
-county_ts.to_pickle('../data/interim/fips_map.pickle')
 
 # Create the FIPS Map DataFrame
 fips_map = county_ts[['RegionName', 'CountyName', 'MetroName', 'StateName', 'CensusRegion']]
@@ -148,13 +150,10 @@ merged = fips_map.merge(city_xwalk,
                         right_on=['County', 'State'],
                         how='left')
 
-merged = fips_map.drop_duplicates()
+merged.drop(['CountyName', 'StateAbbrev'], axis=1, inplace=True)
+merged = merged.drop_duplicates()
 merged.reset_index(drop=True, inplace=True)
 merged.to_pickle('../data/interim/fips-map.pickle')
 
-
-## SCOPE DOWN TO CALIFORNIA
-ca_cities = city_ts[city_ts['State'] == 'CA']
-ca_counties = county_ts[county_ts['StateName'] == 'California']
-
-
+# Save the file in data/interim/ directory
+merged.to_pickle('../data/interim/fips_map.pickle')
