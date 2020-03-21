@@ -5,6 +5,9 @@
 
 
 {% block head %}
+    <link rel="shortcut icon"
+    href="{{ url_for('static', filename='images/favicon.ico') }}">
+
 {{ super() }}
 
 
@@ -27,16 +30,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="/index">Home</a></li>
                 <li><a href="/graph">Graph</a></li>
-                <li><a href="/managers">Managers</a></li>
-                <li><a href="/assignments">Assignments</a></li>
-                <li><a href="/populations">Populations</a></li>
-                <li><a href="/manufacturer_products">Manufacturers' Products</a></li>
-                <li><a href="/categories">Categories</a></li>
-                <li><a href="/gps">GPS</a></li>
-                <li><a href="/store_revenue">Store Revenue</a></li>
-                <li><a href="/gh_day">GH Day</a></li>
-                <li><a href="/state_volume">State Volume</a></li>
-                <li><a href="/population_revenue">Population Revenue</a></li>
+                <li><a href="/equity">Equity</a></li>
             </ul>
         <!-- </div> -->
     <!-- </div> -->
