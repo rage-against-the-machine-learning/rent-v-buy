@@ -153,7 +153,6 @@ merged = fips_map.merge(city_xwalk,
 merged.drop(['CountyName', 'StateAbbrev'], axis=1, inplace=True)
 merged = merged.drop_duplicates()
 merged.reset_index(drop=True, inplace=True)
-merged.to_pickle('../data/interim/fips-map.pickle')
 
 # Save the file in data/interim/ directory
 merged.to_pickle('../data/interim/fips_map.pickle')
