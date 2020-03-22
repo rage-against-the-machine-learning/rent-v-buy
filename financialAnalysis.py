@@ -1,6 +1,6 @@
 import numpy as np
 
-def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciation_rate,
+def equity_and_savings(purchase_price, down_payment, initial_rent, equity_appreciation_rate,
                        mortgage_years=30.0, mortgage_interest_rate=0.04, property_tax_rate=0.0125,
                        annual_maintenance=1000.0, annual_hoa=2000.0, annual_home_insurance=1500.0,
                        marginal_income_tax_rate=0.30, inflation_rate=0.02, savings_interest_rate=0.04,
@@ -53,7 +53,7 @@ def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciati
     home_value[0] = purchase_price    
     debt[0] = purchase_price-down_payment    
     equity[0] = down_payment # closing costs don't add to equity
-    net_equity[0] = purchase_price * (1 - selling_costs)
+    net_equity[0] = equity[0] - selling_costs * home_value[0]
     cash_outflow[0] = down_payment + closing_costs*(purchase_price-down_payment) # considering closing_costs
     rent[0] = initial_rent    
     savings[0] = cash_outflow[0] - rent[0]  # consider closing_costs and correct cash flow
@@ -93,7 +93,7 @@ def equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciati
     
     return (equity, savings, monthly_mortgage_payment, cash_outflow, rent, net_equity)
 
-def approximate_monthly_payments(sale_price, down_payment, initial_rent, equity_appreciation_rate,
+def approximate_monthly_payments(purchase_price, down_payment, initial_rent, equity_appreciation_rate,
                        mortgage_years=30.0, mortgage_interest_rate=0.04, property_tax_rate=0.0125,
                        annual_maintenance=1000.0, annual_hoa=2000.0, annual_home_insurance=1500.0,
                        marginal_income_tax_rate=0.30, inflation_rate=0.02, savings_interest_rate=0.04,
@@ -128,7 +128,7 @@ def approximate_monthly_payments(sale_price, down_payment, initial_rent, equity_
     - debug (Boolean): Whether to print debug information
     """
     (equity, savings, monthly_mortgage_payment, cash_outflow, rent, net_equity) = equity_and_savings(
-        sale_price, down_payment, initial_rent, equity_appreciation_rate, mortgage_years,
+        purchase_price, down_payment, initial_rent, equity_appreciation_rate, mortgage_years,
         mortgage_interest_rate, property_tax_rate, annual_maintenance, annual_hoa,
         annual_home_insurance, marginal_income_tax_rate, inflation_rate, savings_interest_rate,
         closing_costs, selling_costs, number_of_months, debug)
@@ -142,7 +142,7 @@ def approximate_monthly_payments(sale_price, down_payment, initial_rent, equity_
     
     return (monthly_buy, monthly_rent)
 
-def find_payback_time(sale_price, down_payment, initial_rent, equity_appreciation_rate, number_of_months, 
+def find_payback_time(purchase_price, down_payment, initial_rent, equity_appreciation_rate, number_of_months, 
                        mortgage_years=30.0, mortgage_interest_rate=0.04, property_tax_rate=0.0125,
                        annual_maintenance=1000.0, annual_hoa=2000.0, annual_home_insurance=1500.0,
                        marginal_income_tax_rate=0.30, inflation_rate=0.02, savings_interest_rate=0.04,
@@ -178,7 +178,7 @@ def find_payback_time(sale_price, down_payment, initial_rent, equity_appreciatio
     - debug (Boolean): Whether to print debug information
     """
     (equity, savings, monthly_mortgage_payment, cash_outflow, rent, net_equity) = \
-        equity_and_savings(sale_price, down_payment, initial_rent, equity_appreciation_rate, mortgage_years,
+        equity_and_savings(purchase_price, down_payment, initial_rent, equity_appreciation_rate, mortgage_years,
         mortgage_interest_rate, property_tax_rate, annual_maintenance, annual_hoa,
         annual_home_insurance, marginal_income_tax_rate, inflation_rate, savings_interest_rate,
         closing_costs, selling_costs, number_of_months, debug)

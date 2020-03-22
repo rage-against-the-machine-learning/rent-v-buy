@@ -1,7 +1,7 @@
 // Select canvases
 var svg1 = d3.select("#canvas1");
 
-var	margin = {top: 30, right: 40, bottom: 30, left: 50},
+var	margin = {top: 30, right: 40, bottom: 30, left: 70},
 	width = 900 - margin.left - margin.right,
     height = 330 - margin.top - margin.bottom;
 
@@ -12,10 +12,12 @@ var xAxis = d3.axisBottom().scale(x);
 var yAxis = d3.axisLeft().scale(y);
 
 var count = Object.keys(myData).length;
+
 var maxEquity = d3.max(myData, function(d) { return Math.max(d.buy, d.rent)*1.2; });
+var minEquity = d3.min(myData, function(d) { return Math.min(d.buy, d.rent)*0.8; });
 
 x.domain([0, count-1]);
-y.domain([0, maxEquity]);
+y.domain([minEquity, maxEquity]);
 
 var	buyLine = d3.line()
 	.x(function(d) { return x(d.month); })
@@ -24,7 +26,7 @@ var	buyLine = d3.line()
 var	rentLine = d3.line()
 	.x(function(d) { return x(d.month); })
     .y(function(d) { return y(d.rent); });
-    
+
 // Equity build-up plot
 var g = svg1.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -81,20 +83,22 @@ g.append("rect")
     .attr("y", 0.)
     .attr("width", x(myData[payOff]["month"]))
     .attr("height", height)
-    .style("opacity", 0.15)
-    .style("fill", "steelblue");
+    .style("opacity", 0.1)
+    .style("fill", "firebrick");
 
 g.append("rect")
     .attr("x", x(myData[payOff]["month"]))
     .attr("y", 0.)
     .attr("width", width-x(myData[payOff]["month"]))
     .attr("height", height)
-    .style("opacity", 0.15)
-    .style("fill", "firebrick");
+    .style("opacity", 0.1)
+    .style("fill", "steelblue");
 
 // Dividing line if between the plot
 
 if ((payOff > 5) && (payOff < count - 5)){
+
+    console.log('Printing payoff time');
 
     g.append("line")
         .attr("x1", x(myData[payOff]["month"]))
@@ -153,7 +157,6 @@ if ((payOff > 5) && (payOff < count - 5)){
         .attr("dy", ".35em")
         .text("Buying is cheaper")
         .attr("fill", "white");
-
 }
 
 // Define the div for the tooltip
@@ -187,13 +190,13 @@ g.append("g")
     .enter().append("path")
     .attr("class", "dot")
     .attr("transform", function(d) { return "translate("+x(d.month)+","+y(d.buy)+")"; })
-    .attr('d', d3.symbol().type( d3.symbolCircle ).size( 10.0 ) )
+    .attr('d', d3.symbol().type( d3.symbolSquare ).size( 3.0 ) )
     .attr("id", "buyScatter")
     .on("mouseover", function(d) {		
         div.transition()		
             .duration(200)		
             .style("opacity", .9);		
-        div	.html("Month: " + d.month + "<br/>" + "Buy :" + d.buy + "<br/>" + "Rent :" + d.rent )	
+        div	.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
             .style("left", x(d.month) + "px")		
             .style("top", y(d.buy)+ "px");	
         })					
@@ -213,13 +216,13 @@ g.append("g")
     .enter().append("path")
     .attr("class", "dot")
     .attr("transform", function(d) { return "translate("+x(d.month)+","+y(d.rent)+")"; })
-    .attr('d', d3.symbol().type( d3.symbolCircle ).size( 10.0 ) )
+    .attr('d', d3.symbol().type( d3.symbolSquare ).size( 3.0 ) )
     .attr("id", "rentScatter")
     .on("mouseover", function(d) {		
         div.transition()		
             .duration(200)		
             .style("opacity", .9);		
-        div	.html("Month: " + d.month + "<br/>" + "Buy :" + d.buy + "<br/>" + "Rent :" + d.rent )	
+        div	.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
             .style("left", x(d.month) + "px")		
             .style("top", y(d.rent)+ "px");	
         })					
@@ -227,4 +230,4 @@ g.append("g")
         div.transition()		
             .duration(500)		
             .style("opacity", 0);	
-    });  
+    }); 
