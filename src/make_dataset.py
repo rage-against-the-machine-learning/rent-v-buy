@@ -18,13 +18,13 @@ for filename in sorted(os.listdir('../data/raw/')):
     if '.csv.zip' in filename: 
         with ZipFile(f'../data/raw/{filename}', 'r') as a_zip:
             a_zip.extractall(f'../data/raw/unzipped/{filename[:-4]}')
+
+        # Read in the extracted zip files       
+        for filename in sorted(os.listdir('../data/raw/unzipped/')):
+            csv_dfs[filename[:-4]] = (pd.read_csv(f'../data/raw/unzipped/{filename}/{filename}', engine='python'))
             
     elif '.csv' in filename:
         csv_dfs[filename] = pd.read_csv(f'../data/raw/{filename}')
-        
-# Read in the extracted zip files       
-for filename in sorted(os.listdir('../data/raw/unzipped/')):
-    csv_dfs[filename[:-4]] = (pd.read_csv(f'../data/raw/unzipped/{filename}/{filename}', engine='python'))
 
 
 # CREATE FIPS MAP FROM THE COUNTY CROSS WALK, COUNTY TIME SERIES, CITIES CROSSWALK, CITY TIME SERIES
