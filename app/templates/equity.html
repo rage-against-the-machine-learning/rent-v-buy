@@ -11,7 +11,26 @@ var payOff = {{payOff}};
         <svg id="canvas1" width="960" height="350"></svg>
     </div>
     <p id="message">If you stay in your home for <strong>{{payOff}} months or more</strong>, <strong>buying</strong> is the most profitable option.</p>
+
+    <h2>Sliders</h2>
+    <div class="row align-items-center">
+        <div class="col-sm-2"><p>Mortgage length</p>
+        <select id="mortgage-horizon">
+            <option value="30" selected="selected">30 years</option>
+            <option value="20">20 years</option>
+        </select>
+        </div>
+        <div class="col-sm-2"><p>Down payment</p><p id="value-down-payment"></p></div>
+        <div class="col-sm"><div id="slider-down-payment"></div></div>
+        <div class="col-sm-2"><p>Mortgage interest rate</p><p id="value-mortgage-interest"></p></div>
+        <div class="col-sm"><div id="slider-mortgage-interest"></div></div>
+        <div class="col-sm-2"><p>Annual maintenance fees</p><p id="value-annual-maintenance"></p></div>
+        <div class="col-sm"><div id="slider-annual-maintenance"></div></div>
+        <div class="col-sm-2"><p>Annual home insurance</p><p id="value-annual-home-insurance"></p></div>
+        <div class="col-sm"><div id="slider-annual-home-insurance"></div></div>
+    </div>
 <script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
 <link rel="stylesheet" type="text/css" href="static/css/equity.css">
 </body>
 <script src="static/js/equity.js"></script>
