@@ -1,13 +1,89 @@
-﻿{% extends "base.html" %}
+﻿<!DOCTYPE html>
+<meta charset="utf-8">
+<script>
+// Reading data from Python Flask server
+var myData = {{d|tojson}};
+var payOff = {{payOff}};
+</script>
+<body>
 
-{% block page_content %}
-    <h1>We are team tufte-luv</h1>
-
-<div class="container col-md-12">
-</div>
 <div class="container">
-{% if errorMessage %}
-    <h3><em><b>{{ errorMessage }}</b></em></h3>
+{% if splashMessage %}
+    <h3><em><b>{{ splashMessage }}</b></em></h3>
 {% endif %}
 </div>
-{% endblock %}
+Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye Sheffield, Sylvia Tran}
+&nbsp;
+&nbsp;
+<table>
+    <tr>
+        <th>Graphics</th>
+        <th>Selections</th>
+    </tr>
+    <tr>
+        <td style="width:70%">
+               <svg id="choroplethSVG" width="600" height="350"></svg>
+            <p>
+                ignore this text, just for personal reference: choropleth will use zips.tsv from <a href="https://github.com/NelsonMinar/zipdecode-js">here</a>
+            which sourced from the ben fry original zip.gz inside <a href="https://benfry.com/writing/zipdecode/ch06-zipdecode.zip">here</a>
+       </td>
+        <td style="width:30%">
+            Bedrooms: <div id="bedroomSlidah"> </div>
+            Sq. Footage: <div id="sqFootageSlidah"> </div>
+            <div id="updateButoonah">
+                <input name="updateButton"
+                    type="button"
+                    value="Estimate"
+                    onclick="" />
+                <div></div>
+                &nbsp
+                &nbsp
+                Sale estimate: <font color="red">$35,000</font>      Rest estimate: <font color="green">$29,000</font>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:70%">
+            <a href="/equity">Felipe's equity experimental page</a>
+            <div id="container1">
+                <svg id="canvas1" width="600" height="300"></svg>
+            </div>
+            <p id="message">If you stay in your home for <strong>{{payOff}} months or more</strong>, <strong>buying</strong> is the most profitable option.</p>
+        </td>
+        <td style="width:30%">
+    <div class="row align-items-center">
+        <div class="col-sm-2"><p>Mortgage length</p>
+        <select id="mortgage-horizon">
+            <option value="30" selected="selected">30 years</option>
+            <option value="20">20 years</option>
+        </select>
+        </div>
+        <div class="col-sm-2"><p>Down payment</p><p id="value-down-payment"></p></div>
+        <div class="col-sm"><div id="slider-down-payment"></div></div>
+        <div class="col-sm-2"><p>Mortgage interest rate</p><p id="value-mortgage-interest"></p></div>
+        <div class="col-sm"><div id="slider-mortgage-interest"></div></div>
+        <div class="col-sm-2"><p>Annual maintenance fees</p><p id="value-annual-maintenance"></p></div>
+        <div class="col-sm"><div id="slider-annual-maintenance"></div></div>
+        <div class="col-sm-2"><p>Annual home insurance</p><p id="value-annual-home-insurance"></p></div>
+        <div class="col-sm"><div id="slider-annual-home-insurance"></div></div>
+    </div>
+        </td>
+    </tr>
+</table>
+
+<script src="static/js/d3.v5.min.js"></script>
+<script src="static/js/queue.v1.min.js"></script>
+<script src="static/js/topojson.v1.min.js"></script>
+<script src="static/js/d3-simple-slider.min.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/main.css">
+
+
+<br>
+<p id="messagr2">mockup displayed temporarily for reference: </p>
+<img src="static/images/mockup.png" alt="Felipes original mockup">
+
+</body>
+<script src="static/js/equity.js"></script>
+<script src="static/js/main.js"></script>
+
+</html>
