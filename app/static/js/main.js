@@ -165,6 +165,40 @@ var eachDict = {};
             })
 
 
+       } else if (enteredData == "") {
+                g.selectAll("*").remove();
+                        g.selectAll("path")
+            .data(topojson.feature(data, data.objects.zip_codes_for_the_usa).features)
+            //.data(topojson.feature(data, data.objects.Californiageo).features)
+            .enter()
+            .append("path")
+            .attr("stroke", "#333")
+            .attr("class", "counties")
+            .attr("class", "zip")
+            //.attr("data-zip", function(d) {return d.properties.id; })
+            .attr("data-zip", function (d) {
+                return d.properties.zip;
+            })
+            .attr("data-state", function (d) {
+                return d.properties.state;
+            })
+            .attr("data-name", function (d) {
+                return d.properties.name;
+            })
+            .attr("d", geoPauth)
+            .on("mouseover", function (d) {
+                console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
+                tt.transition()
+                    .duration(200)
+                    .style("opacity", 0.9);
+                tt.html(
+                    "zipcode: " + d.properties.zip + "<br/" +
+                    "city: " + d.properties.name
+                )
+                //.style("left", (d3.event.pageX) + "px")
+                //.style("top", (d3.event.pageY + 28) + "px");
+            })
+
        } else {
            console.log("you entered city: " + enteredData)
                // write code to find all the zip codes for the city and ask customer to choose from one?
