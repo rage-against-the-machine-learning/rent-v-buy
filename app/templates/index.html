@@ -1,10 +1,5 @@
 ﻿<!DOCTYPE html>
 <meta charset="utf-8">
-<script>
-// Reading data from Python Flask server
-var myData = {{d|tojson}};
-var payOff = {{payOff}};
-</script>
 <body>
 
 <div class="container">
@@ -39,17 +34,15 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
                 <div></div>
                 &nbsp
                 &nbsp
-                Sale estimate: <font color="red">$35,000</font>      Rest estimate: <font color="green">$29,000</font>
+                Sale estimate: <font color="steelblue">$35,000</font>      Rest estimate: <font color="firebrick">$29,000</font>
             </div>
         </td>
     </tr>
     <tr>
         <td style="width:70%">
-            <a href="/equity">Felipe's equity experimental page</a>
             <div id="container1">
                 <svg id="canvas1" width="600" height="300"></svg>
             </div>
-            <p id="message">If you stay in your home for <strong>{{payOff}} months or more</strong>, <strong>buying</strong> is the most profitable option.</p>
         </td>
         <td style="width:30%">
     <div class="row align-items-center">
@@ -67,6 +60,13 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
         <div class="col-sm"><div id="slider-annual-maintenance"></div></div>
         <div class="col-sm-2"><p>Annual home insurance</p><p id="value-annual-home-insurance"></p></div>
         <div class="col-sm"><div id="slider-annual-home-insurance"></div></div>
+        <div id="calculateButoonah">
+            <input name="calculateButton"
+                type="button"
+                value="Calculate"
+                onclick="calculate_financials()" />
+            <div></div>
+        </div>
     </div>
         </td>
     </tr>
@@ -86,5 +86,252 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
 </body>
 <script src="static/js/equity.js"></script>
 <script src="static/js/main.js"></script>
+<script>
+function calculate_financials(){
+    // Read new values from slider
+    var mortgageHorizon = +document.getElementById('mortgage-horizon').value;
+    var myDownPayment = d3.select("#value-down-payment").node().textContent;
+    myDownPayment = +myDownPayment.substring(1,myDownPayment.length);
+    var myMortgageRate = d3.select("#value-mortgage-interest").node().textContent;
+    myMortgageRate = +myMortgageRate.substring(0,myMortgageRate.length-1);
+    var myMaintenance = d3.select("#value-annual-maintenance").node().textContent;
+    myMaintenance = +myMaintenance.substring(1,myMaintenance.length);
+    var myHomeInsurance = d3.select("#value-annual-home-insurance").node().textContent;
+    myHomeInsurance = +myHomeInsurance.substring(1,myHomeInsurance.length);
+    // Parse request JSON
+    var newParams = { mortgageHorizon: mortgageHorizon, downPayment: myDownPayment, mortgageRate: myMortgageRate,
+        maintenance: myMaintenance, homeInsurance: myHomeInsurance};
 
-</html>
+    fetch(`${window.origin}/index/calculate-financials`, {
+        method: "POST", credentials: "include", body: JSON.stringify(newParams),
+        cache: "no-cache", headers: new Headers({ "content-type": "application/json" })
+    })
+    .then(function(response){
+        if (response.status !== 200){
+            console.log(`Response status was not 200: ${response.status}`);
+            return;
+        }
+        response.json().then(function(data){
+            // Clean group before plotting
+            d3.select("#buildUp").remove();
+
+            // Select canvases
+            var svg1 = d3.select("#canvas1");
+            var	margin = {top: 30, right: 40, bottom: 30, left: 70},
+                width = 600 - margin.left - margin.right,
+                height = 300 - margin.top - margin.bottom;
+
+            var	x = d3.scaleLinear().range([0, width]);
+            var	y = d3.scaleLinear().range([height, 0]);
+
+            var xAxis = d3.axisBottom().scale(x).tickValues([12, 24, 36, 48, 60, 72, 84, 96, 108, 120]);
+            var xGridLines = d3.axisBottom().scale(x).tickValues([12, 24, 36, 48, 60, 72, 84, 96, 108, 120]).tickFormat("").tickSize(height);
+            var yAxis = d3.axisLeft().scale(y);
+            var count = Object.keys(data["data"]).length;
+
+            var maxEquity = d3.max(data["data"], function(d) { return Math.max(d.buy, d.rent)*1.2; });
+            var minEquity = d3.min(data["data"], function(d) { return Math.min(d.buy, d.rent)*0.8; });
+
+            x.domain([0, count-1]);
+            y.domain([minEquity, maxEquity]);
+
+            var	buyLine = d3.line().x(function(d) { return x(d.month); }).y(function(d) { return y(d.buy); });
+                
+            var	rentLine = d3.line().x(function(d) { return x(d.month); }).y(function(d) { return y(d.rent); });
+
+            // Equity build-up plot
+            var g = svg1.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")").attr("id", "buildUp");
+
+            // X axis
+            g.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
+
+            g.append("text")             
+                .attr("transform", "translate(" + (width/2) + " ," + (height + 30) + ")")
+                .attr("class", "label")
+                .style("text-anchor", "middle")
+                .text("Month");
+
+            g.append("line")
+                .attr("x1", 0).attr("y1", 0).attr("x2", width).attr("y2", 0)
+                .style("stroke", "gray").style("stroke-width", 1).style("stroke", "gray").style("shape-rendering", "crispEdges");
+
+            // Y axis
+            g.append("g").attr("class", "y axis").call(yAxis);
+            g.append("g").attr("class", "x axis").call(xGridLines);
+
+            g.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("class", "label")
+                .attr("y", 3 - margin.left)
+                .attr("x", 0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Equity build-up [US$]");
+
+            g.append("line")
+                .attr("x1", width)
+                .attr("y1", 0)
+                .attr("x2", width)
+                .attr("y2", height)
+                .style("stroke", "gray")
+                .style("stroke-width", 1)
+                .style("stroke", "gray")
+                .style("shape-rendering", "crispEdges");
+
+            // Shaded areas
+            g.append("rect")
+                .attr("x", 0.)
+                .attr("y", 0.)
+                .attr("width", x(data["data"][data["payOff"]]["month"]))
+                .attr("height", height)
+                .style("opacity", 0.1)
+                .style("fill", "firebrick");
+
+            g.append("rect")
+                .attr("x", x(data["data"][data["payOff"]]["month"]))
+                .attr("y", 0.)
+                .attr("width", width-x(data["data"][data["payOff"]]["month"]))
+                .attr("height", height)
+                .style("opacity", 0.1)
+                .style("fill", "steelblue");
+
+            // Dividing line if between the plot
+            if ((data["payOff"] > 5) && (data["payOff"] < count - 5)){
+
+                g.append("line")
+                    .attr("x1", x(data["data"][data["payOff"]]["month"]))
+                    .attr("y1", 0)
+                    .attr("x2", x(data["data"][data["payOff"]]["month"]))
+                    .attr("y2", height)
+                    .style("stroke-width", 2)
+                    .style("stroke", "gray")
+                    .style("opacity", 0.9);
+
+                g.append("rect")
+                    .attr("x", x(data["data"][data["payOff"]]["month"])-110.0)
+                    .attr("y", 5.0)
+                    .attr("width", 100.0)
+                    .attr("height", 20.0)
+                    .style("opacity", 0.9)
+                    .style("fill", "gray");
+
+                g.append("line")
+                    .attr("x1", x(data["data"][data["payOff"]]["month"])-10.0)
+                    .attr("y1", 15.0)
+                    .attr("x2", x(data["data"][data["payOff"]]["month"]))
+                    .attr("y2", 15.0)
+                    .style("stroke-width", 2)
+                    .style("stroke", "gray")
+                    .style("opacity", 0.9);
+
+                g.append("text")
+                    .attr("x", x(data["data"][data["payOff"]]["month"])-20.0)
+                    .attr("y", 15.0)
+                    .attr("dy", ".35em")
+                    .text("Renting is cheaper")
+                    .attr("text-anchor", "end")
+                    .attr("fill", "white");
+
+                g.append("rect")
+                    .attr("x", x(data["data"][data["payOff"]]["month"])+10.0)
+                    .attr("y", 15.0)
+                    .attr("width", 100.0)
+                    .attr("height", 20.0)
+                    .style("opacity", 0.9)
+                    .style("fill", "gray");
+
+                g.append("line")
+                    .attr("x1", x(data["data"][data["payOff"]]["month"]))
+                    .attr("y1", 25.0)
+                    .attr("x2", x(data["data"][data["payOff"]]["month"])+10.0)
+                    .attr("y2", 25.0)
+                    .style("stroke-width", 2)
+                    .style("stroke", "gray")
+                    .style("opacity", 0.9);
+
+                g.append("text")
+                    .attr("x", x(data["data"][data["payOff"]]["month"])+20.0)
+                    .attr("y", 25.0)
+                    .attr("dy", ".35em")
+                    .text("Buying is cheaper")
+                    .attr("fill", "white");
+            }
+
+            // Define the div for the tooltip
+            var div = d3.select("body").append("div")	
+                .attr("class", "tooltip")				
+                .style("opacity", 0);
+
+            // Label the end of the plots
+            g.append("text")
+                .attr("transform", "translate(" + (width+3) + "," + y(data["data"][count-1].rent) + ")")
+                .attr("dy", ".35em")
+                .attr("text-anchor", "start")
+                .style("fill", "firebrick")
+                .text("Rent");
+
+            g.append("text")
+                .attr("transform", "translate(" + (width+3) + "," + y(data["data"][count-1].buy) + ")")
+                .attr("dy", ".35em")
+                .attr("text-anchor", "start")
+                .style("fill", "steelblue")
+                .text("Buy");
+
+            // Generate line paths
+            g.append("path")
+                .attr("id", "buyLine")
+                .attr("d", buyLine(data["data"]));
+
+            g.append("g")
+                .selectAll()
+                .data(data["data"])
+                .enter().append("path")
+                .attr("class", "dot")
+                .attr("transform", function(d) { return "translate("+x(d.month)+","+y(d.buy)+")"; })
+                .attr('d', d3.symbol().type( d3.symbolSquare ).size( 3.0 ) )
+                .attr("id", "buyScatter")
+                .on("mouseover", function(d) {		
+                    div.transition()		
+                        .duration(200)		
+                        .style("opacity", .9);		
+                    div	.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
+                        .style("left", x(d.month) + "px")		
+                        .style("top", (y(d.buy)+625.0)+ "px");	
+                    })					
+                .on("mouseout", function(d) {		
+                    div.transition()		
+                        .duration(500)		
+                        .style("opacity", 0);	
+                });
+
+            g.append("path")
+                .attr("id", "rentLine")
+                .attr("d", rentLine(data["data"]));
+
+            g.append("g")
+                .selectAll()
+                .data(data["data"])
+                .enter().append("path")
+                .attr("class", "dot")
+                .attr("transform", function(d) { return "translate("+x(d.month)+","+y(d.rent)+")"; })
+                .attr('d', d3.symbol().type( d3.symbolSquare ).size( 3.0 ) )
+                .attr("id", "rentScatter")
+                .on("mouseover", function(d) {		
+                    div.transition()		
+                        .duration(200)		
+                        .style("opacity", .9);		
+                    div.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
+                        .style("left", x(d.month) + "px")		
+                        .style("top", (y(d.rent)+625.0) + "px");	
+                    })					
+                .on("mouseout", function(d) {		
+                    div.transition()		
+                        .duration(500)		
+                        .style("opacity", 0);	
+                });
+
+        })
+    })
+}
+</script>
+</html>    
