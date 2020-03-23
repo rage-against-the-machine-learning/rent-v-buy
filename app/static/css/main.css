@@ -4,6 +4,29 @@ table, th, td {
     border: 0px solid black;
 }
 
+input,
+canvas {
+  position: absolute;
+}
+
+.states {
+  fill: none;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+tt.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 120px;
+    height: 58px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+
 
 #rentLine {
 	stroke: firebrick;
