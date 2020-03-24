@@ -7,7 +7,8 @@ var	margin = {top: 30, right: 40, bottom: 30, left: 70},
     //height = 330 - margin.top - margin.bottom;
     height = 330;
 
-var tt = d3.select("body").append("div")
+//var div = d3.select("#choroplethSVG").append("div")
+var div = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
@@ -64,6 +65,7 @@ var eachDict = {};
             .enter()
             .append("path")
             .attr("stroke", "#333")
+            .attr("fill", d3.rgb(128,128,128))
             .attr("class", "counties")
             .attr("class", "zip")
             //.attr("data-zip", function(d) {return d.properties.id; })
@@ -80,18 +82,18 @@ var eachDict = {};
             .attr("d", geoPauth)
             .on("mouseover", function (d) {
                 console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
-                tt.transition()
+                div.transition()
                     .duration(200)
                     .style("opacity", 0.9);
-                tt.html(
-                    "zipcode: " + d.properties.zip + "<br/" +
+                div.html(
+                    "zipcode: " + d.properties.zip + "<br/>" +
                     "city: " + d.properties.name
                 )
-                //.style("left", (d3.event.pageX) + "px")
-                //.style("top", (d3.event.pageY + 28) + "px");
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY + 28) + "px");
             })
             .on("mouseout", function (d) {
-                tt.transition()
+                div.transition()
                     .duration(500)
                     .style("opacity", 0);
             })
@@ -128,10 +130,10 @@ var eachDict = {};
             .attr("stroke", "#ff0")
             .attr("fill", function(d) {
                    if (d.properties.zip == enteredData) {
-                       zipColor = "fff"
+                       zipColor = d3.rgb(255,255,255)
                        console.log("inside the fill loop, zip was: "+d.properties.zip+", zipcolor: "+zipColor)
                    } else {
-                       zipColor = "fee"
+                       zipColor = d3.rgb(128,128,128)
                    }
                    return zipColor;
                })
@@ -150,16 +152,19 @@ var eachDict = {};
             .attr("d", geoPauth2)
             .on("mouseover", function (d) {
                 console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
-                tt.transition()
+                div.transition()
                     .duration(200)
                     .style("opacity", 0.9);
-                tt.html(
-                    "zipcode: " + d.properties.zip + "<br/" +
+                div.html(
+                    "zipcode: " + d.properties.zip + "<br/>" +
                     "city: " + d.properties.name
                 )
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY + 28) + "px");
+
             })
             .on("mouseout", function (d) {
-                tt.transition()
+                div.transition()
                     .duration(500)
                     .style("opacity", 0);
             })
@@ -175,6 +180,7 @@ var eachDict = {};
             .attr("stroke", "#333")
             .attr("class", "counties")
             .attr("class", "zip")
+            .attr("fill", d3.rgb(128,128,128))
             //.attr("data-zip", function(d) {return d.properties.id; })
             .attr("data-zip", function (d) {
                 return d.properties.zip;
@@ -188,15 +194,15 @@ var eachDict = {};
             .attr("d", geoPauth)
             .on("mouseover", function (d) {
                 console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
-                tt.transition()
+                div.transition()
                     .duration(200)
                     .style("opacity", 0.9);
-                tt.html(
-                    "zipcode: " + d.properties.zip + "<br/" +
+                div.html(
+                    "zipcode: " + d.properties.zip + "<br/>" +
                     "city: " + d.properties.name
                 )
-                //.style("left", (d3.event.pageX) + "px")
-                //.style("top", (d3.event.pageY + 28) + "px");
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY + 28) + "px");
             })
 
        } else {

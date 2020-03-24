@@ -32,13 +32,13 @@ table, th, td {
 	shape-rendering: crispEdges;
 }
 
-div.tooltip {	
+div.tooltip {
     position: absolute;			
     text-align: center;			
-    width: 100px;					
-    height: 42px;					
+    width: 120px;
+    height: 32px;
     padding: 2px;				
-    font: 12px sans-serif;		
+    font: 10px sans-serif;
     background: lightgray;	
     border: 0px;		
     border-radius: 8px;			
