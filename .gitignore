@@ -5,6 +5,8 @@
 .config
 .ipynb
 .DS_Store
+.vscode
+
 
 venv*
 env*
