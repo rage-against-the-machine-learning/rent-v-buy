@@ -128,11 +128,20 @@ del fips_mapping
 del zip_meta_df
 
 # Pare down the data to only hone in in the ZHVI and ZRI columns (which are the most complete of all avail info)
-ZHVI_ZRI_columns = ['ZHVIPerSqft_AllHomes', 'PriceToRentRatio_AllHomes', 'ZHVI_1bedroom', 'ZHVI_2bedroom',
-       'ZHVI_3bedroom', 'ZHVI_4bedroom', 'ZHVI_5BedroomOrMore', 'ZHVI_AllHomes', 'ZHVI_BottomTier', 
-       'ZHVI_CondoCoop', 'ZHVI_MiddleTier','ZHVI_SingleFamilyResidence', 'ZHVI_TopTier', 'ZRI_AllHomes',
-       'ZRI_AllHomesPlusMultifamily', 'ZriPerSqft_AllHomes','Zri_MultiFamilyResidenceRental', 
-       'Zri_SingleFamilyResidenceRental']
+ZHVI_ZRI_columns = ['ZHVIPerSqft_AllHomes', 'PctOfHomesDecreasingInValues_AllHomes',
+       'PctOfHomesIncreasingInValues_AllHomes',
+       'PctOfListingsWithPriceReductionsSeasAdj_AllHomes',
+       'PctOfListingsWithPriceReductionsSeasAdj_CondoCoop',
+       'PctOfListingsWithPriceReductionsSeasAdj_SingleFamilyResidence',
+       'PctOfListingsWithPriceReductions_AllHomes',
+       'PctOfListingsWithPriceReductions_CondoCoop',
+       'PctOfListingsWithPriceReductions_SingleFamilyResidence',
+       'PriceToRentRatio_AllHomes', 'ZHVI_1bedroom', 'ZHVI_2bedroom',
+       'ZHVI_3bedroom', 'ZHVI_4bedroom', 'ZHVI_5BedroomOrMore',
+       'ZHVI_AllHomes', 'ZHVI_BottomTier', 'ZHVI_CondoCoop', 'ZHVI_MiddleTier',
+       'ZHVI_SingleFamilyResidence', 'ZHVI_TopTier', 'ZRI_AllHomes',
+       'ZRI_AllHomesPlusMultifamily', 'ZriPerSqft_AllHomes',
+       'Zri_MultiFamilyResidenceRental', 'Zri_SingleFamilyResidenceRental']
 
 fips_loc_columns = ['ZipCode_str', 'City', 'County', 'Lat', 'Long']
 
