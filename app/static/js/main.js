@@ -49,9 +49,38 @@ const projectionUSA = d3.geoAlbersUsa()
          */
         zipLatLong.set(d.zip, d)
     })
+var selObject;
 var eachDict = {};
+    var selectedLocation;
     //var objectName = "California.geo"
+
+    function zipClicked(d) {
+        sel = d3.select(this);
+        selObject = sel;
+        console.log("we are in the zipClicked? what is sel: "+sel)
+        selectedLocation = d.properties.name + ", CA, " + d.properties.zip
+        console.log("zip area clicked! location selected: " + selectedLocation);
+            d.fx = d.x;
+    d.fy = d.y;
+        //sel.selectAll("g")
+            //.enter()
+            //.append("path")
+            sel.style("stroke", "red") //q2d2 Mark pinned nodes to visually distinguish them from unpinned nodes,
+            .attr("stroke-width", 3) // q2d2
+        .attr("fill", function(d) {
+            console.log("truly are we in the selectPath? what is sel: "+sel)
+            return d3.rgb(255,255,255);
+        })
+    }
+
+    function fillSelectedLocation(d) {
+        sel = d3.select("#selectedLocationDiv")
+        //xxx
+//selectedLocationDiv
+    }
+
     d3.json("static/maps/zips_us_topo.json").then(function(data) {
+        //d3.json("static/maps/zips_california.json").then(function(data) {
         var zip0;
         //d3.json("static/maps/California.topo.json").then(function(data){
         //d3.json("static/maps/California.topo_backup.json").then(function(data){
@@ -95,13 +124,28 @@ var eachDict = {};
             .on("mouseout", function (d) {
                 div.transition()
                     .duration(500)
-                    .style("opacity", 0);
+                    .style("opacity", 0)
             })
+            .on("click", zipClicked);
+         /*   .on("click", function(d) {
+                console.log(d.properties.zip + "Clicked! anony");
+                d.selectAll("path")
+            .style("stroke", "black") //q2d2 Mark pinned nodes to visually distinguish them from unpinned nodes,
+            .attr("stroke-width", 3) // q2d2
+                //zipClicked(d)
+            })
+        */
+
        var input = d3.select("input")
       //.on("cut", function() { setTimeout(change, 10); })
       //.on("paste", function() { setTimeout(change, 10); })
       .on("change", change)
+
       //.on("keyup", change);
+
+
+
+
 
    function change() {
             var latitude, longitude;
@@ -150,6 +194,7 @@ var eachDict = {};
                 return d.properties.name;
             })
             .attr("d", geoPauth2)
+            .on("click", zipClicked)
             .on("mouseover", function (d) {
                 console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
                 div.transition()
@@ -286,6 +331,7 @@ var bedroomSlider = d3
 
         gBedroomSlider.call(bedroomSlider);
 
+
 const SQFT_INCREMENT = 500
 var sqftSlider = d3
     .sliderBottom()
@@ -307,3 +353,7 @@ var sqftSlider = d3
 	    .attr('transform', 'translate(60,30)')
 
         gSqftSlider.call(sqftSlider);
+
+function estimateSaleAndRent() {
+    console.log("in the estimate fn:")
+}

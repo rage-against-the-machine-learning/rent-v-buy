@@ -451,9 +451,10 @@ var text = g1.append("g").selectAll("text")
 
 
 // q2d1 [2 points] Modify the code so that when you double click on a node, it pins the node’s position such that it will not be modified by the graph layout algorithm (note: pinned nodes can still be dragged around by the user but they will remain at their positions otherwise).
-
+var selObject
 function dblclick(d) {
   sel = d3.select(this);
+  selObject = sel
   //console.log(d.name, " was double clicked")
   
   if (d.fixed == "undefined") d.fixed = false;
