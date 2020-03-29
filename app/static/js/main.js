@@ -55,8 +55,15 @@ var eachDict = {};
     //var objectName = "California.geo"
 
     function zipClicked(d) {
+if (typeof lastSelectedObject != 'undefined') {
+    console.log("last sel was: "+lastSelectedObject)
+    lastSelectedObject.style("stroke", "black")
+        .attr("stroke-width", 1)
+        .attr("fill", d3.rgb(128,128,128))
+}
         sel = d3.select(this);
-        selObject = sel;
+        lastSelectedObject = sel;
+
         console.log("we are in the zipClicked? what is sel: "+sel)
         selectedLocation = d.properties.name + ", CA, " + d.properties.zip
         console.log("zip area clicked! location selected: " + selectedLocation);
@@ -65,16 +72,24 @@ var eachDict = {};
         //sel.selectAll("g")
             //.enter()
             //.append("path")
-            sel.style("stroke", "red") //q2d2 Mark pinned nodes to visually distinguish them from unpinned nodes,
+            sel.style("stroke", "orange") //q2d2 Mark pinned nodes to visually distinguish them from unpinned nodes,
             .attr("stroke-width", 3) // q2d2
         .attr("fill", function(d) {
             console.log("truly are we in the selectPath? what is sel: "+sel)
             return d3.rgb(255,255,255);
         })
+        fillSelectedLocation(selectedLocation)
     }
 
     function fillSelectedLocation(d) {
         sel = d3.select("#selectedLocationDiv")
+        sel.selectAll("*").remove();
+
+            sel.append("text")
+                .attr("font-family", "sans-serif")
+                .style("font-size", "18px")
+                .text(d)
+
         //xxx
 //selectedLocationDiv
     }
@@ -93,7 +108,8 @@ var eachDict = {};
             //.data(topojson.feature(data, data.objects.Californiageo).features)
             .enter()
             .append("path")
-            .attr("stroke", "#333")
+            .attr("stroke", "black")
+            //.attr("stroke", "#333")
             .attr("fill", d3.rgb(128,128,128))
             .attr("class", "counties")
             .attr("class", "zip")
@@ -171,11 +187,36 @@ var eachDict = {};
             .data(topojson.feature(allCAData, allCAData.objects.zip_codes_for_the_usa).features)
             .enter()
             .append("path")
-            .attr("stroke", "#ff0")
+            .style("stroke", "black")
+
+
+            //sel.style("stroke", "orange") //q2d2 Mark pinned nodes to visually distinguish them from unpinned nodes,
+            //.attr("stroke-width", 3)
+            //.attr("stroke", "#ff0")
             .attr("fill", function(d) {
                    if (d.properties.zip == enteredData) {
-                       zipColor = d3.rgb(255,255,255)
-                       console.log("inside the fill loop, zip was: "+d.properties.zip+", zipcolor: "+zipColor)
+                       selectedLocation = d.properties.name + ", CA, " + d.properties.zip
+                       fillSelectedLocation(selectedLocation)
+                       //selectedLocation = d;
+                       //zipColor = d3.rgb(255,255,255)
+                   if (typeof lastSelectedObject != 'undefined') {
+                console.log("zoomedIn: last sel was: "+lastSelectedObject +" , resetting!")
+                    lastSelectedObject.style("stroke", "black")
+                        .attr("stroke-width", 1)
+                        .attr("fill", d3.rgb(128,128,128))
+}
+                       sel = d3.select(this);
+                       lastSelectedObject = sel;
+                       d.fx = d.x;
+                       d.fy = d.y;
+                       sel.style("stroke", "orange")
+                           .attr("stroke-width", 3)
+                           .style("fill", function(d) {
+                               return d3.rgb(255,255,255);
+                           })
+
+                       console.log("zoomed inside the fill loop, zip was: "+d.properties.zip+", zipcolor: "+zipColor)
+
                    } else {
                        zipColor = d3.rgb(128,128,128)
                    }
