@@ -42,9 +42,8 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
     </tr>
     <tr>
         <td style="width:70%">
-            <div id="container1">
-                <svg id="canvas1" width="600" height="300"></svg>
-            </div>
+            <div id="container1"><svg id="canvas1" width="600" height="300"></svg></div>
+            <div id="titleRecommendation"></div>
         </td>
         <td style="width:30%">
     <div class="row align-items-center">
@@ -79,11 +78,6 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
 <script src="static/js/topojson.v2.min.js"></script>
 <script src="static/js/d3-simple-slider.min.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/main.css">
-
-
-<br>
-<p id="messagr2">mockup displayed temporarily for reference: </p>
-<img src="static/images/mockup.png" alt="Felipes original mockup">
 
 </body>
 <script src="static/js/equity.js"></script>
@@ -141,7 +135,7 @@ function calculate_financials(){
                 
             var	rentLine = d3.line().x(function(d) { return x(d.month); }).y(function(d) { return y(d.rent); });
 
-            // Equity build-up plot
+            // Wealth build-up plot
             var g = svg1.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")").attr("id", "buildUp");
 
             // X axis
@@ -168,17 +162,24 @@ function calculate_financials(){
                 .attr("x", 0 - (height / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
-                .text("Equity build-up [US$]");
+                .text("Accumulated wealth [US$]");
 
             g.append("line")
-                .attr("x1", width)
-                .attr("y1", 0)
-                .attr("x2", width)
-                .attr("y2", height)
+                .attr("x1", width).attr("y1", 0)
+                .attr("x2", width).attr("y2", height)
                 .style("stroke", "gray")
                 .style("stroke-width", 1)
-                .style("stroke", "gray")
                 .style("shape-rendering", "crispEdges");
+
+            // Title
+            g.append("text")
+                .attr("y", "-8px")
+                .attr("font-weight", "bold")
+                .attr("font-family", "sans-serif")
+                .attr("x", width/2)
+                .attr("font-size", "14px")
+                .attr("text-anchor", "middle")
+                .text("BUYING becomes cheaper than renting after "+ Math.ceil(data["payOff"]/12.0)+ " YEARS");
 
             // Shaded areas
             g.append("rect")
@@ -304,6 +305,25 @@ function calculate_financials(){
                     div.transition()		
                         .duration(500)		
                         .style("opacity", 0);	
+                    })
+                .on("click",function(d) {
+                    // Plot vertical line for n-th month
+                    d3.select("#selectedMonth").remove();
+                    g.append("line")
+                        .attr("x1", x(d.month)).attr("y1", 0).attr("x2", x(d.month)).attr("y2", height)
+                        .style("stroke", "gray").style("stroke-width", 1).style("stroke", "gray").style("shape-rendering", "crispEdges")
+                        .attr("id", "selectedMonth");
+                    // Append message for selected month
+                    var recom = document.getElementById('titleRecommendation');
+                    if (d.rent > d.buy){
+                        recom.innerHTML = "<b>Month " + d.month + ':</b> <font color="firebrick">Renting</font> is cheaper<br />'
+
+                    } else {
+                        recom.innerHTML = "<b>Month " + d.month + ':</b> <font color="steelblue">Buying</font> is cheaper<br />';
+                    }
+                    recom.innerHTML += '<font color="firebrick">Renting</font> mean wealth is ' + d.rent.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0, style: 'currency', currency: 'USD'});
+                    recom.innerHTML += "<br />";
+                    recom.innerHTML += '<font color="steelblue">Buying</font> mean wealth is ' + d.buy.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0, style: 'currency', currency: 'USD'});
                 });
 
             g.append("path")
@@ -330,6 +350,25 @@ function calculate_financials(){
                     div.transition()		
                         .duration(500)		
                         .style("opacity", 0);	
+                    })
+                .on("click",function(d) {
+                    // Plot vertical line for n-th month
+                    d3.select("#selectedMonth").remove();
+                    g.append("line")
+                        .attr("x1", x(d.month)).attr("y1", 0).attr("x2", x(d.month)).attr("y2", height)
+                        .style("stroke", "gray").style("stroke-width", 1).style("stroke", "gray").style("shape-rendering", "crispEdges")
+                        .attr("id", "selectedMonth");
+                    // Append message for selected month
+                    var recom = document.getElementById('titleRecommendation');
+                    if (d.rent > d.buy){
+                        recom.innerHTML = "<b>Month " + d.month + ':</b> <font color="firebrick">Renting</font> is cheaper<br />'
+
+                    } else {
+                        recom.innerHTML = "<b>Month " + d.month + ':</b> <font color="steelblue">Buying</font> is cheaper<br />';
+                    }
+                    recom.innerHTML += '<font color="firebrick">Renting</font> mean wealth is ' + d.rent.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0, style: 'currency', currency: 'USD'});
+                    recom.innerHTML += "<br />";
+                    recom.innerHTML += '<font color="steelblue">Buying</font> mean wealth is ' + d.buy.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0, style: 'currency', currency: 'USD'});
                 });
 
         })
