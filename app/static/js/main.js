@@ -94,7 +94,7 @@ if (typeof lastSelectedObject != 'undefined') {
 //selectedLocationDiv
     }
 
-    d3.json("static/maps/zips_us_topo.json").then(function(data) {
+    d3.json("static/maps/zips_california_topo-v2.json").then(function(data) {
         //d3.json("static/maps/zips_california.json").then(function(data) {
         var zip0;
         //d3.json("static/maps/California.topo.json").then(function(data){
