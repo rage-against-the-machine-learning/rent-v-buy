@@ -110,6 +110,9 @@ function calculate_financials(){
         response.json().then(function(data){
             // Clean group before plotting
             d3.select("#buildUp").remove();
+            d3.select("#selectedMonth").remove();
+            var recom = document.getElementById('titleRecommendation');
+            recom.innerHTML = '';
 
             // Select canvases
             var svg1 = d3.select("#canvas1");
