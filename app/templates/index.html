@@ -85,6 +85,9 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
 <script src="static/js/queue.v1.min.js"></script>
 <script src="static/js/topojson.v2.min.js"></script>
 <script src="static/js/d3-simple-slider.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/main.css">
 
 </body>
@@ -385,5 +388,17 @@ function calculate_financials(){
         })
     })
 }
+
+
+$( function() {
+    var availableTags = [
+      "Beverly Hills, 90210",
+      "Los Angeles, 90046",
+      "West Hollywood, 90069"
+    ];
+    $( "#myInput" ).autocomplete({
+      source: availableTags
+    });
+  } );
 </script>
 </html>    
