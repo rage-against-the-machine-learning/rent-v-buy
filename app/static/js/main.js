@@ -152,7 +152,7 @@ if (typeof lastSelectedObject != 'undefined') {
             })
         */
 
-       var input = d3.select("input")
+       var input = d3.select("#myInput")
       //.on("cut", function() { setTimeout(change, 10); })
       //.on("paste", function() { setTimeout(change, 10); })
       .on("change", change)
