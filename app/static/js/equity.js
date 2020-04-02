@@ -22,30 +22,6 @@ var gSimple = d3
 gSimple.call(downPaymentSlider);
 d3.select('p#value-down-payment').text(d3.format('($d')(downPaymentSlider.value()));
 
-var mortgage_interest_data = [0.01, 0.03, 0.05, 0.07, 0.09];
-var mortgageRateSlider = d3
-    .sliderBottom()
-    .min(d3.min(mortgage_interest_data))
-    .max(d3.max(mortgage_interest_data))
-    .width(300)
-    .tickFormat(d3.format('.2%'))
-    .ticks(5)
-    .default(0.037)
-    .on('onchange', val => {
-        d3.select('p#value-mortgage-interest').text(d3.format('.2%')(val));
-    });
-
-var gSimple = d3
-    .select('div#slider-mortgage-interest')
-    .append('svg')
-    .attr('width', 500)
-    .attr('height', 100)
-    .append('g')
-    .attr('transform', 'translate(30,30)');
-
-gSimple.call(mortgageRateSlider);
-d3.select('p#value-mortgage-interest').text(d3.format('.2%')(mortgageRateSlider.value()));
-
 var annual_maintenance_data = [0.0, 1000.0, 2000.0, 3000.0, 4000.0, 5000.0];
 var maintenanceSlider = d3
     .sliderBottom()

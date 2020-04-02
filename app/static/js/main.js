@@ -172,20 +172,20 @@ if (typeof lastSelectedObject != 'undefined') {
             })
         */
 
-       var input = d3.select("input")
+       var input = d3.select("#myInput")
       //.on("cut", function() { setTimeout(change, 10); })
       //.on("paste", function() { setTimeout(change, 10); })
       .on("change", change)
-
       //.on("keyup", change);
 
 
 
-
-
    function change() {
-            var latitude, longitude;
-       enteredData = input.property("value");
+       var latitude, longitude;
+       var enteredString = input.property("value");
+       var enteredData = enteredString.substr(enteredString.length - 5);
+       // Add mapping here
+       console.log("Received from autocomplete: " + enteredData);
        zipRegex = /[0-9]{5}/;
        if (zipRegex.test(enteredData)) {
            latitude  = zipLatLong["$"+enteredData].lat;
