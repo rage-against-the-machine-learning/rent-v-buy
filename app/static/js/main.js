@@ -7,6 +7,22 @@ var	margin = {top: 30, right: 40, bottom: 30, left: 70},
     //height = 330 - margin.top - margin.bottom;
     height = 330;
 
+    var buyRent;
+    d3.json("static/maps/cal_zip.json", function(d) {
+        console.log("[buyRent]" +d)
+			  return {
+			    buy: +buy,
+			    rent: +rent
+			 };
+			}).then(function(data) {
+			    buyRent = data;
+			    //console.log("thenfunction" + data)
+                    //data.forEach(function(d){
+                    //console.log("[buy]" +d.buy)
+                    //    console.log("[rent]" +d.rent)
+        })
+
+
 //var div = d3.select("#choroplethSVG").append("div")
 var div = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -94,6 +110,8 @@ if (typeof lastSelectedObject != 'undefined') {
 //selectedLocationDiv
     }
 
+
+
     d3.json("static/maps/zips_california_topo-v2.json").then(function(data) {
         //d3.json("static/maps/zips_california.json").then(function(data) {
         var zip0;
@@ -132,7 +150,9 @@ if (typeof lastSelectedObject != 'undefined') {
                     .style("opacity", 0.9);
                 div.html(
                     "zipcode: " + d.properties.zip + "<br/>" +
-                    "city: " + d.properties.name
+                    "city: " + d.properties.name + "<br/>" +
+                    "buy: " + buyRent[d.properties.zip].buy + "<br/>" +
+                    "rent: " +  buyRent[d.properties.zip].rent
                 )
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY + 28) + "px");
@@ -243,7 +263,9 @@ if (typeof lastSelectedObject != 'undefined') {
                     .style("opacity", 0.9);
                 div.html(
                     "zipcode: " + d.properties.zip + "<br/>" +
-                    "city: " + d.properties.name
+                    "city: " + d.properties.name + "<br/>" +
+                    "buy: " + buyRent[d.properties.zip].buy + "<br/>" +
+                    "rent: " +  buyRent[d.properties.zip].rent
                 )
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY + 28) + "px");
