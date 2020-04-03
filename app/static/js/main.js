@@ -68,6 +68,7 @@ const projectionUSA = d3.geoAlbersUsa()
 var selObject;
 var eachDict = {};
     var selectedLocation;
+    var buyPrice, rentPrice;
     //var objectName = "California.geo"
 
     function zipClicked(d) {
@@ -82,6 +83,8 @@ if (typeof lastSelectedObject != 'undefined') {
 
         console.log("we are in the zipClicked? what is sel: "+sel)
         selectedLocation = d.properties.name + ", CA, " + d.properties.zip
+        buyPrice = buyRent[d.properties.zip].buy
+        rentPrice = buyRent[d.properties.zip].rent
         console.log("zip area clicked! location selected: " + selectedLocation);
             d.fx = d.x;
     d.fy = d.y;
@@ -95,6 +98,8 @@ if (typeof lastSelectedObject != 'undefined') {
             return d3.rgb(255,255,255);
         })
         fillSelectedLocation(selectedLocation)
+        fillRentEstimate(rentPrice)
+        fillSaleEstimate(buyPrice)
     }
 
     function fillSelectedLocation(d) {
@@ -110,7 +115,32 @@ if (typeof lastSelectedObject != 'undefined') {
 //selectedLocationDiv
     }
 
+        function fillSaleEstimate(d) {
+        sel = d3.select("#saleEstimateDiv")
+        sel.selectAll("*").remove();
 
+            sel.append("text")
+                .attr("font-family", "sans-serif")
+                .style("font-size", "18px")
+                .text(d)
+
+        //xxx
+//selectedLocationDiv
+    }
+
+
+        function fillRentEstimate(d) {
+        sel = d3.select("#rentEstimateDiv")
+        sel.selectAll("*").remove();
+
+            sel.append("text")
+                .attr("font-family", "sans-serif")
+                .style("font-size", "18px")
+                .text(d)
+
+        //xxx
+//selectedLocationDiv
+    }
 
     d3.json("static/maps/zips_california_topo-v2.json").then(function(data) {
         //d3.json("static/maps/zips_california.json").then(function(data) {
@@ -144,6 +174,8 @@ if (typeof lastSelectedObject != 'undefined') {
             })
             .attr("d", geoPauth)
             .on("mouseover", function (d) {
+
+                //var buy
                 console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
                 div.transition()
                     .duration(200)
@@ -163,6 +195,7 @@ if (typeof lastSelectedObject != 'undefined') {
                     .style("opacity", 0)
             })
             .on("click", zipClicked);
+            //.on("click", zipClicked);
          /*   .on("click", function(d) {
                 console.log(d.properties.zip + "Clicked! anony");
                 d.selectAll("path")
@@ -182,6 +215,8 @@ if (typeof lastSelectedObject != 'undefined') {
 
    function change() {
        var latitude, longitude;
+       console.log("in change()")
+      //xxx
        var enteredString = input.property("value");
        var enteredData = enteredString.substr(enteredString.length - 5);
        // Add mapping here
@@ -217,6 +252,8 @@ if (typeof lastSelectedObject != 'undefined') {
                    if (d.properties.zip == enteredData) {
                        selectedLocation = d.properties.name + ", CA, " + d.properties.zip
                        fillSelectedLocation(selectedLocation)
+                       fillRentEstimate(buyRent[d.properties.zip].buy)
+                       fillSaleEstimate(buyRent[d.properties.zip].rent)
                        //selectedLocation = d;
                        //zipColor = d3.rgb(255,255,255)
                    if (typeof lastSelectedObject != 'undefined') {

@@ -37,13 +37,11 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
             <input id="myInput" autofocus maxlength=25 placeholder="type a zipcode/city in CA"></input>
                <svg id="choroplethSVG" width="600" height="350"></svg>
             <p>
-                ignore this text, just for personal reference: choropleth will use zips.tsv from <a href="https://github.com/NelsonMinar/zipdecode-js">here</a>
-            which sourced from the ben fry original zip.gz inside <a href="https://benfry.com/writing/zipdecode/ch06-zipdecode.zip">here</a>
        </td>
         <td style="width:30%">
             Location selected: <div id="selectedLocationDiv"></div>
             <br>
-            Bedrooms: <div id="bedroomSlidah"> </div>
+            <!-- Bedrooms: <div id="bedroomSlidah"> </div>
             Sq. Footage: <div id="sqFootageSlidah"> </div>
             <div id="updateButoonah">
                 <input name="updateButton"
@@ -51,9 +49,10 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
                     value="Estimate"
                     onclick="estimateSaleAndRent()" />
                 <div></div>
+                -->
                 &nbsp
                 &nbsp
-                Sale estimate: <font color="steelblue">$35,000</font>      Rest estimate: <font color="firebrick">$29,000</font>
+                Sale estimate: <font color="steelblue"><div id="saleEstimateDiv"></div></font>      Rest estimate: <font color="firebrick"><div id="rentEstimateDiv"></div></font>
             </div>
         </td>
     </tr>
