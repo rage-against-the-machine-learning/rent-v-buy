@@ -122,7 +122,6 @@ function calculate_financials(){
     var myDownPayment = d3.select("#value-down-payment").node().textContent;
     myDownPayment = +myDownPayment.substring(1,myDownPayment.length);
     var myMortgageRate = +document.getElementById('credit-score').value;
-    console.log(myMortgageRate)
     var myMaintenance = d3.select("#value-annual-maintenance").node().textContent;
     myMaintenance = +myMaintenance.substring(1,myMaintenance.length);
     var myHomeInsurance = d3.select("#value-annual-home-insurance").node().textContent;
@@ -321,13 +320,17 @@ function calculate_financials(){
                 .attr("id", "buyLine")
                 .attr("d", buyLine(data["data"]));
 
+            // Only show every 6 months in scatterplot
+            var chosenMonths = [];
+            for(var i =0; i<=data["data"].length; i+=6) chosenMonths.push(data["data"][i]);
+
             g.append("g")
                 .selectAll()
-                .data(data["data"])
+                .data(chosenMonths)
                 .enter().append("path")
                 .attr("class", "dot")
                 .attr("transform", function(d) { return "translate("+x(d.month)+","+y(d.buy)+")"; })
-                .attr('d', d3.symbol().type( d3.symbolSquare ).size( 3.0 ) )
+                .attr('d', d3.symbol().type( d3.symbolSquare ).size( 5.0 ) )
                 .attr("id", "buyScatter")
                 .on("mouseover", function(d) {		
                     div.transition()		
@@ -368,11 +371,11 @@ function calculate_financials(){
 
             g.append("g")
                 .selectAll()
-                .data(data["data"])
+                .data(chosenMonths)
                 .enter().append("path")
                 .attr("class", "dot")
                 .attr("transform", function(d) { return "translate("+x(d.month)+","+y(d.rent)+")"; })
-                .attr('d', d3.symbol().type( d3.symbolSquare ).size( 3.0 ) )
+                .attr('d', d3.symbol().type( d3.symbolSquare ).size( 5.0 ) )
                 .attr("id", "rentScatter")
                 .on("mouseover", function(d) {		
                     div.transition()		
