@@ -8,7 +8,7 @@ var	margin = {top: 30, right: 40, bottom: 30, left: 70},
     height = 330;
 
     var buyRent;
-    d3.json("static/maps/cal_zip.json", function(d) {
+    d3.json("static/maps/buy_rent_appr.json", function(d) {
         console.log("[buyRent]" +d)
 			  return {
 			    buy: +buy,
@@ -233,7 +233,7 @@ if (typeof lastSelectedObject != 'undefined') {
            projNew = d3.geoMercator()
            .center([ Math.round(longitude), Math.round(latitude) ])
            .translate([ width/2, height/2 +40 ])
-           .scale([ width*50.5 ]);
+           .scale([ width*20.5 ]);
 
        geoPauth2 = d3.geoPath().projection(projNew)
 
