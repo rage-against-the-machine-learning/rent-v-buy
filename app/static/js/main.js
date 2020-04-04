@@ -8,7 +8,7 @@ var	margin = {top: 30, right: 40, bottom: 30, left: 70},
     height = 330;
 
     var buyRent;
-    d3.json("static/maps/buy_rent_appr.json", function(d) {
+    d3.json("static/maps/buy_rent_appr_formatted.json", function(d) {
         console.log("[buyRent]" +d)
 			  return {
 			    buy: +buy,
