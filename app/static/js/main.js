@@ -235,6 +235,11 @@ if (typeof lastSelectedObject != 'undefined') {
            .translate([ width/2, height/2 +40 ])
            .scale([ width*20.5 ]);
 
+           // Show inputs for financial calculations
+           finInputs = document.getElementById('financialInputs');            
+           finInputs.style.display = "block";
+           show_sliders();
+
        geoPauth2 = d3.geoPath().projection(projNew)
 
 

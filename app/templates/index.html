@@ -62,7 +62,7 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
             <div id="titleRecommendation"></div>
         </td>
         <td style="width:30%">
-    <div class="row align-items-center">
+    <div class="row align-items-center" id="financialInputs">
         <div class="col-sm-2"><p>Mortgage length</p>
         <select id="mortgage-horizon">
             <option value="30" selected="selected">30 years</option>
@@ -107,9 +107,15 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
 <link rel="stylesheet" type="text/css" href="static/css/main.css">
 
 </body>
-<script src="static/js/equity.js"></script>
+<script src="static/js/financialSliders.js"></script>
 <script src="static/js/main.js"></script>
 <script>
+
+// Do not show financial inputs until a zip code is selected
+var finInputs = document.getElementById('financialInputs');            
+finInputs.style.display = "none"
+
+
 function calculate_financials(){
     // Read new values from slider
     var mortgageHorizon = +document.getElementById('mortgage-horizon').value;
