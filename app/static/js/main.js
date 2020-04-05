@@ -247,7 +247,7 @@ if (typeof lastSelectedObject != 'undefined') {
            // Show inputs for financial calculations
            finInputs = document.getElementById('financialInputs');            
            finInputs.style.display = "block";
-           show_sliders();
+           showingSliders = showSliders(showingSliders);
 
        geoPauth2 = d3.geoPath().projection(projNew)
 

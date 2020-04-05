@@ -113,8 +113,8 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
 
 // Do not show financial inputs until a zip code is selected
 var finInputs = document.getElementById('financialInputs');            
-finInputs.style.display = "none"
-
+finInputs.style.display = "none";
+var showingSliders = false;
 
 function calculate_financials(){
     // Read values from first view
@@ -138,6 +138,9 @@ function calculate_financials(){
     var newParams = { mortgageHorizon: mortgageHorizon, downPayment: myDownPayment, mortgageRate: myMortgageRate,
         maintenance: myMaintenance, homeInsurance: myHomeInsurance, buyPrice: myBuyPrice, rentPrice: myRentPrice,
         appreciationRate: myApprRate};
+
+    // Print request msg to console
+    console.log(newParams);
 
     fetch(`${window.origin}/index/calculate-financials`, {
         method: "POST", credentials: "include", body: JSON.stringify(newParams),
