@@ -117,6 +117,14 @@ finInputs.style.display = "none"
 
 
 function calculate_financials(){
+    // Read values from first view
+    var myZipCode = selectedLocation.substr(selectedLocation.length - 5);
+    var myBuyPrice = buyRent[myZipCode]["buy"];
+    myBuyPrice = 1000.0 * parseFloat( myBuyPrice.substr(1, myBuyPrice.length - 2).replace(/,/g, ''));
+    var myRentPrice = buyRent[myZipCode]["rent"];
+    myRentPrice = parseFloat( myRentPrice.substr(1, myRentPrice.length - 7).replace(/,/g, ''));
+    var myApprRate = buyRent[myZipCode]["appr_rate"];
+    myApprRate = 0.01*parseFloat(myApprRate.substr(0,myApprRate.length-1));
     // Read new values from slider
     var mortgageHorizon = +document.getElementById('mortgage-horizon').value;
     var myDownPayment = d3.select("#value-down-payment").node().textContent;
@@ -128,7 +136,8 @@ function calculate_financials(){
     myHomeInsurance = +myHomeInsurance.substring(1,myHomeInsurance.length);
     // Parse request JSON
     var newParams = { mortgageHorizon: mortgageHorizon, downPayment: myDownPayment, mortgageRate: myMortgageRate,
-        maintenance: myMaintenance, homeInsurance: myHomeInsurance};
+        maintenance: myMaintenance, homeInsurance: myHomeInsurance, buyPrice: myBuyPrice, rentPrice: myRentPrice,
+        appreciationRate: myApprRate};
 
     fetch(`${window.origin}/index/calculate-financials`, {
         method: "POST", credentials: "include", body: JSON.stringify(newParams),
@@ -324,9 +333,6 @@ function calculate_financials(){
             var chosenMonths = [];
             for(var i =0; i<=data["data"].length; i+=6) chosenMonths.push(data["data"][i]);
 
-            // Temp zip_code for Zillow href
-            var temp_zip_code = 93720
-
             g.append("g")
                 .selectAll()
                 .data(chosenMonths)
@@ -359,11 +365,11 @@ function calculate_financials(){
                     var recom = document.getElementById('titleRecommendation');
                     if (d.rent > d.buy){
                         recom.innerHTML = "<b>Month " + d.month + ':</b> <font color="firebrick">Renting</font> is cheaper<br />';
-                        recom.innerHTML += '<a href="https://www.zillow.com/homes/'+ temp_zip_code + '_rb/">Do you want to start your search to rent in ' + temp_zip_code + '?</a><br />';
+                        recom.innerHTML += '<a href="https://www.zillow.com/homes/'+ myZipCode + '_rb/">Do you want to start your search to rent in ' + myZipCode + '?</a><br />';
 
                     } else {
                         recom.innerHTML = "<b>Month " + d.month + ':</b> <font color="steelblue">Buying</font> is cheaper<br />';
-                        recom.innerHTML += '<a href="https://www.zillow.com/homes/'+ temp_zip_code + '_rb/">Do you want to start your search to buy in ' + temp_zip_code + '?</a><br />'
+                        recom.innerHTML += '<a href="https://www.zillow.com/homes/'+ myZipCode + '_rb/">Do you want to start your search to buy in ' + myZipCode + '?</a><br />'
                     }
                     recom.innerHTML += '<font color="firebrick">Renting</font> mean wealth is ' + d.rent.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0, style: 'currency', currency: 'USD'});
                     recom.innerHTML += "<br />";
@@ -406,11 +412,11 @@ function calculate_financials(){
                     var recom = document.getElementById('titleRecommendation');
                     if (d.rent > d.buy){
                         recom.innerHTML = "<b>Month " + d.month + ':</b> <font color="firebrick">Renting</font> is cheaper<br />';
-                        recom.innerHTML += '<a href="https://www.zillow.com/homes/'+ temp_zip_code + '_rb/">Do you want to start your search to rent in ' + temp_zip_code + '?</a><br />';
+                        recom.innerHTML += '<a href="https://www.zillow.com/homes/'+ myZipCode + '_rb/">Do you want to start your search to rent in ' + myZipCode + '?</a><br />';
 
                     } else {
                         recom.innerHTML = "<b>Month " + d.month + ':</b> <font color="steelblue">Buying</font> is cheaper<br />';
-                        recom.innerHTML += '<a href="https://www.zillow.com/homes/'+ temp_zip_code + '_rb/">Do you want to start your search to buy in ' + temp_zip_code + '?</a><br />'
+                        recom.innerHTML += '<a href="https://www.zillow.com/homes/'+ myZipCode + '_rb/">Do you want to start your search to buy in ' + myZipCode + '?</a><br />'
                     }
                     recom.innerHTML += '<font color="firebrick">Renting</font> mean wealth is ' + d.rent.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0, style: 'currency', currency: 'USD'});
                     recom.innerHTML += "<br />";

@@ -35,9 +35,9 @@ def calculate_financials():
     number_of_months = 121
 
     # Calculate new financial results
-    equity, savings, mortgage, cash_outflow, rent, net_equity = equity_and_savings(purchase_price,
-                                                                    req['downPayment'], initial_rent,
-                                                                    equity_appreciation_rate, 
+    equity, savings, mortgage, cash_outflow, rent, net_equity = equity_and_savings(req['buyPrice'],
+                                                                    req['downPayment'], req['rentPrice'],
+                                                                    req['appreciationRate'], 
                                                                     mortgage_interest_rate = req['mortgageRate']/100.0,
                                                                     annual_maintenance = req['maintenance'],
                                                                     annual_home_insurance = req['homeInsurance'],
