@@ -63,7 +63,8 @@ const projectionUSA = d3.geoAlbersUsa()
 var selObject;
 var eachDict = {};
     var selectedLocation;
-    var buyPrice, rentPrice;
+    var buyPrice = "$0"
+    var rentPrice = "$0"
     //var objectName = "California.geo"
 
     function zipClicked(d) {
@@ -216,8 +217,8 @@ if (typeof lastSelectedObject != 'undefined') {
        var input = d3.select("#myInput")
       //.on("cut", function() { setTimeout(change, 10); })
       //.on("paste", function() { setTimeout(change, 10); })
+           .on("click", change)
       .on("change", change)
-      //.on("keyup", change);
 
 
 
@@ -360,12 +361,21 @@ if (typeof lastSelectedObject != 'undefined') {
             .attr("d", geoPauth)
             .on("mouseover", function (d) {
                 console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
+                                if (buyRent[d.properties.zip] == undefined) {
+                    buyPrice = "$0";
+                    rentPrice = "$0";
+                } else {
+                    buyPrice = buyRent[d.properties.zip].buy;
+                    rentPrice = buyRent[d.properties.zip].rent;
+                }
                 div.transition()
                     .duration(200)
                     .style("opacity", 0.9);
                 div.html(
-                    "zipcode: " + d.properties.zip + "<br/>" +
-                    "city: " + d.properties.name
+                    "zipcode: " + d.properties.zip + "<br/>" + +
+                    "city: " + d.properties.name +
+                                                            "buy: " + buyPrice + "<br/>" +
+                    "rent: " +  rentPrice
                 )
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY + 28) + "px");
