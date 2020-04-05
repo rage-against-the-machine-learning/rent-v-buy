@@ -35,14 +35,9 @@ const projectionUSA = d3.geoAlbersUsa()
 
 			var projectionCA1 = d3.geoMercator()
 								   .center([ -120, 37 ])
-								   .translate([ width/2, height/2 +40 ])
+								   //.translate([ width/2, height/2 +40 ])
+                                   .translate([ width/2, height/2 ])
 								   .scale([ width*2.5 ]);
-
-
-            var projectionCA2 = d3.geoAlbers()
-                       .center([ -120, 37 ])
-                       .translate([ width/2, height/2 +40 ])
-                       .scale(8000);
 
     var geoPauth = d3.geoPath().projection(projectionCA1);
     var zipCityDict = {};
@@ -245,8 +240,8 @@ if (typeof lastSelectedObject != 'undefined') {
 
            projNew = d3.geoMercator()
            .center([ Math.round(longitude), Math.round(latitude) ])
-           .translate([ width/2, height/2 +40 ])
-           .scale([ width*20.5 ]);
+           .translate([ width/2, height/2 ])
+           .scale([ width*50.5 ]);
 
            // Show inputs for financial calculations
            finInputs = document.getElementById('financialInputs');            
@@ -415,7 +410,7 @@ if (typeof lastSelectedObject != 'undefined') {
     context.globalAlpha = 1;
     context.fillStyle = "#f00";
     zipcodes.forEach(function(d) {
-      for (var i = 0, n = zip1.length; i < n; ++i) {
+      for (var i "$=" 0, n = zip1.length; i < n; ++i) {
         if (d.zip[i] !== zip1[i]) {
           return;
         }
