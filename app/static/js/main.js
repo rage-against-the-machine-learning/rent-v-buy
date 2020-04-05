@@ -83,8 +83,14 @@ if (typeof lastSelectedObject != 'undefined') {
 
         console.log("we are in the zipClicked? what is sel: "+sel)
         selectedLocation = d.properties.name + ", CA, " + d.properties.zip
-        buyPrice = buyRent[d.properties.zip].buy
-        rentPrice = buyRent[d.properties.zip].rent
+                console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
+                if (buyRent[d.properties.zip] == undefined) {
+                    buyPrice = "$0";
+                    rentPrice = "$0";
+                } else {
+                    buyPrice = buyRent[d.properties.zip].buy;
+                    rentPrice = buyRent[d.properties.zip].rent;
+                }
         console.log("zip area clicked! location selected: " + selectedLocation);
             d.fx = d.x;
     d.fy = d.y;
@@ -175,16 +181,23 @@ if (typeof lastSelectedObject != 'undefined') {
             .attr("d", geoPauth)
             .on("mouseover", function (d) {
 
-                //var buy
+                var buyPrice, rentPrice
                 console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
+                if (buyRent[d.properties.zip] == undefined) {
+                    buyPrice = "$0";
+                    rentPrice = "$0";
+                } else {
+                    buyPrice = buyRent[d.properties.zip].buy;
+                    rentPrice = buyRent[d.properties.zip].rent;
+                }
                 div.transition()
                     .duration(200)
                     .style("opacity", 0.9);
                 div.html(
                     "zipcode: " + d.properties.zip + "<br/>" +
                     "city: " + d.properties.name + "<br/>" +
-                    "buy: " + buyRent[d.properties.zip].buy + "<br/>" +
-                    "rent: " +  buyRent[d.properties.zip].rent
+                    "buy: " + buyPrice + "<br/>" +
+                    "rent: " +  rentPrice
                 )
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY + 28) + "px");
@@ -299,15 +312,23 @@ if (typeof lastSelectedObject != 'undefined') {
             .attr("d", geoPauth2)
             .on("click", zipClicked)
             .on("mouseover", function (d) {
+                var buyPrice, rentPrice
                 console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
+                                if (buyRent[d.properties.zip] == undefined) {
+                    buyPrice = "$0";
+                    rentPrice = "$0";
+                } else {
+                    buyPrice = buyRent[d.properties.zip].buy;
+                    rentPrice = buyRent[d.properties.zip].rent;
+                }
                 div.transition()
                     .duration(200)
                     .style("opacity", 0.9);
                 div.html(
                     "zipcode: " + d.properties.zip + "<br/>" +
                     "city: " + d.properties.name + "<br/>" +
-                    "buy: " + buyRent[d.properties.zip].buy + "<br/>" +
-                    "rent: " +  buyRent[d.properties.zip].rent
+                                        "buy: " + buyPrice + "<br/>" +
+                    "rent: " +  rentPrice
                 )
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY + 28) + "px");
