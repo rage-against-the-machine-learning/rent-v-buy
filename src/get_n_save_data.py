@@ -26,8 +26,6 @@ if not os.path.isdir(data_dir):
     os.mkdir(data_dir)
 if not os.path.isdir(data_dir + 'raw/'):
     os.mkdir(data_dir + 'raw/')
-if not os.path.isdir(data_dir + 'raw/unzipped/'):
-    os.mkdir(data_dir + 'raw/unzipped/')
 if not os.path.isdir(data_dir + 'interim/'):
     os.mkdir(data_dir + 'interim/')
 if not os.path.isdir(data_dir + 'processed/'):
@@ -37,7 +35,11 @@ if not os.path.isdir(data_dir + 'predictions/'):
 
 # 2. Download the files from Kaggle.com
 # AFTER setting up the kaggle.com API key per the README.md
-if 'zecon.zip' not in os.listdir('../data/raw') and 'kaggle.json' in os.listdir('~/.kaggle'):
+if 'kaggle.json' not in os.listdir(str(pathlib.Path().home()) + '/.kaggle/'): 
+    print('Check that you have setup your Kaggle API key and the key!. Follow the instructions on the README.md for Authentication setup.')
+
+if 'zecon.zip' not in os.listdir('../data/raw'):
+    print('Preview the data from kaggle.com: ' + '\n')
     list_files = subprocess.run([
         'kaggle',
         'datasets',  
@@ -49,6 +51,7 @@ if 'zecon.zip' not in os.listdir('../data/raw') and 'kaggle.json' in os.listdir(
 
     # Change working directory in ./data/raw/
     # Then Download the zipfile from kaggle
+    print('Download the data from kaggle.com: ' + '\n')
     os.chdir('../data/raw/')
     download_files = subprocess.run([
         'kaggle',
@@ -59,16 +62,14 @@ if 'zecon.zip' not in os.listdir('../data/raw') and 'kaggle.json' in os.listdir(
     ])
     print("The exit code was: %d" % download_files.returncode)
 
-else:
-    print('Check that you have setup your Kaggle API key and the key!. Follow the instructions on the README.md for Authentication setup.')
-
 
 # 3 Unzip the zipfile that was downloaded
-files = os.listdir('../data/raw/')
+files = os.listdir(f'{data_dir}raw/')
 
 for f in files: 
     if '.zip' in f:
-        with ZipFile(f'../data/raw/{f}', 'r') as a_zip:
-                    a_zip.extractall(f'../data/raw/unzipped/{f[:-4]}')
+        with ZipFile(f'{data_dir}raw/{f}', 'r') as a_zip:
+            a_zip.extractall(f'{data_dir}raw/{f[:-4]}')
+        
     else:
         pass

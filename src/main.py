@@ -1,6 +1,9 @@
-#run our model
-import pandas as pd
-import make_zip_pair
+# Download data from kaggle.com
+import get_n_save_data as get 
 
-data = pd.read_csv('../data/raw/unzipped/Zip_time_series.csv')
-print(make_zip_pair.make_main(data,91770))
+# Light data processing
+import make_dataset as make
+
+# Pare down scope to just California
+
+

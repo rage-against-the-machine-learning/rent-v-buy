@@ -1,6 +1,5 @@
 import pandas as pd 
 import numpy as np  
-from zipfile import ZipFile
 
 import pathlib
 import sys
@@ -14,25 +13,26 @@ warnings.filterwarnings("ignore")
 # Unzip the files and read the csvs
 csv_dfs = {}
 
-for filename in sorted(os.listdir('../data/raw/')):
-    if '.csv.zip' in filename: 
-        with ZipFile(f'../data/raw/{filename}', 'r') as a_zip:
-            a_zip.extractall(f'../data/raw/unzipped/{filename[:-4]}')
-            
-    elif '.csv' in filename:
-        csv_dfs[filename] = pd.read_csv(f'../data/raw/{filename}')
+zecon_dir = str(pathlib.Path().absolute().parent) + '/raw/zecon/'
+for filename in os.listdir(zecon_dir):
+    print(f"Reading in {filename}...")        
+    if '.csv' in filename:
+        try:
+            csv_dfs[filename[:-4]] = pd.read_csv(f'{zecon_dir}{filename}', 
+                                                 error_bad_lines=False)
+        except:
+            csv_dfs[filename[-4:]] = pd.read_csv(f'{zecon_dir}{filename}', 
+                                                 encoding='latin-1')
 
-# Read in the extracted zip files       
-for filename in sorted(os.listdir('../data/raw/unzipped/')):
-    csv_dfs[filename[:-4]] = (pd.read_csv(f'../data/raw/unzipped/{filename}/{filename}', engine='python'))
+print("All csv's loaded.")
 
 
 # CREATE FIPS MAP FROM THE COUNTY CROSS WALK, COUNTY TIME SERIES, CITIES CROSSWALK, CITY TIME SERIES
-county_xwalk = pd.read_csv('../data/raw/CountyCrosswalk_Zillow.csv')
-city_xwalk = pd.read_csv('../data/raw/unzipped/cities_crosswalk.csv/cities_crosswalk.csv')
+county_xwalk = csv_dfs['CountyCrossWalk_Zillow']
+city_xwalk = csv_dfs['cities_crosswalk']
 
-county_ts = pd.read_csv('../data/raw/unzipped/County_time_series.csv/County_time_series.csv')
-city_ts = pd.read_csv('../data/raw/unzipped/City_time_series.csv/City_time_series.csv')
+county_ts = csv_dfs['County_time_series']
+city_ts = csv_dfs['City_time_series']
 
 state_region_d = {
     'West' : ['Arizona', 'California', 'Colorado', 'Idaho', 'Montana', 'Nevada',  'New Mexico', 'Oregon', 'Utah',  'Washington'],
@@ -155,4 +155,5 @@ merged = merged.drop_duplicates()
 merged.reset_index(drop=True, inplace=True)
 
 # Save the file in data/interim/ directory
-merged.to_pickle('../data/interim/fips_map.pickle')
+interim_dir = str(pathlib.Path().absolute().parent) + '/interim/'
+merged.to_pickle(f'{interim_dir}fips_map.pickle')
