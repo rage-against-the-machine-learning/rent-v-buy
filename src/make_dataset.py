@@ -1,3 +1,13 @@
+'''
+make_datset.py
+
+This file serves to: 
+1. Read in the downloaded data from zillow/zecon on Kaggle.com as pandas DataFrames
+2. Create a Mapping table that gives the city-name to region to state, to FIPS links
+This mapping table will be pickled and saved in the /data/interim folder as `fips_map.pikcle`
+and subsequently used for purposes of data pre-processing.
+'''
+
 import pandas as pd 
 import numpy as np  
 
@@ -7,13 +17,14 @@ import os
 sys.path.append(str(pathlib.Path().absolute().parent))
 
 import warnings
-warnings.filterwarnings("ignore")
+warnings.filterwarnings('ignore')
 
 
 # Unzip the files and read the csvs
 csv_dfs = {}
 
-zecon_dir = str(pathlib.Path().absolute().parent) + '/raw/zecon/'
+zecon_dir = str(pathlib.Path().absolute().parent) + '/data/raw/zecon/'
+
 for filename in os.listdir(zecon_dir):
     print(f"Reading in {filename}...")        
     if '.csv' in filename:
@@ -155,5 +166,5 @@ merged = merged.drop_duplicates()
 merged.reset_index(drop=True, inplace=True)
 
 # Save the file in data/interim/ directory
-interim_dir = str(pathlib.Path().absolute().parent) + '/interim/'
+interim_dir = str(pathlib.Path().absolute().parent) + '/data/interim/'
 merged.to_pickle(f'{interim_dir}fips_map.pickle')
