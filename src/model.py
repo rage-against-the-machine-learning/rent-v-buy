@@ -1,6 +1,5 @@
-# this script takes the clean dataset gets the data for the current month
-# Created by Skye
-import numpy as np
+# This script takes the clean dataset and generates predictions
+
 import pandas as pd
 
 from matplotlib import pyplot as plt
@@ -9,7 +8,6 @@ import warnings
 warnings.filterwarnings('ignore')
 
 from datetime import datetime
-from dateutil.parser import parse
 from dateutil import relativedelta
 
 import json
@@ -171,7 +169,6 @@ excl_zips = pickle.load(my_file)
 
 
 # 2. Get all unizue zipcodes & iterate over them to create outputs:
-# TODO: build a checker to ensure the zip code is no tone of the ones we've ruled out
 all_ca_zips = processed['ZipCode'].unique().tolist()
 
 UI_output = dict()
@@ -181,3 +178,9 @@ for zipcode in all_ca_zips:
         UI, calculator = make_UI_n_dec_calculator_outputs (processed, zipcode, excl_zips)
         UI_output.update(UI)
         calculator_output.update(calculator)
+
+with open('../data/predictions/UI_output.json', 'w') as f1:
+    json.dump(UI_output, f1)
+
+with open('../data/predictions/calculator_output.json', 'w') as f2:
+    json.dump(calculator_output, f2)
