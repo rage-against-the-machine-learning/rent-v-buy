@@ -18,6 +18,7 @@ import make_dataset as make
 print('............................')
 print('............................')
 print('3. Scoping the data down to the Golden State--California.')
+print('3. Preprocess data for modeling.')
 print('............................')
 print('............................')
 import california_only as ca
@@ -25,7 +26,8 @@ import california_only as ca
 # Model Preprocessing
 print('............................')
 print('............................')
-print('4. Model preprocessing.')
+print('4. Generate predictions for buy and rent values.')
 print('............................')
 print('............................')
+import model
 
