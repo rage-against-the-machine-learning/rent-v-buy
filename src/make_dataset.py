@@ -23,7 +23,7 @@ warnings.filterwarnings('ignore')
 # Unzip the files and read the csvs
 csv_dfs = {}
 
-zecon_dir = str(pathlib.Path().absolute().parent) + '/data/raw/zecon/'
+zecon_dir = '../../data/raw/zecon/'
 
 for filename in os.listdir(zecon_dir):
     print(f"Reading in {filename}...")        
@@ -166,5 +166,5 @@ merged = merged.drop_duplicates()
 merged.reset_index(drop=True, inplace=True)
 
 # Save the file in data/interim/ directory
-interim_dir = str(pathlib.Path().absolute().parent) + '/data/interim/'
+interim_dir = '../../data/interim/'
 merged.to_pickle(f'{interim_dir}fips_map.pickle')

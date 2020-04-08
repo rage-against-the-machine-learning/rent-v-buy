@@ -15,10 +15,10 @@ sys.path.append(str(pathlib.Path().absolute().parent))
 
 
 # LOAD DATA
-city_ts = pd.read_csv('../data/raw/zecon/City_time_series.csv')
-zip_ts = pd.read_csv('../data/raw/zecon/Zip_time_series.csv')
+city_ts = pd.read_csv('../../data/raw/zecon/City_time_series.csv')
+zip_ts = pd.read_csv('../../data/raw/zecon/Zip_time_series.csv')
 
-fips_mapping = pd.read_pickle('../data/interim/fips_map.pickle')
+fips_mapping = pd.read_pickle('../../data/interim/fips_map.pickle')
 
 
 # PARE DOWN CITY TABLE TO JUST CA
@@ -177,12 +177,12 @@ ca_zip_w_fips = ca_zip_zill_ts.merge(fips_mapping_CA,
 
 
 # Save the files (prior to imputing with city-data): 
-ca_city_ts.to_pickle('../data/interim/california-city-ts.pickle')
-ca_zip_ts.to_pickle('../data/interim/california-zip-ts.pickle')
+ca_city_ts.to_pickle('../../data/interim/california-city-ts.pickle')
+ca_zip_ts.to_pickle('../../data/interim/california-zip-ts.pickle')
 
 # Save the files (after imputing missing zipcodes with city data)
-city_w_zips_ts.to_pickle('../data/interim/ca-city-w-zip-ts.pickle')
-ca_zip_w_fips.to_pickle('../data/interim/ca-zip-w-city-ts.pickle')
+city_w_zips_ts.to_pickle('../../data/interim/ca-city-w-zip-ts.pickle')
+ca_zip_w_fips.to_pickle('../../data/interim/ca-zip-w-city-ts.pickle')
 
 
 # Clean up the df for modeling:
@@ -213,7 +213,7 @@ min_max_dates_df.reset_index(inplace=True)
 min_max_dates_df.rename(columns={'index':'zip_code'}, inplace=True)
 
 excl_these = min_max_dates_df[(min_max_dates_df['max_date'] < '2017')]
-with open ('../data/processed/exclude_these_zips.pickle', 'wb') as f:
+with open ('../../data/processed/exclude_these_zips.pickle', 'wb') as f:
     pickle.dump(excl_these, f)
 
 # Create a list of Zipcodes we need to generate 0's for predictions for
@@ -242,4 +242,4 @@ del interpol
 
 # Save the dataframe for modeling into the data/interim folder:
 print("Saving the DataFrame for modeling...")
-interpol_time.to_pickle('../data/processed/interpolated_fillnaTime_df.pickle')
+interpol_time.to_pickle('../../data/processed/interpolated_fillnaTime_df.pickle')
