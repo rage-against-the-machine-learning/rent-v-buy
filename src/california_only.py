@@ -243,5 +243,3 @@ del interpol
 # Save the dataframe for modeling into the data/interim folder:
 print("Saving the DataFrame for modeling...")
 interpol_time.to_pickle('../data/processed/interpolated_fillnaTime_df.pickle')
-
-
