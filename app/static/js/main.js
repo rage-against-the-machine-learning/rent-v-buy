@@ -15,7 +15,7 @@ var	margin = {top: 30, right: 40, bottom: 30, left: 70},
     //width = 600 - margin.left - margin.right,
     width = 600,
     //height = 330 - margin.top - margin.bottom;
-    height = 330;
+    height = 350;
 var xCoordForLegend = width - margin.left;
 var buyRent;
 var minAppr = 0;
@@ -149,17 +149,17 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
 
         if ((input.property("value") != "") & (typeof d == 'undefined')) {
             //someone entered the location in the field, nothing was clicked
-            console.log("[DisplayMap], data in field is: "+input.property("value")+ ",no zip clicked")
+            //console.log("[DisplayMap], data in field is: "+input.property("value")+ ",no zip clicked")
             enteredString = input.property("value");
             enteredData = enteredString.substr(enteredString.length - 5);
         } else if ((input.property("value") != "") & (typeof d != 'undefined')) {
             // while there is value in the field, someone clicked, so we give precedence to the clicked zip
-            console.log("[DisplayMap], old data in field is: "+input.property("value")+ ",but user clicked on zip: " +d.properties.zip)
+            //console.log("[DisplayMap], old data in field is: "+input.property("value")+ ",but user clicked on zip: " +d.properties.zip)
             enteredData = d.properties.zip
         } else if ((input.property("value") == "") & (typeof d != 'undefined')) {
             // there was nothing entered in field, but d is defined, which means we received
             // location via the click on the map
-            console.log("[DisplayMap], no data in field, user clicked on zip: " +d.properties.zip)
+            //console.log("[DisplayMap], no data in field, user clicked on zip: " +d.properties.zip)
             enteredData = d.properties.zip
         } 
 
@@ -173,15 +173,15 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
             .attr("fill", function(d) {
                 if (d.properties.zip == enteredData) {
                     if (typeof lastSelectedObject != 'undefined') {
-                        console.log("[DisplayMap], enteredData " + enteredData + " matches zip")
-                        console.log("[DisplayMap] last sel was: "+lastSelectedObject +" , resetting!")
+                        //console.log("[DisplayMap], enteredData " + enteredData + " matches zip")
+                        //console.log("[DisplayMap] last sel was: "+lastSelectedObject +" , resetting!")
                         lastSelectedObject.style("stroke", "black")
                             .attr("stroke-width", 1)
                             //.attr("fill", d3.rgb(128,128,128))
                     }
                    sel = d3.select(this);
                    lastSelectedObject = sel;
-                   console.log("[DisplayMap] sel: "+sel)
+                   //console.log("[DisplayMap] sel: "+sel)
 
 
                    selectedLocation = d.properties.name + ", CA, " + d.properties.zip
@@ -237,7 +237,7 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
             .on("mouseover", function (d) {
 
                 var buyPrice, rentPrice
-                console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
+                //console.log("zipcode: " + d.properties.zip + ", city: " + d.properties.name)
                 if (buyRent[d.properties.zip] == undefined) {
                     buyPrice = "$0";
                     rentPrice = "$0";
@@ -267,49 +267,73 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
             })
             //.on("click", zipClicked);
             .on("click", change);
+
+    var zoom = d3.zoom()
+      //.scaleExtent([1, 8])
+      .on('zoom', function() {
+          g.selectAll('path')
+           .attr('transform', d3.event.transform);
+       })
+
+    g.call(zoom)
     }
 
 
-    function calculateZoomedProjection(zipcode) {
+    function calculateZoomedProjection(zipcode,d) {
+            var zoomFactor = 15 // default
+            var centering = [width/2, height/2]
+            LAregex = /900[0-9]{2}/;
+            bayArearegex = /9[4-5][0-9]{3}/
             latitude  = zipLatLong["$"+zipcode].lat;
-            longitude = zipLatLong["$"+zipcode].lon
+            longitude = zipLatLong["$"+zipcode].lon;
+
+            if (LAregex.test(zipcode)) zoomFactor = 48
+            if (bayArearegex.test(zipcode)) {
+                zoomFactor = 50;
+                centering = [230+Math.round(longitude/6),100]
+            }
+            //if (typeof d != 'undefined')
+
+            console.log("[calculateZoomedProjection] zoomFactor: " + zoomFactor)
+            console.log("[calculateZoomedProjection] centering: " + centering)
+
             console.log("[calculateZoomedProjection] zip code: " + zipcode)
             g.selectAll("*").remove();
             console.log("[calculateZoomedProjection] latitude: ", latitude)
-            console.log("[calculateZoomedProjection] ongitude: ", longitude)
+            console.log("[calculateZoomedProjection] longitude: ", longitude)
 
             projNew = d3.geoMercator()
             .center([ Math.round(longitude), Math.round(latitude) ])
-            .translate([ width/2, height/2 ])
-            .scale([ width*50.5 ]);
+            .translate(centering)
+            .scale([ width*zoomFactor ]);
 
            return d3.geoPath().projection(projNew)
     }
 
     function change(d) {
        var latitude, longitude;
-       console.log("in change()")
-       console.log("[change]: input value: "+ input.property("value"))
+       //console.log("in change()")
+       //console.log("[change]: input value: "+ input.property("value"))
       //xxx
         if ((input.property("value") != "") & (typeof d == 'undefined')) {
             //someone entered the location in the field, nothing was clicked
-            console.log("[change], data in field is: "+input.property("value")+ ",no zip clicked")
+            //console.log("[change], data in field is: "+input.property("value")+ ",no zip clicked")
             enteredString = input.property("value");
             enteredData = enteredString.substr(enteredString.length - 5);
         } else if ((input.property("value") != "") & (typeof d != 'undefined')) {
             // while there is value in the field, someone clicked, so we give precedence to the clicked zip
-            console.log("[change], old data in field is: "+input.property("value")+ ",but user clicked on zip: " +d.properties.zip)
+            //console.log("[change], old data in field is: "+input.property("value")+ ",but user clicked on zip: " +d.properties.zip)
             enteredData = d.properties.zip
         } else if ((input.property("value") == "") & (typeof d != 'undefined')) {
             // there was nothing entered in field, but d is defined, which means we received
             // location via the click on the map
-            console.log("[change], no data in field, user clicked on zip: " +d.properties.zip)
+            //console.log("[change], no data in field, user clicked on zip: " +d.properties.zip)
             enteredData = d.properties.zip
         } else if ((input.property("value") == "") & (enteredData == "") & (typeof d == 'undefined')) {
             // nothing entered in the field, no d set , thus nothing clicked
             // means if change was called it was called from the input selection with nothing in the field
             // time to reset the map..
-            console.log("[change], no value entered in input field, and no zip clicked")
+            //console.log("[change], no value entered in input field, and no zip clicked")
             g.selectAll("*").remove();
             DisplayMap(allCAData,fullStateProjection,undefined)
             DisplayLegend()
@@ -331,6 +355,7 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
 
             zipZoomedProjection = calculateZoomedProjection(enteredData)
             DisplayMap(allCAData,zipZoomedProjection,d);
+            DisplayMap(allCAData,fullStateProjection,d);
             DisplayLegend()
 
      
@@ -380,7 +405,7 @@ function DisplayLegend() {
     legend.selectAll("*").remove();
     numRange = []
     colorRange = 5
-    console.log("[Legend] called , colorRange = " + colorRange)
+    //console.log("[Legend] called , colorRange = " + colorRange)
     rangeSlices = Math.round(maxAppr)/colorRange
     //nineRange = d3.range(1,10);
     d3.range(1,colorRange+1).forEach(function(d,i) {
@@ -401,14 +426,14 @@ function DisplayLegend() {
         .attr('cx', 0)
         .attr('cy', function(d, i){
             radius = i*18
-            console.log("[DisplayLegend] circle radius: " + radius)
+            //console.log("[DisplayLegend] circle radius: " + radius)
             return  radius;
         })
         .attr("r", 7)
         .attr("stroke", "white")
         .style('fill', function(d){
             colorShade = colorZip(d)
-            console.log("[DisplayLegend] circle colorShade: " + colorShade)
+            //console.log("[DisplayLegend] circle colorShade: " + colorShade)
             return colorShade
                  });
 
