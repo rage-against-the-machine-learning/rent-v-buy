@@ -16,7 +16,7 @@ var	margin = {top: 30, right: 40, bottom: 30, left: 70},
     width = 600,
     //height = 330 - margin.top - margin.bottom;
     height = 330;
-
+var xCoordForLegend = width - margin.left;
 var buyRent;
 var minAppr = 0;
 var maxAppr = 0;
@@ -32,6 +32,12 @@ var cleanedApprRate;
 var allCAData;
 var enteredData = ""
 var enteredString = ""
+var numRange = []
+var rangeSlices
+
+var legend 
+
+
 
 //------------------------LOAD DATA-------------------------//
 
@@ -110,6 +116,7 @@ function cleanApprRate(d) {
 
 
 
+//------------------------MAIN: RENDER THE MAPS-------------------------//
 
 Promise.all(californiaDataLoadPromise).then(ExecuteMeWhenDataIsLoaded)
 
@@ -128,11 +135,14 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
             enteredData = ""
             enteredString = ""
             g.selectAll("*").remove();
+            DisplayLegend()
             DisplayMap(allCAData,fullStateProjection,undefined)
+            
         })
         
 
     DisplayMap(allCAData,fullStateProjection,undefined);
+    DisplayLegend()
 
     function DisplayMap(allCAData, projection,d) {
         // the main Display function, displaying a map and sets the zoom parameters based on the projection
@@ -231,9 +241,11 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                 if (buyRent[d.properties.zip] == undefined) {
                     buyPrice = "$0";
                     rentPrice = "$0";
+                    apprRate = "n/a"
                 } else {
                     buyPrice = buyRent[d.properties.zip].buy;
                     rentPrice = buyRent[d.properties.zip].rent;
+                    apprRate = buyRent[d.properties.zip].appr_rate;
                 }
                 div.transition()
                     .duration(200)
@@ -242,7 +254,8 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                     "zipcode: " + d.properties.zip + "<br/>" +
                     "city: " + d.properties.name + "<br/>" +
                     "buy: " + buyPrice + "<br/>" +
-                    "rent: " +  rentPrice
+                    "rent: " +  rentPrice  + "<br/>" +
+                    "appr_rate: " +  apprRate
                 )
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY + 28) + "px");
@@ -299,6 +312,7 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
             console.log("[change], no value entered in input field, and no zip clicked")
             g.selectAll("*").remove();
             DisplayMap(allCAData,fullStateProjection,undefined)
+            DisplayLegend()
 
         }
 
@@ -317,13 +331,13 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
 
             zipZoomedProjection = calculateZoomedProjection(enteredData)
             DisplayMap(allCAData,zipZoomedProjection,d);
+            DisplayLegend()
 
      
        }
     }
 
-
-
+//------------------------ DISPLAY THE BUY AND RENT AMOUNTS-------------------------//
 
     function fillSelectedLocation(d) {
         sel = d3.select("#selectedLocationDiv")
@@ -352,5 +366,94 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
             .style("font-size", "18px")
             .text(d)
     }
+
+
+
+//------------------------ THE LEGEND FUNCTION-------------------------//
+
+function DisplayLegend() {
+    legend = g.append('g')
+        .attr('class', 'legend')
+        .attr("transform", "translate(" + xCoordForLegend  + "," + margin.top + ")")
+        .style('fill', "grey");
+
+    legend.selectAll("*").remove();
+    numRange = []
+    colorRange = 5
+    console.log("[Legend] called , colorRange = " + colorRange)
+    rangeSlices = Math.round(maxAppr)/colorRange
+    //nineRange = d3.range(1,10);
+    d3.range(1,colorRange+1).forEach(function(d,i) {
+        //console.log("i: ", i)
+        if (i == 0) {
+            numRange.push(Math.round(minAppr));
+        } else {
+            //numRange.push(numRange[i-1]+rangeSlices)
+            numRange.push(Math.round(rangeSlices*i));
+        }
+    })
+
+
+    legend.selectAll("circle")
+        .data(numRange) // enter the data
+        .enter()
+        .append("circle")
+        .attr('cx', 0)
+        .attr('cy', function(d, i){
+            radius = i*18
+            console.log("[DisplayLegend] circle radius: " + radius)
+            return  radius;
+        })
+        .attr("r", 7)
+        .attr("stroke", "white")
+        .style('fill', function(d){
+            colorShade = colorZip(d)
+            console.log("[DisplayLegend] circle colorShade: " + colorShade)
+            return colorShade
+                 });
+
+    legend.selectAll('text')
+        .data(numRange)
+        .enter()
+        .append('text')
+        .text(function(d,i){
+            if (i == 0) {
+                return d+"-"+numRange[1]+"%";
+            } else if (i == numRange.length-1) {
+                return ">" +d+"%";
+            } else {
+                return d+"-"+numRange[i+1]+"%";
+            }
+
+            
+            
+        })
+        .attr('x', 18)
+        .attr('y', function(d,i) {
+            return i*18+5;
+        })
+
+    eqTitle = g.append("text")
+        .attr("x", (width - 90)) 
+        //.attr("x", xCoordForGatechID)             
+        .attr("y", (margin.bottom / 3))
+        //.attr("y", yCoordForGatechID)
+        .attr("text-anchor", "center")
+        .style('fill', "grey")  
+        .style("font-size", "10px")
+        .text("Appreciation Rate");
+
+    eqNote = g.append("text")
+        .attr("x", (width - 90)) 
+        //.attr("x", xCoordForGatechID)             
+        .attr("y", (120+ margin.bottom / 3))
+        //.attr("y", yCoordForGatechID)
+        .attr("text-anchor", "center")
+        .style('fill', "grey")  
+        .style("font-size", "10px")
+        .text("Grey = no data");
+}
+
+   
        
 } // closing promises bracket
