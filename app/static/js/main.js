@@ -261,11 +261,11 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                     .duration(200)
                     .style("opacity", 0.9);
                 div.html(
-                    "zipcode: " + d.properties.zip + "<br/>" +
-                    "city: " + titleCase(d.properties.name) + "<br/>" +
-                    "buy: " + buyPrice + "<br/>" +
-                    "rent: " +  rentPrice  + "<br/>" +
-                    "appr_rate: " +  apprRate
+                    "Zip code: " + d.properties.zip + "<br/>" +
+                    "City: " + titleCase(d.properties.name) + "<br/>" +
+                    "Purchase: " + buyPrice + "<br/>" +
+                    "Rental: " +  rentPrice  + "<br/>" +
+                    "Appreciation rate: " +  apprRate
                 )
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY + 28) + "px");
@@ -358,9 +358,15 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
             console.log("change(): someone clicked on zip: " + enteredData)
             // someone entered data in the field above
 
-            // Show inputs for financial calculations
-            finInputs = document.getElementById('financialInputs');            
-            finInputs.style.display = "block";
+            if (buyPrice != '$0') {
+                // Show inputs for financial calculations
+                finInputs = document.getElementById('financialInputs');            
+                finInputs.style.display = "block";
+            } else {
+                // Hide inputs for financial calculations
+                finInputs = document.getElementById('financialInputs');            
+                finInputs.style.display = "none";
+            }
 
             zipZoomedProjection = calculateZoomedProjection(enteredData)
             DisplayMap(allCAData,zipZoomedProjection,d);
@@ -458,9 +464,6 @@ function DisplayLegend() {
             } else {
                 return d+"-"+numRange[i+1]+"%";
             }
-
-            
-            
         })
         .attr('x', 18)
         .attr('y', function(d,i) {
@@ -468,20 +471,16 @@ function DisplayLegend() {
         })
 
     eqTitle = g.append("text")
-        .attr("x", (width - 90)) 
-        //.attr("x", xCoordForGatechID)             
+        .attr("x", (width - 90))            
         .attr("y", (margin.bottom / 3))
-        //.attr("y", yCoordForGatechID)
         .attr("text-anchor", "center")
         .style('fill', "grey")  
         .style("font-size", "10px")
         .text("Appreciation Rate");
 
     eqNote = g.append("text")
-        .attr("x", (width - 90)) 
-        //.attr("x", xCoordForGatechID)             
+        .attr("x", (width - 90))         
         .attr("y", (120+ margin.bottom / 3))
-        //.attr("y", yCoordForGatechID)
         .attr("text-anchor", "center")
         .style('fill', "grey")  
         .style("font-size", "10px")

@@ -359,7 +359,7 @@ function plotWealthBuildUp(data, zipCode){
             div.transition()		
                 .duration(200)		
                 .style("opacity", .9);		
-            div	.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
+            div.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
                 .style("left", x(d.month) + "px")		
                 .style("top", (y(d.buy)+625.0)+ "px");	
             })					
