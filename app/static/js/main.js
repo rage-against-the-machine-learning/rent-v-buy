@@ -199,6 +199,9 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                    if (buyRent[d.properties.zip] == undefined) {
                         buyPrice = "$0";
                         rentPrice = "$0";
+                        // Clean group before plotting
+                        d3.select("#buildUp").remove();
+                        d3.select("#selectedMonth").remove();
                     } else {
                         buyPrice = buyRent[d.properties.zip].buy;
                         rentPrice = buyRent[d.properties.zip].rent;
@@ -362,6 +365,9 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                 // Show inputs for financial calculations
                 finInputs = document.getElementById('financialInputs');            
                 finInputs.style.display = "block";
+                // Clean group before plotting
+                d3.select("#buildUp").remove();
+                d3.select("#selectedMonth").remove();
             } else {
                 // Hide inputs for financial calculations
                 finInputs = document.getElementById('financialInputs');            
@@ -469,6 +475,21 @@ function DisplayLegend() {
         .attr('y', function(d,i) {
             return i*18+5;
         })
+    
+    legend.append("circle")
+        .attr('cx', 0)
+        .attr('cy', 90)
+        .attr("r", 7)
+        .attr("stroke", "white")
+        .style('fill', "gray");
+    
+    legend.append("text")
+        .attr("x", 18)         
+        .attr("y", 95)
+        .attr("text-anchor", "center")
+        .style('fill', "grey")  
+        .style("font-size", "10px")
+        .text("No data");
 
     eqTitle = g.append("text")
         .attr("x", (width - 90))            
@@ -478,13 +499,6 @@ function DisplayLegend() {
         .style("font-size", "10px")
         .text("Appreciation Rate");
 
-    eqNote = g.append("text")
-        .attr("x", (width - 90))         
-        .attr("y", (120+ margin.bottom / 3))
-        .attr("text-anchor", "center")
-        .style('fill', "grey")  
-        .style("font-size", "10px")
-        .text("Grey = no data");
 }
 
    
