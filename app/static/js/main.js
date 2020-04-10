@@ -354,26 +354,12 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
 
         }
 
-
        console.log("change(): enteredData: " + enteredData);
        zipRegex = /[0-9]{5}/;
 
         if (zipRegex.test(enteredData)) {
             console.log("change(): someone clicked on zip: " + enteredData)
             // someone entered data in the field above
-
-            if (buyPrice != '$0') {
-                // Show inputs for financial calculations
-                finInputs = document.getElementById('financialInputs');            
-                finInputs.style.display = "block";
-                // Clean group before plotting
-                d3.select("#buildUp").remove();
-                d3.select("#selectedMonth").remove();
-            } else {
-                // Hide inputs for financial calculations
-                finInputs = document.getElementById('financialInputs');            
-                finInputs.style.display = "none";
-            }
 
             zipZoomedProjection = calculateZoomedProjection(enteredData)
             DisplayMap(allCAData,zipZoomedProjection,d);
@@ -382,6 +368,21 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
 
      
        }
+
+       console.log(buyPrice);
+       if (buyPrice != '$0') {
+           // Show inputs for financial calculations
+           finInputs = document.getElementById('financialInputs');            
+           finInputs.style.display = "block";
+           // Clean group before plotting
+           d3.select("#buildUp").remove();
+           d3.select("#selectedMonth").remove();
+       } else {
+           // Hide inputs for financial calculations
+           finInputs = document.getElementById('financialInputs');            
+           finInputs.style.display = "none";
+       }
+       
     }
 
 //------------------------ DISPLAY THE BUY AND RENT AMOUNTS-------------------------//
@@ -447,7 +448,8 @@ function DisplayLegend() {
         .attr("width", 90)
         .attr("height", 130)
         .attr("stroke", "white")
-        .style('fill', "white");
+        .style('fill', "white")
+        .style("opacity", 0.65);
 
     legend.selectAll("circle")
         .data(numRange) // enter the data
@@ -469,6 +471,7 @@ function DisplayLegend() {
         .data(numRange)
         .enter()
         .append('text')
+        .style('fill', d3.rgb(64,64,64))
         .text(function(d,i){
             if (i == 0) {
                 return d+"-"+numRange[1]+"%";
@@ -494,7 +497,7 @@ function DisplayLegend() {
         .attr("x", 18)         
         .attr("y", 95)
         .attr("text-anchor", "center")
-        .style('fill', "grey")  
+        .style('fill', d3.rgb(64,64,64))
         .style("font-size", "10px")
         .text("No data");
 
