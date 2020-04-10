@@ -2,7 +2,7 @@ import numpy as np
 
 def equity_and_savings(purchase_price, down_payment, initial_rent, equity_appreciation_rate,
                        mortgage_years=30.0, mortgage_interest_rate=0.04, property_tax_rate=0.0125,
-                       annual_maintenance=1000.0, annual_hoa=0.0, annual_home_insurance=1500.0,
+                       annual_maintenance=10000.0, annual_hoa=0.0, annual_home_insurance=3000.0,
                        marginal_income_tax_rate=0.30, inflation_rate=0.02, savings_interest_rate=0.04,
                        closing_costs=0.05, selling_costs=0.05, number_of_months=300, debug=True):
     """
