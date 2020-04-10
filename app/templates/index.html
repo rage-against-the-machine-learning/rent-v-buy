@@ -2,6 +2,20 @@
 <meta charset="utf-8">
 <head>
 <style>
+    div#banner { 
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        background-color: #DDEEEE; 
+        width: 100%; 
+    }
+    div#banner-content { 
+        width: 800px; 
+        margin: 0 auto; 
+        padding: 10px; 
+        font-size: 24px;
+        border: none;
+    }
   .ui-autocomplete {
     max-height: 200px;
     overflow-y: auto;
@@ -18,6 +32,11 @@
 </head>
 
 <body>
+<div id="banner">
+    <div id="banner-content">
+    Moving to California? Should you rent or buy?
+    </div>
+</div>
 
 <div class="container">
 {% if splashMessage %}
@@ -28,10 +47,6 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
 &nbsp;
 &nbsp;
 <table>
-    <tr>
-        <th>Graphics</th>
-        <th>Selections</th>
-    </tr>
     <tr>
         <td style="width:70%">
             <input id="myInput" autofocus maxlength=25 placeholder="type a zipcode/city in CA"></input>
