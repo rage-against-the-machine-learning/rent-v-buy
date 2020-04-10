@@ -129,6 +129,7 @@ function titleCase(string) {
     for(var i = 0; i< sentence.length; i++){
        sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
     }
+
  return sentence.join(" ");
 }
 
@@ -217,8 +218,8 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
 
                     //console.log("zoomed inside the fill loop, zip was: "+d.properties.zip+", zipcolor: "+zipColor)
                    fillSelectedLocation(selectedLocation)
-                   fillRentEstimate(buyPrice)
-                   fillSaleEstimate(rentPrice)
+                   fillRentEstimate(rentPrice)
+                   fillSaleEstimate(buyPrice)
                 } else {
                     // check if buyRent has the zip code if not, make colorNumber grey , ie d3.rgb(128,128,128)
                     if (buyRent[d.properties.zip] == undefined) {
@@ -437,8 +438,16 @@ function DisplayLegend() {
             //numRange.push(numRange[i-1]+rangeSlices)
             numRange.push(Math.round(rangeSlices*i));
         }
-    })
+    });
 
+    // Add white background
+    legend.append("rect")
+        .attr('x', -22)
+        .attr('y', -26)
+        .attr("width", 90)
+        .attr("height", 130)
+        .attr("stroke", "white")
+        .style('fill', "white");
 
     legend.selectAll("circle")
         .data(numRange) // enter the data
@@ -447,14 +456,12 @@ function DisplayLegend() {
         .attr('cx', 0)
         .attr('cy', function(d, i){
             radius = i*18
-            //console.log("[DisplayLegend] circle radius: " + radius)
             return  radius;
         })
         .attr("r", 7)
         .attr("stroke", "white")
         .style('fill', function(d){
             colorShade = colorZip(d)
-            //console.log("[DisplayLegend] circle colorShade: " + colorShade)
             return colorShade
                  });
 
@@ -481,7 +488,7 @@ function DisplayLegend() {
         .attr('cy', 90)
         .attr("r", 7)
         .attr("stroke", "white")
-        .style('fill', "gray");
+        .style('fill', "lightgray");
     
     legend.append("text")
         .attr("x", 18)         
@@ -493,10 +500,11 @@ function DisplayLegend() {
 
     eqTitle = g.append("text")
         .attr("x", (width - 90))            
-        .attr("y", (margin.bottom / 3))
+        .attr("y", 18)
         .attr("text-anchor", "center")
-        .style('fill', "grey")  
+        .style('fill', d3.rgb(64,64,64)) 
         .style("font-size", "10px")
+        .attr("font-weight","bold")
         .text("Appreciation Rate");
 
 }
