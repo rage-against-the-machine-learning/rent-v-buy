@@ -280,34 +280,34 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
 
 
     function calculateZoomedProjection(zipcode,d) {
-            var zoomFactor = 15 // default
-            var centering = [width/2, height/2]
-            LAregex = /900[0-9]{2}/;
-            bayArearegex = /9[4-5][0-9]{3}/
-            latitude  = zipLatLong["$"+zipcode].lat;
-            longitude = zipLatLong["$"+zipcode].lon;
+        var zoomFactor = 15 // default
+        var centering = [width/2, height/2]
+        LAregex = /900[0-9]{2}/;
+        bayArearegex = /9[4-5][0-9]{3}/
+        latitude  = zipLatLong["$"+zipcode].lat;
+        longitude = zipLatLong["$"+zipcode].lon;
 
-            if (LAregex.test(zipcode)) zoomFactor = 48
-            if (bayArearegex.test(zipcode)) {
-                zoomFactor = 50;
-                centering = [230+Math.round(longitude/6),100]
-            }
-            //if (typeof d != 'undefined')
+        if (LAregex.test(zipcode)) zoomFactor = 48
+        if (bayArearegex.test(zipcode)) {
+            zoomFactor = 50;
+            centering = [230+Math.round(longitude/6),100]
+        }
+        //if (typeof d != 'undefined')
 
-            console.log("[calculateZoomedProjection] zoomFactor: " + zoomFactor)
-            console.log("[calculateZoomedProjection] centering: " + centering)
+        console.log("[calculateZoomedProjection] zoomFactor: " + zoomFactor)
+        console.log("[calculateZoomedProjection] centering: " + centering)
 
-            console.log("[calculateZoomedProjection] zip code: " + zipcode)
-            g.selectAll("*").remove();
-            console.log("[calculateZoomedProjection] latitude: ", latitude)
-            console.log("[calculateZoomedProjection] longitude: ", longitude)
+        console.log("[calculateZoomedProjection] zip code: " + zipcode)
+        g.selectAll("*").remove();
+        console.log("[calculateZoomedProjection] latitude: ", latitude)
+        console.log("[calculateZoomedProjection] longitude: ", longitude)
 
-            projNew = d3.geoMercator()
-            .center([ Math.round(longitude), Math.round(latitude) ])
-            .translate(centering)
-            .scale([ width*zoomFactor ]);
+        projNew = d3.geoMercator()
+        .center([ Math.round(longitude), Math.round(latitude) ])
+        .translate(centering)
+        .scale([ width*zoomFactor ]);
 
-           return d3.geoPath().projection(projNew)
+        return d3.geoPath().projection(projNew)
     }
 
     function change(d) {
@@ -351,7 +351,6 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
             // Show inputs for financial calculations
             finInputs = document.getElementById('financialInputs');            
             finInputs.style.display = "block";
-            showingSliders = showSliders(showingSliders);
 
             zipZoomedProjection = calculateZoomedProjection(enteredData)
             DisplayMap(allCAData,zipZoomedProjection,d);
