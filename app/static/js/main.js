@@ -123,6 +123,15 @@ Promise.all(californiaDataLoadPromise).then(ExecuteMeWhenDataIsLoaded)
 // we execute the following code only after the data has been loaded. the promise ensures we 
 // serialize these functions in the client browser instead of asynchronous execution.
 
+// Title case for city name
+function titleCase(string) {
+    var sentence = string.toLowerCase().split(" ");
+    for(var i = 0; i< sentence.length; i++){
+       sentence[i] = sentence[i][0].toUpperCase() + sentence[i].slice(1);
+    }
+ return sentence;
+}
+
 function ExecuteMeWhenDataIsLoaded([allCAData]) {
 
     var input = d3.select("#myInput")
@@ -184,7 +193,8 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                    //console.log("[DisplayMap] sel: "+sel)
 
 
-                   selectedLocation = d.properties.name + ", CA, " + d.properties.zip
+                   selectedLocation = titleCase(d.properties.name) + ", CA, " + d.properties.zip;
+                   console.log(selectedLocation);
 
                    if (buyRent[d.properties.zip] == undefined) {
                         buyPrice = "$0";
@@ -231,7 +241,7 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
             })
             .attr("data-name", function (d) {
                 zipCityDict[d.properties.zip] = d.properties.name;
-                return d.properties.name;
+                return titleCase(d.properties.name);
             })
             .attr("d", projection)
             .on("mouseover", function (d) {
@@ -252,7 +262,7 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                     .style("opacity", 0.9);
                 div.html(
                     "zipcode: " + d.properties.zip + "<br/>" +
-                    "city: " + d.properties.name + "<br/>" +
+                    "city: " + titleCase(d.properties.name) + "<br/>" +
                     "buy: " + buyPrice + "<br/>" +
                     "rent: " +  rentPrice  + "<br/>" +
                     "appr_rate: " +  apprRate
