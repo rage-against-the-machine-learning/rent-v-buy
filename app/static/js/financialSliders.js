@@ -4,7 +4,7 @@ Show only if a zip code has already been selected
 */
 function showSliders(){
     // Down payment slider
-    var down_payment_data = [0.0, 25000.0, 50000.0, 75000.0, 100000.0];
+    var down_payment_data = [0.0, 50000.0, 100000.0, 150000.0, 200000.0];
     var downPaymentSlider = d3
         .sliderBottom()
         .min(d3.min(down_payment_data)).max(d3.max(down_payment_data))
