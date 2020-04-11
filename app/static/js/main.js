@@ -53,8 +53,8 @@ d3.json("static/maps/UI_output.json", function(d) {
 		    //console.log("thenfunction buyrent(keys): " + d3.values(buyRent))
             d3.values(buyRent).forEach(function(d2) {
                 apprRateArray.push(cleanApprRate(d2.appr_rate))
-                minAppr = d3.min(apprRateArray)
-                maxAppr = d3.max(apprRateArray)
+                minAppr = d3.min(apprRateArray);
+                maxAppr = d3.max(apprRateArray);
                 colorZip = d3.scaleThreshold()
                     .domain(d3.range(minAppr,maxAppr))
                     .range(d3.schemeBlues[9])
@@ -107,8 +107,8 @@ function cleanApprRate(d) {
 
     if (cleaned < 0) {
         cleaned = 0.1
-    } else if (cleaned > 20) {
-        cleaned = 15
+    } else if (cleaned > 10.0) {
+        cleaned = 10.0
     }
     return parseFloat(cleaned);
 }
@@ -191,8 +191,6 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                     }
                    sel = d3.select(this);
                    lastSelectedObject = sel;
-                   //console.log("[DisplayMap] sel: "+sel)
-
 
                    selectedLocation = titleCase(d.properties.name) + ", CA, " + d.properties.zip;
                    console.log(selectedLocation);
@@ -478,7 +476,8 @@ function DisplayLegend() {
         .style('fill', d3.rgb(64,64,64))
         .text(function(d,i){
             if (i == 0) {
-                return d+"-"+numRange[1]+"%";
+                //return d+"-"+numRange[1]+"%";
+                return "<"+numRange[1]+"%";
             } else if (i == numRange.length-1) {
                 return ">" +d+"%";
             } else {
