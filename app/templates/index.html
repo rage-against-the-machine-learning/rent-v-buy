@@ -394,9 +394,9 @@ function plotWealthBuildUp(data, zipCode){
             div2.transition()		
                 .duration(200)		
                 .style("opacity", .9);		
-            div2.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
-                .style("left", x(d.month)+900.0 + "px")		
-                .style("top", (y(d.buy)+625.0)+ "px");	
+            div2.html("Month: " + d.month + "<br/>" + "Buy: $" + Math.round(d.buy) + "<br/>" + "Rent: $" + Math.round(d.rent) )	
+                .style("left", x(d.month)+400.0 + "px")		
+                .style("top", (y(d.buy)+600.0)+ "px");	
             })					
         .on("mouseout", function(d) {		
             div2.transition()		
@@ -439,9 +439,9 @@ function plotWealthBuildUp(data, zipCode){
             div2.transition()		
                 .duration(200)		
                 .style("opacity", .9);		
-            div2.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
-                .style("left", x(d.month)+900.0 + "px")		
-                .style("top", (y(d.rent)+625.0) + "px");	
+            div2.html("Month: " + d.month + "<br/>" + "Buy: $" + Math.round(d.buy) + "<br/>" + "Rent: $" + Math.round(d.rent) )	
+                .style("left", x(d.month)+400.0 + "px")		
+                .style("top", (y(d.rent)+600.0) + "px");	
             })					
         .on("mouseout", function(d) {		
             div2.transition()		

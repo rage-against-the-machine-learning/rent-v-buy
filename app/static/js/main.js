@@ -13,7 +13,7 @@ var g = choroplethSVG.append("g")
 
 var	margin = {top: 30, right: 40, bottom: 30, left: 70},
     //width = 600 - margin.left - margin.right,
-    width = 600,
+    width = 1000,
     //height = 330 - margin.top - margin.bottom;
     height = 500;
 var xCoordForLegend = width - margin.left;
@@ -201,6 +201,8 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                         // Clean group before plotting
                         d3.select("#buildUp").remove();
                         d3.select("#selectedMonth").remove();
+                        var recom = document.getElementById('titleRecommendation');
+                        recom.innerHTML = '';
                     } else {
                         buyPrice = buyRent[d.properties.zip].buy;
                         rentPrice = buyRent[d.properties.zip].rent;
@@ -371,6 +373,8 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
         // New zip code selection: Remove financial plot
         d3.select("#buildUp").remove();
         d3.select("#selectedMonth").remove();
+        var recom = document.getElementById('titleRecommendation');
+        recom.innerHTML = '';
 
        if (buyPrice != '$0') {
            // Show inputs for financial calculations
