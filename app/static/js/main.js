@@ -370,6 +370,10 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
        }
 
        console.log(buyPrice);
+        // New zip code selection: Remove financial plot
+        d3.select("#buildUp").remove();
+        d3.select("#selectedMonth").remove();
+
        if (buyPrice != '$0') {
            // Show inputs for financial calculations
            finInputs = document.getElementById('financialInputs');            
