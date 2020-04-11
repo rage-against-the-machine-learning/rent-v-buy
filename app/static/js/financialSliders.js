@@ -16,7 +16,7 @@ function showSliders(){
     var gSimple = d3
         .select('div#slider-down-payment')
         .append('svg')
-        .attr('width', 500).attr('height', 100)
+        .attr('width', 500).attr('height', 75)
         .append('g')
         .attr('transform', 'translate(30,30)');
     gSimple.call(downPaymentSlider);
@@ -34,7 +34,7 @@ function showSliders(){
     var gSimple = d3
         .select('div#slider-annual-maintenance')
         .append('svg')
-        .attr('width', 500).attr('height', 100)
+        .attr('width', 500).attr('height', 75)
         .append('g')
         .attr('transform', 'translate(30,30)');
     gSimple.call(maintenanceSlider);
@@ -52,7 +52,7 @@ function showSliders(){
     var gSimple = d3
         .select('div#slider-annual-home-insurance')
         .append('svg')
-        .attr('width', 500).attr('height', 100)
+        .attr('width', 500).attr('height', 75)
         .append('g')
         .attr('transform', 'translate(30,30)');
     gSimple.call(homeInsuranceSlider);

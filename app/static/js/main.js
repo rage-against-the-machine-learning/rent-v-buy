@@ -15,7 +15,7 @@ var	margin = {top: 30, right: 40, bottom: 30, left: 70},
     //width = 600 - margin.left - margin.right,
     width = 600,
     //height = 330 - margin.top - margin.bottom;
-    height = 350;
+    height = 500;
 var xCoordForLegend = width - margin.left;
 var buyRent;
 var minAppr = 0;

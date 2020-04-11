@@ -39,73 +39,80 @@
 </div>
 
 <div class="container">
-{% if splashMessage %}
-    <h3><em><b>{{ splashMessage }}</b></em></h3>
-{% endif %}
 </div>
-Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye Sheffield, Sylvia Tran}
-&nbsp;
-&nbsp;
+<br>
+<br>
+<br>
 <table>
     <tr>
         <td style="width:70%">
             <input id="myInput" autofocus maxlength=25 placeholder="type a zipcode/city in CA"></input>
             <button id="resetButton" type="button">Reset</button>
-               <svg id="choroplethSVG" width="600" height="350"></svg>
+               <svg id="choroplethSVG" width="600" height="500"></svg>
             <p>
             <p style="font-style: italic;">Use mouse wheel to zoom in and out, and drag map to move around</p>
        </td>
         <td style="width:30%">
-            Location selected: <div id="selectedLocationDiv"></div>
-            <br>
-                Sale estimate: <font color="steelblue"><div id="saleEstimateDiv"></div></font>      Rent estimate: <font color="firebrick"><div id="rentEstimateDiv"></div></font>
+            <div class="row align-items-center" id="financialInputs">
+                <table>
+                    <tr>
+                        <td style="width:33%">
+                        <div class="col-sm-2"><p>Confidence in market</p>
+                            <select id="confidence">
+                                <option value="0.5">Conservative</option>
+                                <option value="0.75" selected="selected">Average</option>
+                                <option value="1.0">Optimistic</option>
+                            </select>
+                        </div>
+                        </td>
+                        <td style="width:33%">
+                        <div class="col-sm-2"><p>Mortgage length</p>
+                            <select id="mortgage-horizon">
+                                <option value="30" selected="selected">30 years</option>
+                                <option value="20">20 years</option>
+                            </select>
+                            </div>
+                        </td>
+                        <td style="width:33%">
+                        <div class="col-sm-2"><p>Credit score</p>
+                            <select id="credit-score">
+                                <option value="0.03408" selected="selected">760-850</option>
+                                <option value="0.03630">700-759</option>
+                                <option value="0.03807">680-699</option>
+                                <option value="0.04021">660-679</option>
+                                <option value="0.04451">640-659</option>
+                                <option value="0.04997">620-639</option>
+                            </select>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="col-sm-2"><p>Down payment</p><p id="value-down-payment"></p></div>
+                <div class="col-sm"><div id="slider-down-payment"></div></div>
+                <div class="col-sm-2"><p>Annual maintenance and HOA fees</p><p id="value-annual-maintenance"></p></div>
+                <div class="col-sm"><div id="slider-annual-maintenance"></div></div>
+                <div class="col-sm-2"><p>Annual home insurance</p><p id="value-annual-home-insurance"></p></div>
+                <div class="col-sm"><div id="slider-annual-home-insurance"></div></div>
+                <div id="calculateButoonah">
+                    <input name="calculateButton"
+                        type="button"
+                        value="Calculate"
+                        onclick="calculateFinancials()" />
+                    <div></div>
+                </div>
             </div>
         </td>
     </tr>
     <tr>
         <td style="width:70%">
-            <div id="container1"><svg id="canvas1" width="600" height="300"></svg></div>
-            <div id="titleRecommendation"></div>
+        Location selected: <div id="selectedLocationDiv"></div>
+        <br>
+            Sale estimate: <font color="steelblue"><div id="saleEstimateDiv"></div></font>      Rent estimate: <font color="firebrick"><div id="rentEstimateDiv"></div></font>
+        </div>
         </td>
         <td style="width:30%">
-    <div class="row align-items-center" id="financialInputs">
-        <div class="col-sm-2"><p>Confidence in market</p>
-            <select id="confidence">
-                <option value="0.5">Conservative</option>
-                <option value="0.75" selected="selected">Average</option>
-                <option value="1.0">Optimistic</option>
-            </select>
-            </div>
-        <div class="col-sm-2"><p>Mortgage length</p>
-        <select id="mortgage-horizon">
-            <option value="30" selected="selected">30 years</option>
-            <option value="20">20 years</option>
-        </select>
-        </div>
-        <div class="col-sm-2"><p>Credit score</p>
-            <select id="credit-score">
-                <option value="0.03408" selected="selected">760-850</option>
-                <option value="0.03630">700-759</option>
-                <option value="0.03807">680-699</option>
-                <option value="0.04021">660-679</option>
-                <option value="0.04451">640-659</option>
-                <option value="0.04997">620-639</option>
-            </select>
-            </div>
-        <div class="col-sm-2"><p>Down payment</p><p id="value-down-payment"></p></div>
-        <div class="col-sm"><div id="slider-down-payment"></div></div>
-        <div class="col-sm-2"><p>Annual maintenance and HOA fees</p><p id="value-annual-maintenance"></p></div>
-        <div class="col-sm"><div id="slider-annual-maintenance"></div></div>
-        <div class="col-sm-2"><p>Annual home insurance</p><p id="value-annual-home-insurance"></p></div>
-        <div class="col-sm"><div id="slider-annual-home-insurance"></div></div>
-        <div id="calculateButoonah">
-            <input name="calculateButton"
-                type="button"
-                value="Calculate"
-                onclick="calculateFinancials()" />
-            <div></div>
-        </div>
-    </div>
+            <div id="container1"><svg id="canvas1" width="600" height="300"></svg></div>
+            <div id="titleRecommendation"></div>
         </td>
     </tr>
 </table>
@@ -378,7 +385,7 @@ function plotWealthBuildUp(data, zipCode){
                 .duration(200)		
                 .style("opacity", .9);		
             div2.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
-                .style("left", x(d.month) + "px")		
+                .style("left", x(d.month)+900.0 + "px")		
                 .style("top", (y(d.buy)+625.0)+ "px");	
             })					
         .on("mouseout", function(d) {		
@@ -423,7 +430,7 @@ function plotWealthBuildUp(data, zipCode){
                 .duration(200)		
                 .style("opacity", .9);		
             div2.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
-                .style("left", x(d.month) + "px")		
+                .style("left", x(d.month)+900.0 + "px")		
                 .style("top", (y(d.rent)+625.0) + "px");	
             })					
         .on("mouseout", function(d) {		
