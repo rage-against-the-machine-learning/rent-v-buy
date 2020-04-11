@@ -9,7 +9,7 @@ function showSliders(){
         .sliderBottom()
         .min(d3.min(down_payment_data)).max(d3.max(down_payment_data))
         .width(300)
-        .tickFormat(d3.format('($d'))
+        .tickFormat(d3.format('($,d'))
         .ticks(5)
         .default(40000.0)
         .on('onchange', val => { d3.select('p#value-down-payment').text(d3.format('($d')(val)); });
@@ -27,7 +27,7 @@ function showSliders(){
         .sliderBottom()
         .min(d3.min(annual_maintenance_data)).max(d3.max(annual_maintenance_data))
         .width(300)
-        .tickFormat(d3.format('($d'))
+        .tickFormat(d3.format('($,d'))
         .ticks(5)
         .default(10000.0)
         .on('onchange', val => { d3.select('p#value-annual-maintenance').text(d3.format('($d')(val)); });
@@ -45,7 +45,7 @@ function showSliders(){
         .sliderBottom()
         .min(d3.min(annual_home_insurance_data)).max(d3.max(annual_home_insurance_data))
         .width(300)
-        .tickFormat(d3.format('($d'))
+        .tickFormat(d3.format('($,d'))
         .ticks(5)
         .default(3000.0)
         .on('onchange', val => { d3.select('p#value-annual-home-insurance').text(d3.format('($d')(val)); });

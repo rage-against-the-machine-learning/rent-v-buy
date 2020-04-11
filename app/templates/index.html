@@ -69,6 +69,13 @@ Team 235 (aka Tufte Love) : {Felipe Lopez, Omer Ansari, Richard Levine, Skye She
         </td>
         <td style="width:30%">
     <div class="row align-items-center" id="financialInputs">
+        <div class="col-sm-2"><p>Confidence in market</p>
+            <select id="confidence">
+                <option value="0.5">Conservative</option>
+                <option value="0.75" selected="selected">Average</option>
+                <option value="1.0">Optimistic</option>
+            </select>
+            </div>
         <div class="col-sm-2"><p>Mortgage length</p>
         <select id="mortgage-horizon">
             <option value="30" selected="selected">30 years</option>
@@ -142,6 +149,9 @@ function getFinancialInputs(zipCode, buyRentObj){
     // parse appreciation rate from "5.8%"
     var appRate = buyRentObj[zipCode]["appr_rate"];
     appRate = 0.01*parseFloat(appRate.substr(0,appRate.length-1));
+    // read market confidence from slider
+    var confidence = +document.getElementById('confidence').value;
+    appRate *= confidence;
     // read length of mortgage from slider
     var mortgageHorizon = +document.getElementById('mortgage-horizon').value;
     // read down payment from slider, ignore $ sign
@@ -187,10 +197,10 @@ function plotWealthBuildUp(data, zipCode){
                 .range([height, 0]);
     var xAxis = d3.axisBottom()
                 .scale(x)
-                .tickValues([12, 24, 36, 48, 60, 72, 84, 96, 108, 120]);    
+                .tickValues([12, 24, 36, 48, 60, 72]);    
     var xGridLines = d3.axisBottom()
                         .scale(x)
-                        .tickValues([12, 24, 36, 48, 60, 72, 84, 96, 108, 120])
+                        .tickValues([12, 24, 36, 48, 60, 72])
                         .tickFormat("")
                         .tickSize(height);
     var yAxis = d3.axisLeft()
@@ -332,8 +342,8 @@ function plotWealthBuildUp(data, zipCode){
             .attr("fill", "white");
     }
     // Define the div for the tooltip
-    var div = d3.select("body").append("div")	
-        .attr("class", "tooltip")				
+    var div2 = d3.select("#container1").append("div")	
+        .attr("class", "tooltip2")				
         .style("opacity", 0);
     // Label the end of the plots
     g.append("text")
@@ -364,15 +374,15 @@ function plotWealthBuildUp(data, zipCode){
         .attr('d', d3.symbol().type( d3.symbolSquare ).size( 5.0 ) )
         .attr("id", "buyScatter")
         .on("mouseover", function(d) {		
-            div.transition()		
+            div2.transition()		
                 .duration(200)		
                 .style("opacity", .9);		
-            div.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
+            div2.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
                 .style("left", x(d.month) + "px")		
                 .style("top", (y(d.buy)+625.0)+ "px");	
             })					
         .on("mouseout", function(d) {		
-            div.transition()		
+            div2.transition()		
                 .duration(500)		
                 .style("opacity", 0);	
             })
@@ -409,15 +419,15 @@ function plotWealthBuildUp(data, zipCode){
         .attr('d', d3.symbol().type( d3.symbolSquare ).size( 5.0 ) )
         .attr("id", "rentScatter")
         .on("mouseover", function(d) {		
-            div.transition()		
+            div2.transition()		
                 .duration(200)		
                 .style("opacity", .9);		
-            div.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
+            div2.html("Month: " + d.month + "<br/>" + "Buy: " + Math.round(d.buy) + "<br/>" + "Rent: " + Math.round(d.rent) )	
                 .style("left", x(d.month) + "px")		
                 .style("top", (y(d.rent)+625.0) + "px");	
             })					
         .on("mouseout", function(d) {		
-            div.transition()		
+            div2.transition()		
                 .duration(500)		
                 .style("opacity", 0);	
             })

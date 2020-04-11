@@ -27,12 +27,8 @@ def calculate_financials():
     req = request.get_json()
     print("Request message was: ", req)
 
-    # Financial calcs
-    purchase_price = 420000.0
-    equity_appreciation_rate = 0.02 # 3.0% -- Assumed the same for buy and rent scenarios
-    initial_rent = 1600.0 # Monthly payment
-    
-    number_of_months = 121
+    # Financial calcs   
+    number_of_months = 73
 
     # Calculate new financial results
     equity, savings, mortgage, cash_outflow, rent, net_equity = equity_and_savings(req['buyPrice'],
