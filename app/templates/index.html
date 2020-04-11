@@ -28,6 +28,9 @@
   * html .ui-autocomplete {
     height: 200px;
   }
+  footer {
+      text-align: center;
+  }
 </style>
 </head>
 
@@ -45,21 +48,19 @@
 <br>
 <table>
     <tr>
-        <td style="width:70%">
-            <input id="myInput" autofocus maxlength=25 placeholder="type a zipcode/city in CA"></input>
-            <button id="resetButton" type="button">Reset</button>
-               <svg id="choroplethSVG" width="600" height="500"></svg>
+        <td colspan="3" >
+            <svg id="choroplethSVG" width="1000" height="500"></svg>
             <p>
             <p style="font-style: italic;">Use mouse wheel to zoom in and out, and drag map to move around</p>
        </td>
-        <td style="width:30%">
+        <td >
             <div class="row align-items-center" id="financialInputs">
                 <table>
                     <tr>
                         <td style="width:33%">
                         <div class="col-sm-2"><p>Confidence in market</p>
                             <select id="confidence">
-                                <option value="0.25">Conservative</option>
+                                <option value="0.5">Conservative</option>
                                 <option value="0.75" selected="selected">Average</option>
                                 <option value="1.0">Optimistic</option>
                             </select>
@@ -104,14 +105,23 @@
         </td>
     </tr>
     <tr>
-        <td style="width:70%">
+        <td style="width: 25%">
+            <input id="myInput" autofocus maxlength=25 placeholder="type a zipcode/city in CA"></input>
+            <button id="resetButton" type="button">Reset</button>
+        </td>
+        <td style="width: 25%">&nbsp;</td>
+        <td style="width: 25%">&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td >
         Location selected: <div id="selectedLocationDiv"></div>
         <br>
             Sale estimate: <font color="steelblue"><div id="saleEstimateDiv"></div></font>      Rent estimate: <font color="firebrick"><div id="rentEstimateDiv"></div></font>
         </div>
         </td>
-        <td style="width:30%">
-            <div id="container1"><svg id="canvas1" width="600" height="300"></svg></div>
+        <td colspan="3">
+            <div id="container1"><svg id="canvas1" width="1000" height="300"></svg></div>
             <div id="titleRecommendation"></div>
         </td>
     </tr>
@@ -195,7 +205,7 @@ function plotWealthBuildUp(data, zipCode){
     // Select canvases
     var svg1 = d3.select("#canvas1");
     var	margin = {top: 30, right: 40, bottom: 30, left: 70},
-        width = 600 - margin.left - margin.right,
+        width = 1000 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom;
     // Define axes
     var	x = d3.scaleLinear()
