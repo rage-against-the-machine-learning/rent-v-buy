@@ -1,3 +1,4 @@
+
 # Byte-compiled / optimized / DLL files
 .idea/
 __pycache__
@@ -13,6 +14,9 @@ __pycache__/
 
 # C extensions
 *.so
+
+# Data folder -- cannot push up all those GB's
+data/*
 
 # Distribution / packaging
 .Python
@@ -79,6 +83,9 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+.ipynb
+.ipython
+.jupyter
 
 # pyenv
 .python-version
@@ -92,11 +99,12 @@ celerybeat-schedule
 # Environments
 .env
 .venv
-env/
-venv/
+env/*
+venv/*
 ENV/
 env.bak/
 venv.bak/
+
 
 # Spyder project settings
 .spyderproject
@@ -110,3 +118,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
+.cache
+.local
+.config
+.vscode
