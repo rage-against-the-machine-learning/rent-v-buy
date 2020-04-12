@@ -1,4 +1,4 @@
-## Downloading the Data
+## Kaggle API Key Setup 
 
 Since the data is hosted on Kaggle.com, it is necessary for you to complete the following steps **before executing any of the scripts:**
 
@@ -33,6 +33,7 @@ Since the data is hosted on Kaggle.com, it is necessary for you to complete the 
      $ chmod 600 kaggle.json
      ```
 
+## Downloading the Data
 ## Execute data ETL pipeline & generate predictions (2+ hrs)
 * Extracts (downloads) data from Kaggle.com
 * Transforms the data to scope down to just California
