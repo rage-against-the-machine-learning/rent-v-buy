@@ -123,14 +123,17 @@
         </td>
         <td colspan="3">
             <div id="container1"><svg id="canvas1" width="1000" height="300"></svg></div>
-            <div id="titleRecommendation"></div>
+            <div style="font-size:12px" id="titleRecommendation"></div>
         </td>
     </tr>
 </table>
 <footer>
     <p>Posted by: Team Tufte-Love (235) </p>
-    <p>Contact information: <a href="mailto:sylvi.tran@gmail.com">
-        sylvi.tran@gmail.com</a>.</p>
+    <p>Contact information: <a href="oansari@gmail.com">Omer Ansari</a>, 
+        <a href="ralevine@gmail.com">Richard Levine</a>, 
+        <a href="felipelopez@utexas.edu">Felipe Lopez</a>, 
+        <a href="katarina.skye17@gmail.com">Skye Sheffield</a>, 
+        <a href="mailto:sylvi.tran@gmail.com">Sylvia Tran</a>.</p>
 </footer>
 
 <script src="static/js/d3.v5.min.js"></script>
@@ -174,15 +177,15 @@ function getFinancialInputs(zipCode, buyRentObj){
     var mortgageHorizon = +document.getElementById('mortgage-horizon').value;
     // read down payment from slider, ignore $ sign
     var downPayment = d3.select("#value-down-payment").node().textContent;
-    downPayment = +downPayment.substring(1,downPayment.length);
+    downPayment = +downPayment.substring(1,downPayment.length).replace(/,/g, '');
     // read mortgage rate from credit score slider
     var mortgageRate = +document.getElementById('credit-score').value;
     // read maintenance and HOA fees from slider, ignore the $ sign
     var maintenance = d3.select("#value-annual-maintenance").node().textContent;
-    maintenance = +maintenance.substring(1,maintenance.length);
+    maintenance = +maintenance.substring(1,maintenance.length).replace(/,/g, '');
     // read home insurance from slider, ignore the $ sign
     var homeInsurance = d3.select("#value-annual-home-insurance").node().textContent;
-    homeInsurance = +homeInsurance.substring(1,homeInsurance.length);
+    homeInsurance = +homeInsurance.substring(1,homeInsurance.length).replace(/,/g, '');
     // Parse request JSON
     return {mortgageHorizon: mortgageHorizon,
             downPayment: downPayment,
