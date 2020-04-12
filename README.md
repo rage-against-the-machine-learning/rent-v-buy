@@ -1,44 +1,47 @@
 # CSE 6242 Data Visualization and Analytics (DVA)
 
 ## Rent vs Buy 
-- Semester: Spring 202020<br>
-- Team: 245 : tufte-love
+- Semester: Spring 2020<br>
+- Team: 235 : tufte-love
 
 ## Purpose
-To provide an intuitive “look-ahead”  tool which helps users choose the most financially optimum option between  buying or renting a home.
+To provide an intuitive “look-ahead”  tool which helps users choose the most financially optimal option between buying or renting a home in the state of California.
 
 ## Team
+* Omer Ansari
+* Richard Levine
+* Felipe Lopez
+* Skye Sheffield
+* Sylvia Tran
 
 ## Application components
-![rent vs buy applicatio architecture](media/app_arch.jpg)
+![rent vs buy application architecture](https://github.com/rage-against-the-machine-learning/rent-v-buy/blob/flaskBranch/media/app_arch.png)
 
 ## How to set up development environment
+1. Download the repository to your local machine.
+2. Change directories into the repository project folder
 
-Set up virtual environment:
+3. Set up virtual environment:
 ```
-knail1s-MBP.home [rent-v-buy]$
-knail1s-MBP.home [rent-v-buy]$ python3.7 -m venv venv
+[rent-v-buy]$
+[rent-v-buy]$ python3.7 -m venv venv
 ```
-
-Activate virtual environment:
+4. Activate virtual environment:
 ```
-knail1s-MBP.home [rent-v-buy]$ . venv/bin/activate
-(venv) knail1s-MBP.home [rent-v-buy]$
+[rent-v-buy]$ . venv/bin/activate
+(venv) [rent-v-buy]$
 ```
-
-Install all requirements:
+5. Install all requirements:
 ```
-(venv) knail1s-MBP.home [rent-v-buy]$ pip install -r requirements.txt
+(venv) [rent-v-buy]$ pip install -r requirements.txt
 ```
-
 
 Note: we purposely don't upload the virtual env directory to git. You are required to create a fresh venv/ locally.
 
 ## How to run (in dev environment)
-
 ```
-(venv) knail1s-MBP.home [rent-v-buy]$ export FLASK_APP=rentvbuy.py
-(venv) knail1s-MBP.home [rent-v-buy]$ flask run
+(venv) [rent-v-buy]$ export FLASK_APP=rentvbuy.py
+(venv) [rent-v-buy]$ flask run
  * Serving Flask app "dbtest.py"
  * Environment: production
    WARNING: Do not use the development server in a production environment.
@@ -48,7 +51,7 @@ Note: we purposely don't upload the virtual env directory to git. You are requir
 
 ```
 
-For tips set up and run this in Pycharm, please check out this [link](https://www.youtube.com/watch?v=bZUokrYanFM&feature=youtu.be)
+For tips set up and run this in Pycharm, please [watch this video](https://www.youtube.com/watch?v=bZUokrYanFM&feature=youtu.be).
 
 
 ## Running system online (Primary approach)
