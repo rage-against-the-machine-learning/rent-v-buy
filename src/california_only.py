@@ -213,11 +213,12 @@ min_max_dates_df.reset_index(inplace=True)
 min_max_dates_df.rename(columns={'index':'zip_code'}, inplace=True)
 
 excl_these = min_max_dates_df[(min_max_dates_df['max_date'] < '2017')]
-with open ('../../data/processed/exclude_these_zips.pickle', 'wb') as f:
-    pickle.dump(excl_these, f)
 
 # Create a list of Zipcodes we need to generate 0's for predictions for
-zips_to_exclude = excl_these['zip_code'].tolist() + ['96041']
+zips_to_exclude = excl_these['zip_code'].tolist()
+with open ('../../data/processed/exclude_these_zips.pickle', 'wb') as f:
+    pickle.dump(zips_to_exclude, f)
+    
 del excl_these
 
 # Create DataFrame that applies time interpolated values for zipcodes (time series) 

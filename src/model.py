@@ -150,9 +150,9 @@ def make_UI_n_dec_calculator_outputs (my_data:pd.DataFrame, zip_code_of_interest
                                                         "appr_rate" : appr_rate_buy }}
 
     else:
-        UI_formatted = {str(zip_code_of_interest): {"buy": '$ N/A', 
-                                                    "rent": '$ N/A', 
-                                                    "appr_rate" : 'N/A %'}}
+        UI_formatted = {str(zip_code_of_interest): {"buy": '$0', 
+                                                    "rent": '$0', 
+                                                    "appr_rate" : '0%'}}
 
         rentVbuy_formatted = {str(zip_code_of_interest): {"buy": 0, 
                                                           "rent": 0, 
@@ -162,10 +162,11 @@ def make_UI_n_dec_calculator_outputs (my_data:pd.DataFrame, zip_code_of_interest
 
     
 # 1. BRING IN THE PREPROCESSED DATA & skip-zip codes
-processed = pd.read_pickle('../data/processed/interpolated_fillnaTime_df.pickle')
+processed = pd.read_pickle('../../data/processed/interpolated_fillnaTime_df.pickle')
 
-my_file = open ('../data/processed/exclude_these_zips.pickle', 'rb')
+my_file = open ('../../data/processed/exclude_these_zips.pickle', 'rb')
 excl_zips = pickle.load(my_file)
+excl_zips = [int(zip) for zip in excl_zips]
 
 
 # 2. Get all unizue zipcodes & iterate over them to create outputs:
@@ -175,12 +176,13 @@ UI_output = dict()
 calculator_output = dict()
 
 for zipcode in all_ca_zips:
+    if zipcode not in excl_zips:
         UI, calculator = make_UI_n_dec_calculator_outputs (processed, zipcode, excl_zips)
         UI_output.update(UI)
         calculator_output.update(calculator)
 
-with open('../data/predictions/UI_output.json', 'w') as f1:
+with open('../../data/predictions/UI_output.json', 'w') as f1:
     json.dump(UI_output, f1)
 
-with open('../data/predictions/calculator_output.json', 'w') as f2:
+with open('../../data/predictions/calculator_output.json', 'w') as f2:
     json.dump(calculator_output, f2)
