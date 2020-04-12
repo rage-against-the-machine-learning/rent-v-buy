@@ -1,4 +1,7 @@
 body { font: 10px Arial;}
+p {
+  font-size: 13px;
+}
 
 table, th, td {
     border: 0px solid black;
