@@ -1,5 +1,9 @@
 # rent-v-buy
 
+### USING THIS REPOSITORY:
+1. [Downloading Data](https://github.com/rage-against-the-machine-learning/rent-v-buy/wiki/Getting-Started-in-Jupyter-Notebook)
+2. [Setting up a VirtualEnv & Flask](https://github.com/rage-against-the-machine-learning/rent-v-buy/wiki/Setting-up-Virtual-Environment-&-Flask)
+
 ### REPOSITORY STRUCTURE
 
 ```
