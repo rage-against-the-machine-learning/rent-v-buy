@@ -33,7 +33,19 @@ Since the data is hosted on Kaggle.com, it is necessary for you to complete the 
      $ chmod 600 kaggle.json
      ```
 
-   
+## Execute data ETL pipeline & generate predictions (2+ hrs)
+* Extracts (downloads) data from Kaggle.com
+* Transforms the data to scope down to just California
+* Loads cleaned and preprocessed data into time series forecasting model
+* Generate buy, rent, and appreciation rate predictions for each California zip code
 
-## Download this Repository & Create a Virtual Environment
+Change directories from the root repository folder to the `src/` directory
+```
+(venv) [rent-v-buy]$ cd ./src
+```
 
+Execute the main.py script (2+ hrs to run on a 16GB RAM machine
+NOTE: Prior to executing code, ensure you have [activated your virtual environment and installed the requirements.txt file](https://github.com/rage-against-the-machine-learning/rent-v-buy/blob/master/README.md).
+```
+(venv) [rent-v-buy]$ python main.py
+```
