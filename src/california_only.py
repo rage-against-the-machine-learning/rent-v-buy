@@ -3,6 +3,8 @@
 import pandas as pd
 import numpy as np 
 import zipcodes
+from datetime import datetime
+import pickle
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -13,13 +15,14 @@ sys.path.append(str(pathlib.Path().absolute().parent))
 
 
 # LOAD DATA
-city_ts = pd.read_csv('../data/raw/unzipped/City_time_series.csv/City_time_series.csv')
-zip_ts = pd.read_csv('../data/raw/unzipped/Zip_time_series.csv/Zip_time_series.csv')
+city_ts = pd.read_csv('../../data/raw/zecon/City_time_series.csv')
+zip_ts = pd.read_csv('../../data/raw/zecon/Zip_time_series.csv')
 
-fips_mapping = pd.read_pickle('../data/interim/fips_map.pickle')
+fips_mapping = pd.read_pickle('../../data/interim/fips_map.pickle')
 
 
 # PARE DOWN CITY TABLE TO JUST CA
+print('Begin paring down scope of data to just California...')
 city_ts_merged = city_ts.merge(fips_mapping,
                               how='left',
                               left_on='RegionName',
@@ -41,6 +44,7 @@ zip_ts['ZipCode_str'] = zip_ts['RegionName'].astype(str)
 maybe_ca_zips = [zipcode for zipcode in zip_ts['ZipCode_str'].unique().tolist() if zipcode[0] == '9']
 
 # Use `zipcodes` to pare down the maybe_ca_zips to DEFINITE CA zips
+print('Use the `zipcodes` package to gather California-only zip codes...')
 confirmed_CA_zips = []
 
 for zipcode in maybe_ca_zips:
@@ -128,15 +132,8 @@ del fips_mapping
 del zip_meta_df
 
 # Pare down the data to only hone in in the ZHVI and ZRI columns (which are the most complete of all avail info)
-ZHVI_ZRI_columns = ['ZHVIPerSqft_AllHomes', 'PctOfHomesDecreasingInValues_AllHomes',
-       'PctOfHomesIncreasingInValues_AllHomes',
-       'PctOfListingsWithPriceReductionsSeasAdj_AllHomes',
-       'PctOfListingsWithPriceReductionsSeasAdj_CondoCoop',
-       'PctOfListingsWithPriceReductionsSeasAdj_SingleFamilyResidence',
-       'PctOfListingsWithPriceReductions_AllHomes',
-       'PctOfListingsWithPriceReductions_CondoCoop',
-       'PctOfListingsWithPriceReductions_SingleFamilyResidence',
-       'PriceToRentRatio_AllHomes', 'ZHVI_1bedroom', 'ZHVI_2bedroom',
+print('Gather the relevant columns for buy / rent predictions...')
+ZHVI_ZRI_columns = ['ZHVI_1bedroom', 'ZHVI_2bedroom',
        'ZHVI_3bedroom', 'ZHVI_4bedroom', 'ZHVI_5BedroomOrMore',
        'ZHVI_AllHomes', 'ZHVI_BottomTier', 'ZHVI_CondoCoop', 'ZHVI_MiddleTier',
        'ZHVI_SingleFamilyResidence', 'ZHVI_TopTier', 'ZRI_AllHomes',
@@ -180,9 +177,70 @@ ca_zip_w_fips = ca_zip_zill_ts.merge(fips_mapping_CA,
 
 
 # Save the files (prior to imputing with city-data): 
-ca_city_ts.to_pickle('../data/interim/california-city-ts.pickle')
-ca_zip_ts.to_pickle('../data/interim/california-zip-ts.pickle')
+ca_city_ts.to_pickle('../../data/interim/california-city-ts.pickle')
+ca_zip_ts.to_pickle('../../data/interim/california-zip-ts.pickle')
 
 # Save the files (after imputing missing zipcodes with city data)
-city_w_zips_ts.to_pickle('../data/interim/ca-city-w-zip-ts.pickle')
-ca_zip_w_fips.to_pickle('../data/interim/ca-zip-w-city-ts.pickle')
+city_w_zips_ts.to_pickle('../../data/interim/ca-city-w-zip-ts.pickle')
+ca_zip_w_fips.to_pickle('../../data/interim/ca-zip-w-city-ts.pickle')
+
+
+# Clean up the df for modeling:
+ca_zip_ts = ca_zip_ts.copy()
+del ca_zip_w_fips
+del ca_zip_zill_ts
+del city_w_zips_ts
+
+
+ca_zip_ts.rename(columns={'RegionName':'FIPS',
+                          'ZipCode_str' : 'ZipCode'}, inplace=True)
+
+# Facebook Prophet needs to have a column called 'ds' with datetime types 
+ca_zip_ts['ds'] = ca_zip_ts['Date'].apply(lambda _ : datetime.strptime(_, "%Y-%m-%d"))
+
+all_zips = list(set(ca_zip_ts['ZipCode']))
+
+# Go through the zipcodes and get the min and max dates for each of the zip codes
+zip_minmax_dates = dict()
+
+for zipcode in all_zips:
+    sub_df = ca_zip_ts[ca_zip_ts['ZipCode'] == zipcode]
+    zip_minmax_dates[zipcode] = {'min_date': sub_df.ds.min(),
+                                 'max_date': sub_df.ds.max()}
+
+min_max_dates_df = pd.DataFrame(zip_minmax_dates).T
+min_max_dates_df.reset_index(inplace=True)
+min_max_dates_df.rename(columns={'index':'zip_code'}, inplace=True)
+
+excl_these = min_max_dates_df[(min_max_dates_df['max_date'] < '2017')]
+
+# Create a list of Zipcodes we need to generate 0's for predictions for
+zips_to_exclude = excl_these['zip_code'].tolist()
+with open ('../../data/processed/exclude_these_zips.pickle', 'wb') as f:
+    pickle.dump(zips_to_exclude, f)
+    
+del excl_these
+
+# Create DataFrame that applies time interpolated values for zipcodes (time series) 
+# that have missing values
+print("Imputing null values by applying time interpolation...")
+interpol = ca_zip_ts.copy()
+interpol = interpol[['ds', 'ZipCode', 'ZHVI_SingleFamilyResidence', 'Zri_MultiFamilyResidenceRental']]
+
+interpol_time = interpol.copy()
+interpol_time.set_index('ds', inplace=True)
+
+interpol_time = interpol_time.assign(ZHVI_ITime=interpol_time.ZHVI_SingleFamilyResidence.interpolate(method='time', limit_direction='both'))
+interpol_time = interpol_time.assign(ZRI_ITime=interpol_time.Zri_MultiFamilyResidenceRental.interpolate(method='time', limit_direction='both'))
+
+interpol_time.drop(['ZHVI_SingleFamilyResidence', 'Zri_MultiFamilyResidenceRental'], axis=1, inplace=True)
+interpol_time.rename(columns={'ZHVI_ITime':'ZHVI_SingleFamilyResidence',
+                              'ZRI_ITime': 'Zri_MultiFamilyResidenceRental'}, inplace=True) 
+interpol_time = interpol_time.reset_index()
+interpol_time['ZipCode'] = interpol_time['ZipCode'].astype('int32')
+
+del interpol
+
+# Save the dataframe for modeling into the data/interim folder:
+print("Saving the DataFrame for modeling...")
+interpol_time.to_pickle('../../data/processed/interpolated_fillnaTime_df.pickle')

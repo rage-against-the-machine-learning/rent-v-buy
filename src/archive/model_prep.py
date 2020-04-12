@@ -53,7 +53,7 @@ class Prep_For_Modeling():
         zip_ts.reset_index(drop=True, inplace=True)
         self.zip = zip_ts
         
-
+    
     def user_specified_BR (self, num_of_br, df:pd.DataFrame=self.zip) -> pd.DataFrame:
         '''
         pare down training data to only relevant columns
