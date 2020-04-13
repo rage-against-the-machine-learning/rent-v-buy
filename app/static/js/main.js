@@ -88,10 +88,10 @@ d3.json("static/maps/zips_california_topo-v2.json")
 // define initial default projection, centered at californias lat,long: -120,37
 var projectionCA1 = d3.geoMercator()
 					   .center([ -120, 37 ])
-					   .translate([ width/2, height/2 +40 ])
-                       //.translate([ width/2, height/2 + 25 ])
-					   .scale([ width*2.5 ]);
-					   //.scale([ width*2.3 ]);
+					   //.translate([ width/2, height/2 +40 ])
+                                           .translate([ width/2, height/2 + 25 ])
+					   //.scale([ width*2.5 ]);
+					   .scale([ width*2.3 ]);
 
 var fullStateProjection = d3.geoPath().projection(projectionCA1);
 
@@ -214,8 +214,8 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                    sel.style("stroke", "orange")
                         .attr("stroke-width", 3)
                         .style("fill", function(d) {
-                           return d3.rgb(255,255,255);
-                           //return d3.rgb(255,165,0);
+                           //return d3.rgb(255,255,255);
+                           return d3.rgb(255,165,0);
                         })
 
                     //console.log("zoomed inside the fill loop, zip was: "+d.properties.zip+", zipcolor: "+zipColor)
@@ -306,9 +306,8 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
 
         if (LAregex.test(zipcode)) zoomFactor = 48
         if (bayArearegex.test(zipcode)) {
-            zoomFactor = 15;
-            //zoomFactor = 25;
-            centering = [230+Math.round(longitude/6),250]
+            //zoomFactor = 15;
+            zoomFactor = 25;
             //centering = [230+Math.round(longitude/6),250]
         }
         //if (typeof d != 'undefined')
