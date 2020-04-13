@@ -78,29 +78,29 @@
             <p>
             <p style="font-style: italic;">Use mouse wheel to zoom in and out, and drag map to move around</p>
        </td>
-        <td >
+        <td  style="padding-left: 10px">
             <div class="row align-items-center" id="financialInputs">
                 <table>
                     <tr>
-                        <td style="width:33%">
-                        <div class="col-sm-2"><p>Confidence in market<span title="Evaluate scenarios based on your confidence that real estate market will continue appreciating">[?]</span></p>
+                        <td >
+                            <div ><b>Confidence in market</b><span title="Evaluate scenarios based on your confidence that real estate market will continue appreciating">&nbsp;[?]&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
                             <select id="confidence">
-                                <option value="0.5">Conservative</option>
+                                <option value="0.5">Conservative&nbsp;&nbsp;&nbsp;</option>
                                 <option value="0.75" selected="selected">Average</option>
                                 <option value="1.0">Optimistic</option>
                             </select>
                         </div>
                         </td>
-                        <td style="width:33%">
-                        <div class="col-sm-2"><p>Mortgage length</p>
+                        <td >
+                            <div ><b>Mortgage length&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><br>
                             <select id="mortgage-horizon">
                                 <option value="30" selected="selected">30 years</option>
                                 <option value="20">20 years</option>
                             </select>
                             </div>
                         </td>
-                        <td style="width:33%">
-                        <div class="col-sm-2"><p>Credit score</p>
+                        <td >
+                            <div ><b>Credit score</b><br>
                             <select id="credit-score">
                                 <option value="0.03408" selected="selected">760-850</option>
                                 <option value="0.03630">700-759</option>
@@ -113,18 +113,32 @@
                         </td>
                     </tr>
                 </table>
-                <div class="col-sm-2"><p>Down payment</p><p id="value-down-payment"></p></div>
-                <div class="col-sm"><div id="slider-down-payment"></div></div>
-                <div class="col-sm-2"><p>Annual maintenance and HOA fees</p><p id="value-annual-maintenance"></p></div>
-                <div class="col-sm"><div id="slider-annual-maintenance"></div></div>
-                <div class="col-sm-2"><p>Annual home insurance</p><p id="value-annual-home-insurance"></p></div>
-                <div class="col-sm"><div id="slider-annual-home-insurance"></div></div>
+                <br><br>
+                <div ><span style="font-size: medium"><b>Down payment</b><br>
+                    <span id="value-down-payment"></span></span>
+                    <div id="slider-down-payment"></div></div>
+                <br>
+                <div ><span style="font-size: medium"><b>Annual maintenance and HOA fees</b><br>
+                    <span id="value-annual-maintenance"></span></span>
+                    <div id="slider-annual-maintenance"></div></div>
+                <br>
+                <div ><span style="font-size: medium"><b>Annual home insurance</b><br>
+                    <span id="value-annual-home-insurance"></span></span>
+                    <div id="slider-annual-home-insurance"></div></div>
+                <br>
                 <div id="calculateButoonah">
                     <input name="calculateButton"
                         type="button"
                         value="Calculate"
-                        onclick="calculateFinancials()" />
-                    <div></div>
+                        onclick="calculateFinancials()"
+                        style="background-color:#4CAF50;
+                                color: white;
+                                cursor: pointer;
+                                padding: 10px 28px 8px 28px;
+                                text-align: center;
+                                font-size: 16px;
+                                font-weight: bold;"
+                    />
                 </div>
             </div>
         </td>
@@ -136,7 +150,7 @@
         </td>
         <td style="width: 25%">&nbsp;</td>
         <td style="width: 25%">&nbsp;</td>
-        <td>&nbsp;</td>
+        <td style="padding-left: 10px">&nbsp;</td>
     </tr>
     <tr>
         <td >
@@ -153,10 +167,10 @@
 </table>
 <footer>
     <p>Posted by: Team Tufte-Love (235) </p>
-    <p>Contact information: <a href="oansari@gmail.com">Omer Ansari</a>, 
-        <a href="ralevine@gmail.com">Richard Levine</a>, 
-        <a href="felipelopez@utexas.edu">Felipe Lopez</a>, 
-        <a href="katarina.skye17@gmail.com">Skye Sheffield</a>, 
+    <p>Contact information: <a href="mailto:oansari@gmail.com">Omer Ansari</a>,
+        <a href="mailto:ralevine@gmail.com">Richard Levine</a>,
+        <a href="mailto:felipelopez@utexas.edu">Felipe Lopez</a>,
+        <a href="mailto:katarina.skye17@gmail.com">Skye Sheffield</a>,
         <a href="mailto:sylvi.tran@gmail.com">Sylvia Tran</a>.</p>
 </footer>
 

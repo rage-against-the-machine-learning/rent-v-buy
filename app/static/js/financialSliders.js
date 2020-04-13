@@ -12,7 +12,7 @@ function showSliders(){
         .tickFormat(d3.format('($,d'))
         .ticks(5)
         .default(100000.0)
-        .on('onchange', val => { d3.select('p#value-down-payment').text(d3.format('($,d')(val)); });
+        .on('onchange', val => { d3.select('#value-down-payment').text(d3.format('($,d')(val)); });
     var gSimple = d3
         .select('div#slider-down-payment')
         .append('svg')
@@ -20,7 +20,7 @@ function showSliders(){
         .append('g')
         .attr('transform', 'translate(30,30)');
     gSimple.call(downPaymentSlider);
-    d3.select('p#value-down-payment').text(d3.format('($,d')(downPaymentSlider.value()));
+    d3.select('#value-down-payment').text(d3.format('($,d')(downPaymentSlider.value()));
     // Maintenance and HOA fees slider
     var annual_maintenance_data = [0.0, 10000.0, 20000.0, 30000.0, 40000.0];
     var maintenanceSlider = d3
@@ -30,7 +30,7 @@ function showSliders(){
         .tickFormat(d3.format('($,d'))
         .ticks(5)
         .default(20000.0)
-        .on('onchange', val => { d3.select('p#value-annual-maintenance').text(d3.format('($,d')(val)); });
+        .on('onchange', val => { d3.select('#value-annual-maintenance').text(d3.format('($,d')(val)); });
     var gSimple = d3
         .select('div#slider-annual-maintenance')
         .append('svg')
@@ -38,7 +38,7 @@ function showSliders(){
         .append('g')
         .attr('transform', 'translate(30,30)');
     gSimple.call(maintenanceSlider);
-    d3.select('p#value-annual-maintenance').text(d3.format('($,d')(maintenanceSlider.value()));
+    d3.select('#value-annual-maintenance').text(d3.format('($,d')(maintenanceSlider.value()));
     // Home insurance fees slider
     var annual_home_insurance_data = [0.0, 2000.0, 4000.0, 6000.0, 8000.0, 10000.0];
     var homeInsuranceSlider = d3
@@ -48,7 +48,7 @@ function showSliders(){
         .tickFormat(d3.format('($,d'))
         .ticks(5)
         .default(6000.0)
-        .on('onchange', val => { d3.select('p#value-annual-home-insurance').text(d3.format('($,d')(val)); });
+        .on('onchange', val => { d3.select('#value-annual-home-insurance').text(d3.format('($,d')(val)); });
     var gSimple = d3
         .select('div#slider-annual-home-insurance')
         .append('svg')
@@ -56,5 +56,5 @@ function showSliders(){
         .append('g')
         .attr('transform', 'translate(30,30)');
     gSimple.call(homeInsuranceSlider);
-    d3.select('p#value-annual-home-insurance').text(d3.format('($,d')(homeInsuranceSlider.value()));
+    d3.select('#value-annual-home-insurance').text(d3.format('($,d')(homeInsuranceSlider.value()));
 }
