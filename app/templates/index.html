@@ -239,6 +239,9 @@ function getFinancialInputs(zipCode, buyRentObj){
 Plot wealth build up over time in rent and buy scenarios
 */
 function plotWealthBuildUp(data, zipCode){
+
+    console.log(data["payOff"]);
+
     // Clean group before plotting
     d3.select("#buildUp").remove();
     d3.select("#selectedMonth").remove();
@@ -324,10 +327,9 @@ function plotWealthBuildUp(data, zipCode){
         .style("shape-rendering", "crispEdges");
     // Title
     var finTitleHTML;
-    if (data["payOff"] == 0) {
-        finTitleHTML = "BUYING is always better than renting";
-    } if (data["payOff"] == 72) {
-        finTitleHTML = "RENTING is always better than buying";
+    if (data["payOff"] == -1) {
+        finTitleHTML = "RENTING is better than buying for the first 6 YEARS";
+        data["payOff"] = 72;
     } else {
         finTitleHTML = "BUYING becomes cheaper than renting after "+ Math.ceil(data["payOff"]/12.0)+ " YEARS";
     }
