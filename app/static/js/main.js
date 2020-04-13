@@ -303,8 +303,8 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
 
         if (LAregex.test(zipcode)) zoomFactor = 48
         if (bayArearegex.test(zipcode)) {
-            zoomFactor = 50;
-            centering = [230+Math.round(longitude/6),100]
+            zoomFactor = 15;
+            centering = [230+Math.round(longitude/6),250]
         }
         //if (typeof d != 'undefined')
 
