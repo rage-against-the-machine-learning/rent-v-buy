@@ -1,6 +1,8 @@
-﻿<!DOCTYPE html>
-<meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="en">
 <head>
+<meta charset="utf-8">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>Rent vs. Buy Calculator</title>
     <!--
     WWWWWWWWWWWWWWWWWWNNNWWWWWWWWWNNNNNNWWWWWWWWWWWWWWWWWWWWWWWW
@@ -129,7 +131,7 @@
     </tr>
     <tr>
         <td style="width: 25%">
-            <input id="myInput" autofocus maxlength=25 placeholder="type a zipcode/city in CA"></input>
+            <input id="myInput" autofocus maxlength=25 placeholder="type a zipcode/city in CA">
             <button id="resetButton" type="button">Reset</button>
         </td>
         <td style="width: 25%">&nbsp;</td>
@@ -140,9 +142,8 @@
         <td >
         <p>Location selected:</p> <div id="selectedLocationDiv"></div>
         <br>
-            <p>Buy estimate:</p> <font color="steelblue"><div id="saleEstimateDiv"></div></font>   
-            <p>Rent estimate:</p> <font color="firebrick"><div id="rentEstimateDiv"></div></font>
-        </div>
+            <p>Buy estimate:</p> <div style="color: steelblue" id="saleEstimateDiv"></div>
+            <p>Rent estimate:</p> <div style="color: firebrick" id="rentEstimateDiv"></div>
         </td>
         <td colspan="3">
             <div id="container1"><svg id="canvas1" width="1000" height="300"></svg></div>
@@ -168,7 +169,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/main.css">
 
-</body>
+
 <script src="static/js/financialSliders.js"></script>
 <script src="static/js/main.js"></script>
 
@@ -3384,4 +3385,5 @@ $( function() {
     });
   } );
 </script>
-</html>    
+</body>
+</html>
