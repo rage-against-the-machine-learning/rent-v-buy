@@ -50,7 +50,14 @@ def make_model_input_df (data:pd.DataFrame, rent_or_buy:str) -> pd.DataFrame:
         model_payload = data.rename(columns={ 'Zri_MultiFamilyResidenceRental': 'y'})
     else:
         model_payload = data.rename(columns={'ZHVI_SingleFamilyResidence': 'y'})
-        
+
+    #if this is a model rerun? if so removed the outliers
+    if rerun == 1:
+        y=model_payload['y']
+        removed_outliers = y.between(y.quantile(.1), y.quantile(.90)) 
+        index_names = model_payload[~removed_outliers].index
+        model_payload.drop(index_names, inplace=True) 
+
     return model_payload
 
 
@@ -122,9 +129,14 @@ def make_UI_n_dec_calculator_outputs (my_data:pd.DataFrame, zip_code_of_interest
         clean_data = my_data.loc[my_data['ZipCode'] == zip_code_of_interest]
         clean_data.reset_index(drop=True, inplace=True)
         
-        # prepare the dataframe for payload to model
-        rent_dataset = make_model_input_df(clean_data, 'rent')
-        buy_dataset  = make_model_input_df(clean_data, 'buy')
+        if rerun == 1:
+            # prepare the dataframe for payload to model
+            rent_dataset = make_model_input_df(clean_data, 'rent', 1)
+            buy_dataset  = make_model_input_df(clean_data, 'buy', 1)
+        else:    
+            rent_dataset = make_model_input_df(clean_data, 'rent', 0)
+            buy_dataset  = make_model_input_df(clean_data, 'buy', 0)
+        
         
         # Determine the number of months for which to forecast
         prediction_size_rent = find_pred_size(rent_dataset)
@@ -186,3 +198,100 @@ with open('../../data/predictions/UI_output.json', 'w') as f1:
 
 with open('../../data/predictions/calculator_output.json', 'w') as f2:
     json.dump(calculator_output, f2)
+
+## Now we are going to rerun the predictions for certain models 
+with open('../data/predictions/UI_output.json') as f1:
+    ui_out_data = json.load(f1)
+with open('../data/predictions/calculator_output.json') as f2:
+    cal_out_data = json.load(f2)
+
+df_og = pd.DataFrame(cal_out_data).T
+
+#get std and mode to determine which zipcodes to rerun
+appr_std = df_og.describe(include='all').loc['std']['appr_rate']
+appr_mode = stats.mode(df_og['appr_rate'])[0][0]
+
+appr_max = appr_mode + (appr_std *2)
+rerun_appr_max = df_og.index[df_og['appr_rate'] > appr_max].tolist()
+
+appr_min = appr_mode - (appr_std *2)
+rerun_appr_min = df_og.index[df_og['appr_rate'] < appr_min].tolist()
+
+#all the buy and rent values that are negative because that is not possible
+rerun_buy_min = df_og.index[df_og['buy'] < 0].tolist()
+rerun_rent_min = df_og.index[df_og['rent'] < 0].tolist()
+
+#max buy and rent values that are 10X the mean 
+buy_max = df_og.describe(include='all').loc['mean']['buy']*10
+rerun_buy_max = df_og.index[df_og['buy'] > buy_max].tolist()
+
+rent_max = (df_og.describe(include='all').loc['mean']['rent'])*10
+rerun_rent_max = df_og.index[df_og['rent'] > rent_max].tolist()
+
+#join these lists 
+rerun_list = list(set().union(rerun_buy_max, rerun_buy_min, rerun_rent_max, rerun_rent_min, rerun_appr_max, rerun_appr_min))
+rerun_list = [int(i) for i in rerun_list]
+print('Rerunning the following zipcodes...", rerun_list)
+
+#rerun Prophet for the zipcodes that were identified
+UI_output_rerun = dict()
+calculator_output_rerun = dict()
+excl_zips=[]
+for zipcode in rerun_list :
+    UI, calculator = make_UI_n_dec_calculator_outputs (processed, zipcode, excl_zips, 1 )
+    UI_output_rerun.update(UI)
+    calculator_output_rerun.update(calculator)
+
+with open('../data/predictions/UI_output_rerun.json', 'w') as f1:
+    json.dump(UI_output_rerun, f1)
+
+with open('../data/predictions/calculator_output_rerun.json', 'w') as f2:
+    json.dump(calculator_output_rerun, f2)
+
+with open('../data/predictions/UI_output_rerun.json') as f3:
+    rerun_ui_data = json.load(f3)
+with open('../data/predictions/calculator_output_rerun.json') as f4:
+    rerun_cal_data = json.load(f4)
+
+df = pd.DataFrame(rerun_cal_data).T
+
+#deleting values that are STILL negative. Its not possible so these need to be removed. 
+#this involves a close look into the model though
+delete_buy_min = df.index[df['buy'] < 0].tolist()
+delete_rent_min = df.index[df['rent'] < 0].tolist()
+
+appr_max = appr_mode + (appr_std *2)
+delete_appr_max = df.index[df['appr_rate'] > appr_max].tolist()
+ 
+appr_min = appr_mode - (appr_std *2)
+delete_appr_min = df.index[df['appr_rate'] < appr_min].tolist()
+
+delete_list = list(set().union(delete_buy_min, delete_rent_min, delete_appr_min))
+delete_list = [int(i) for i in delete_list]
+print(delete_list)
+
+#deleting the old data on these zipcodes and replacing it 
+for zipcode in rerun_list:
+    del cal_out_data[str(zipcode)]
+    del ui_out_data[str(zipcode)]
+    #if they are in the delete_list then we just replace the values 
+    # with 0 as we do not have enough information on these zipcodes
+    if zipcode in delete_list:
+        no_info_cal = {str(zipcode): {"buy": 0, 
+                                     "rent": 0, 
+                                     "appr_rate" : 0 }}
+        no_info_ui = {str(zipcode): {"buy": '$0', 
+                                      "rent": '$0', 
+                                       "appr_rate" : '0%'}}
+        cal_out_data.update(no_info_cal)
+        ui_out_data.update(no_info_ui)
+    #replace new data with outliers removed to the rest of the zipcode data
+    else:
+        cal_out_data[str(zipcode)]=rerun_cal_data[str(zipcode)]
+        ui_out_data[str(zipcode)]=(rerun_ui_data[str(zipcode)])
+
+with open('../data/predictions/UI_output_final.json', 'w') as f5:
+    json.dump(ui_out_data, f5)
+
+with open('../data/predictions/calculator_output_final.json', 'w') as f6:
+    json.dump(cal_out_data, f6)
