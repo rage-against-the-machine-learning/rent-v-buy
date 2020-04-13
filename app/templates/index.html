@@ -323,6 +323,14 @@ function plotWealthBuildUp(data, zipCode){
         .style("stroke-width", 1)
         .style("shape-rendering", "crispEdges");
     // Title
+    var finTitleHTML;
+    if (data["payOff"] == 0) {
+        finTitleHTML = "BUYING is always better than renting";
+    } if (data["payOff"] == 72) {
+        finTitleHTML = "RENTING is always better than buying";
+    } else {
+        finTitleHTML = "BUYING becomes cheaper than renting after "+ Math.ceil(data["payOff"]/12.0)+ " YEARS";
+    }
     g.append("text")
         .attr("y", "-8px")
         .attr("font-weight", "bold")
@@ -330,7 +338,8 @@ function plotWealthBuildUp(data, zipCode){
         .attr("x", width/2)
         .attr("font-size", "14px")
         .attr("text-anchor", "middle")
-        .text("BUYING becomes cheaper than renting after "+ Math.ceil(data["payOff"]/12.0)+ " YEARS");
+        .text(finTitleHTML);
+
     // Shaded areas
     g.append("rect")
         .attr("x", 0.)
