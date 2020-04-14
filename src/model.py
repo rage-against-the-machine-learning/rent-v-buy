@@ -267,7 +267,8 @@ with open('../../data/predictions/UI_output.json', 'w') as f1:
 with open('../../data/predictions/calculator_output.json', 'w') as f2:
     json.dump(calculator_output, f2)
 
-## Now we are going to rerun the predictions for certain models
+
+## 3. Now we are going to rerun the predictions for certain models
 rerun_list, appr_max, appr_min = get_rerun_list(calculator_output)
 
 #rerun Prophet for the zipcodes that were identified
