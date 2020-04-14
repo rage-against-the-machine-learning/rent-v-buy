@@ -284,7 +284,7 @@ for zipcode in rerun_list :
 delete_list = get_delete_zipcodes(calculator_output_rerun, appr_max, appr_min)
 
 #deleting the old data on these zipcodes and replacing it 
-for zipcode in rerun_list:
+for zipcode in delete_list:
     del calculator_output[str(zipcode)]
     del UI_output[str(zipcode)]
     #if they are in the delete_list then we just replace the values 
