@@ -54,7 +54,7 @@ def make_model_input_df (data:pd.DataFrame, rent_or_buy:str, rerun:bool=False) -
         model_payload = data.rename(columns={'ZHVI_SingleFamilyResidence': 'y'})
 
     #if this is a model rerun? if so removed the outliers
-    if rerun == 1:
+    if rerun:
         y=model_payload['y']
         removed_outliers = y.between(y.quantile(.1), y.quantile(.90)) 
         index_names = model_payload[~removed_outliers].index
