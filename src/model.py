@@ -175,7 +175,7 @@ def get_delete_zipcodes(my_dict, appr_max, appr_min):
     
     return delete_list
           
-def make_UI_n_dec_calculator_outputs (my_data:pd.DataFrame, zip_code_of_interest:int, excl_zips:list, rerun) -> (dict, dict):
+def make_UI_n_dec_calculator_outputs (my_data:pd.DataFrame, zip_code_of_interest:int, excl_zips:list, rerun:bool=False) -> (dict, dict):
     '''
     Given a zipcode, 
     1. Filter all time series data for that zip code
