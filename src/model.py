@@ -275,7 +275,7 @@ UI_output_rerun = dict()
 calculator_output_rerun = dict()
 excl_zips=[]
 for zipcode in rerun_list :
-    UI, calculator = make_UI_n_dec_calculator_outputs (processed, zipcode, excl_zips, 1 )
+    UI, calculator = make_UI_n_dec_calculator_outputs (processed, zipcode, excl_zips, True)
     UI_output_rerun.update(UI)
     calculator_output_rerun.update(calculator)
 
