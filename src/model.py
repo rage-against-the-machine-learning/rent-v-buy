@@ -289,15 +289,14 @@ for zipcode in delete_list:
     del UI_output[str(zipcode)]
     #if they are in the delete_list then we just replace the values 
     # with 0 as we do not have enough information on these zipcodes
-    if zipcode in delete_list:
-        no_info_cal = {str(zipcode): {"buy": 0, 
+    no_info_cal = {str(zipcode): {"buy": 0, 
                                      "rent": 0, 
                                      "appr_rate" : 0 }}
-        no_info_ui = {str(zipcode): {"buy": '$0', 
+    no_info_ui = {str(zipcode): {"buy": '$0', 
                                       "rent": '$0', 
                                        "appr_rate" : '0%'}}
-        calculator_output.update(no_info_cal)
-        UI_output.update(no_info_ui)
+    calculator_output.update(no_info_cal)
+    UI_output.update(no_info_ui)
     #replace new data with outliers removed to the rest of the zipcode data
     else:
         calculator_output[str(zipcode)]=calculator_output_rerun[str(zipcode)]
