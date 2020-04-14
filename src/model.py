@@ -202,8 +202,8 @@ def make_UI_n_dec_calculator_outputs (my_data:pd.DataFrame, zip_code_of_interest
             rent_dataset = make_model_input_df(clean_data, 'rent', 1)
             buy_dataset  = make_model_input_df(clean_data, 'buy', 1)
         else:    
-            rent_dataset = make_model_input_df(clean_data, 'rent', 0)
-            buy_dataset  = make_model_input_df(clean_data, 'buy', 0)
+            rent_dataset = make_model_input_df(clean_data, 'rent')
+            buy_dataset  = make_model_input_df(clean_data, 'buy')
         
         
         # Determine the number of months for which to forecast
