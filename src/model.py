@@ -199,8 +199,8 @@ def make_UI_n_dec_calculator_outputs (my_data:pd.DataFrame, zip_code_of_interest
         
         if rerun:
             # prepare the dataframe for payload to model
-            rent_dataset = make_model_input_df(clean_data, 'rent', 1)
-            buy_dataset  = make_model_input_df(clean_data, 'buy', 1)
+            rent_dataset = make_model_input_df(clean_data, 'rent', True)
+            buy_dataset  = make_model_input_df(clean_data, 'buy', True)
         else:    
             rent_dataset = make_model_input_df(clean_data, 'rent')
             buy_dataset  = make_model_input_df(clean_data, 'buy')
