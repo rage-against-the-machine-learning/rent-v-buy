@@ -279,7 +279,8 @@ for zipcode in rerun_list :
     UI, calculator = make_UI_n_dec_calculator_outputs (processed, zipcode, excl_zips, True)
     UI_output_rerun.update(UI)
     calculator_output_rerun.update(calculator)
-
+    calculator_output[str(zipcode)]=calculator_output_rerun[str(zipcode)]
+    UI_output[str(zipcode)]=(UI_output_rerun[str(zipcode)])
 delete_list = get_delete_zipcodes(calculator_output_rerun, appr_max, appr_min)
 
 #deleting the old data on these zipcodes and replacing it 
