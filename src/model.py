@@ -109,7 +109,7 @@ def calc_appr_rate(appr_data:pd.DataFrame):
     cagr = (new_value / old_value)**(1/3) - 1
     return round(cagr * 100, 2)
     
-def get_rerun_list(my_dict):   
+def get_rerun_list(my_dict:dict) -> (list, float, float):   
     '''
     Given a dictonary
     1. Find the std of the appr_rate and the mode and use this to determine the zipcodes that are outside of this range
