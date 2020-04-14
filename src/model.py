@@ -242,7 +242,7 @@ def make_UI_n_dec_calculator_outputs (my_data:pd.DataFrame, zip_code_of_interest
 
     
 # 1. BRING IN THE PREPROCESSED DATA & skip-zip codes
-processed = pd.read_pickle('../data/interim/interpolated_fillnaTime_df.pickle')
+processed = pd.read_pickle('../data/processed/interpolated_fillnaTime_df.pickle')
 
 my_file = open ('../../data/processed/exclude_these_zips.pickle', 'rb')
 excl_zips = pickle.load(my_file)
