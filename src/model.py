@@ -257,7 +257,7 @@ calculator_output = dict()
 
 for zipcode in all_ca_zips:
     if zipcode not in excl_zips:
-        UI, calculator = make_UI_n_dec_calculator_outputs (processed, zipcode, excl_zips, 0)
+        UI, calculator = make_UI_n_dec_calculator_outputs (processed, zipcode, excl_zips)
         UI_output.update(UI)
         calculator_output.update(calculator)
 
