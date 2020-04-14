@@ -249,7 +249,7 @@ excl_zips = pickle.load(my_file)
 excl_zips = [int(zip) for zip in excl_zips]
 
 
-#2. Get all unizue zipcodes & iterate over them to create outputs:
+#2. Get all unique zip codes & iterate over them to create outputs:
 all_ca_zips = processed['ZipCode'].unique().tolist()
 
 UI_output = dict()
