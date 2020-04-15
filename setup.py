@@ -8,7 +8,6 @@ setup (
     , url = "https://github.com/rage-against-the-machine-learning/rent-v-buy"
     , author = "Team Tufte Love"
     , package_dir = {'':'src'}
-                    # 'video_descriptor': '../data_helper.py'}
     , packages = find_packages()
     , install_requires = [
         'numpy'
