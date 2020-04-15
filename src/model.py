@@ -242,7 +242,7 @@ def make_UI_n_dec_calculator_outputs (my_data:pd.DataFrame, zip_code_of_interest
 
     
 # 1. BRING IN THE PREPROCESSED DATA & skip-zip codes
-processed = pd.read_pickle('../data/processed/interpolated_fillnaTime_df.pickle')
+processed = pd.read_pickle('../../data/processed/interpolated_fillnaTime_df.pickle')
 
 my_file = open ('../../data/processed/exclude_these_zips.pickle', 'rb')
 excl_zips = pickle.load(my_file)
@@ -250,6 +250,7 @@ excl_zips = [int(zip) for zip in excl_zips]
 
 
 #2. Get all unique zip codes & iterate over them to create outputs:
+print('Generating time series forecast predictions for each zip code...')
 all_ca_zips = processed['ZipCode'].unique().tolist()
 
 UI_output = dict()
@@ -261,14 +262,15 @@ for zipcode in all_ca_zips:
         UI_output.update(UI)
         calculator_output.update(calculator)
 
-with open('../../data/predictions/UI_output.json', 'w') as f1:
+with open('../../data/predictions/UI_output_before_rerun.json', 'w') as f1:
     json.dump(UI_output, f1)
 
-with open('../../data/predictions/calculator_output.json', 'w') as f2:
+with open('../../data/predictions/calculator_output_before_rerun.json', 'w') as f2:
     json.dump(calculator_output, f2)
 
 
 ## 3. Now we are going to rerun the predictions for certain models
+print('Rerun the model on certain zip codes that have abnormal predictions...')
 rerun_list, appr_max, appr_min = get_rerun_list(calculator_output)
 
 #rerun Prophet for the zipcodes that were identified
@@ -279,8 +281,11 @@ for zipcode in rerun_list :
     UI, calculator = make_UI_n_dec_calculator_outputs (processed, zipcode, excl_zips, True)
     UI_output_rerun.update(UI)
     calculator_output_rerun.update(calculator)
+    
+    # Replace the old value with the value generated in the re-run
     calculator_output[str(zipcode)]=calculator_output_rerun[str(zipcode)]
     UI_output[str(zipcode)]=(UI_output_rerun[str(zipcode)])
+
 delete_list = get_delete_zipcodes(calculator_output_rerun, appr_max, appr_min)
 
 #deleting the old data on these zipcodes and replacing it 
@@ -297,13 +302,10 @@ for zipcode in delete_list:
                                        "appr_rate" : '0%'}}
     calculator_output.update(no_info_cal)
     UI_output.update(no_info_ui)
-    #replace new data with outliers removed to the rest of the zipcode data
-    else:
-        calculator_output[str(zipcode)]=calculator_output_rerun[str(zipcode)]
-        UI_output[str(zipcode)]=(UI_output_rerun[str(zipcode)])
 
-with open('../data/predictions/UI_output_final.json', 'w') as f5:
+print('Writing the output results to the data/predictions/ directory...')
+with open('../../data/predictions/UI_output.json', 'w') as f5:
     json.dump(UI_output, f5)
 
-with open('../data/predictions/calculator_output_final.json', 'w') as f6:
+with open('../../data/predictions/calculator_output.json', 'w') as f6:
     json.dump(calculator_output, f6)
