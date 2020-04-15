@@ -8,40 +8,52 @@
 
 ```
 ├── README.md          <- The top-level README for developers using this project.
+├── Procfile           <- needed for heroku app to run
+├── app.json           <- flask 
 │
-├── data               <- Hidden folder in .gitignore 
+├── app                <- All files related to front-end app build
+│   ├── static         
+│   │   ├── css        <- main.css file in this directory
+│   │   ├── js         <- JavaScript files for front-end build of choropleth etc.
+│   │   │                 (GRADE: financialSliders.js and main.js)
+│   │   ├── maps       <- topo.json files etc for choropleth build  
+│   │   └── favicon.ico   
+│   │
+│   ├── templates      <- (GRADE).hmtl files for front-end build 
+│   │
+│   ├── __init__.py    
+│   └── homeRoute.py   <- (GRADE) Script to generate outputs from our financial calculator for rent v. buy
+│
+├── data               <- Hidden folder in .gitignore / directory is created upon executing `/src/main.py`
 │   ├── external       <- Data from third party sources (non-Zillow).
 │   ├── interim        <- Intermediate data that has been transformed.
 │   ├── processed      <- The final, canonical data sets for modeling.
 │   └── raw            <- The original, immutable data dump (from https://www.kaggle.com/zillow/zecon).
 │
-├── models             <- Trained and serialized models, model predictions, or model summaries
+├── notebooks          <- Jupyter notebooks
+│   └── Archive        <- Folder holding exploratory notebooks for methods/techniques not used & other scratch work
 │
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`.
+├── references         <- Data dictionaries, manuals, and all other explanatory materials
 │
-├── references         <- Data dictionaries, manuals, and all other explanatory materials, project deliverables.
-│
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
+├── reports            <- Project Deliverables
 │   └── figures        <- Generated graphics and figures to be used in reporting
 │   └── proposal       <- All proposal documents submitted on 2020-02-29
-│   └── progress_rpt   <- All progress-report related documents (due 2020-03-27)
-│   └── final_poster   <- All poster presentation related files (due 2020-04-17)
+│   └── progress_rpt   <- All progress-report related documents submitted weekend of 2020-03-27
+│   └── poster         <- All final report related files (due 2020-04-17)
 │
 ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
 │                         generated with `pip freeze > requirements.txt`
 │
-├── setup.py           <- Make this project pip installable with `pip install -e`
-│
-└── src                <- Source code for use in this project.
+└── src                <- (GRADE) Source code for entire data ETL & model pipeline (from download to model predictions).
+    ├── README.md      <- Instructions on obtaining Kaggle API Key for data download to work
     ├── __init__.py    <- Makes src a Python module
     │
-    ├── make_dataset.py     <- Scripts to download or generate data
-    ├── build_features.py   <- Scripts to turn raw data into features for modeling
-    ├── predict_model.py    <- Scripts to make predictions (run after train_model.py)
-    ├── train_model.py      <- Scripts to train models 
+    ├── get_n_save_data.py     <- Script to download data from Kaggle.com & save to local machine
+    ├── make_dataset.py        <- Script to do cursory cleaning in preparation for data pre-processing
+    ├── california_only.py     <- Script to pare down scope of downloaded data to California
+    ├── model.py               <- Script to generate time series forecast predictions for each zip code in California
     │
-    └── visualize.py        <- Scripts to create exploratory and results oriented visualizations
+    ├── main.py                <- Script to EXCECUTE the entire Data Pipeline 
+    └── helper.py              <- Script to aid in notebook explorations
 
 ```
