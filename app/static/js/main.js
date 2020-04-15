@@ -380,7 +380,7 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
         var recom = document.getElementById('titleRecommendation');
         recom.innerHTML = '';
 
-       if (buyPrice != '$0') {
+       if (buyPrice != '$0K') {
            // Show inputs for financial calculations
            finInputs = document.getElementById('financialInputs');            
            finInputs.style.display = "block";
