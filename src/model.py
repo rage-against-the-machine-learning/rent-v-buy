@@ -230,8 +230,8 @@ def make_UI_n_dec_calculator_outputs (my_data:pd.DataFrame, zip_code_of_interest
                                                         "appr_rate" : appr_rate_buy }}
 
     else:
-        UI_formatted = {str(zip_code_of_interest): {"buy": '$0', 
-                                                    "rent": '$0', 
+        UI_formatted = {str(zip_code_of_interest): {"buy": '$0K', 
+                                                    "rent": '$0/month', 
                                                     "appr_rate" : '0%'}}
 
         rentVbuy_formatted = {str(zip_code_of_interest): {"buy": 0, 
@@ -297,8 +297,8 @@ for zipcode in delete_list:
     no_info_cal = {str(zipcode): {"buy": 0, 
                                      "rent": 0, 
                                      "appr_rate" : 0 }}
-    no_info_ui = {str(zipcode): {"buy": '$0', 
-                                      "rent": '$0', 
+    no_info_ui = {str(zipcode): {"buy": '$0K', 
+                                      "rent": '$0/month', 
                                        "appr_rate" : '0%'}}
     calculator_output.update(no_info_cal)
     UI_output.update(no_info_ui)
