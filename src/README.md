@@ -47,6 +47,22 @@ Change directories from the root repository folder to the `src/` directory
 
 Execute the main.py script (2+ hrs to run on a 16GB RAM machine
 NOTE: Prior to executing code, ensure you have [activated your virtual environment and installed the requirements.txt file](https://github.com/rage-against-the-machine-learning/rent-v-buy/blob/master/README.md).
+#### TO DOWNLOAD DATA ONLY
 ```
-(venv) [rent-v-buy]$ python main.py
+(venv) [rent-v-buy]$ cd src/
+(venv) [rent-v-buy/src]$ python main.py
+```
+
+#### TO RUN ENTIRE ETL INCL. TIME SERIES FORECASTING
+```
+# If you already ran the DOWNLOAD DATA commands, then execute the following:
+(venv) [rent-v-buy]$ rm -rf data/
+(venv) [rent-v-buy]$ cd src/
+(venv) [rent-v-buy/src]$ python main.py
+```
+
+```
+# If you did NOT run the DOWNLOAD DATA commands above, then execute the following:
+(venv) [rent-v-buy]$ cd src/
+(venv) [rent-v-buy/src]$ python main.py
 ```
