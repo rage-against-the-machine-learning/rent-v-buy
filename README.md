@@ -11,7 +11,7 @@ The purpose of our app is to provide an intuitive "look-ahead" tool that helps u
 * Sylvia Tran
 
 ### APPLICATION ARCHITECTURE: 
-[](https://github.com/rage-against-the-machine-learning/rent-v-buy/blob/master/reports/figures/app_arch.png)
+![](https://github.com/rage-against-the-machine-learning/rent-v-buy/blob/master/reports/figures/app_arch.png)
 
 ### I. USING THIS REPOSITORY:
 > These instructions assume the user has a Linux or Mac OS. <br>
