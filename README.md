@@ -14,8 +14,10 @@ The purpose of our app is to provide an intuitive "look-ahead" tool that helps u
 ![](https://github.com/rage-against-the-machine-learning/rent-v-buy/blob/master/reports/figures/app_arch.png)
 
 ### I. USING THIS REPOSITORY:
+### [Demo Video Link](https://youtu.be/Lw3U7w5Ds6E)
 > These instructions assume the user has a Linux or Mac OS. <br>
-> For Windows, different instructions are required.
+> For Windows, different instructions are required. <br>
+> If you're not inclined to build the app, [CLICK HERE](https://rentvbuy.herokuapp.com/) : https://rentvbuy.herokuapp.com/
 
 #### IA. Setting up a VirtualEnv & Flask
 1. Download the repository to your local machine.
