@@ -73,7 +73,6 @@ It is optional to run the entire data pipeline from data download to prediction 
 ```
 ├── README.md          <- The top-level README for developers using this project.
 ├── Procfile           <- needed for heroku app to run
-├── app.json           <- flask 
 ├── financialAnalysis.py  <- Python script with formulas to calculate rent-v-buy outputs to surface to front-end
 │
 ├── app                <- All files related to front-end app build
