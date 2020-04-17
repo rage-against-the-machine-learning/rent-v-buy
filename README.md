@@ -1,7 +1,7 @@
 # rent-v-buy
 
 ## OBJECTIVE
-The purpose of our app is to provide an intuitive "look-ahead" tool which helps users choose the most financial optimal option between renting an apartment or buying a home in the state of California. 
+The purpose of our app is to provide an intuitive "look-ahead" tool that helps users choose the financially optimal option between renting an apartment and buying a home in the state of California. 
 
 ### Team 235: Tufte-Love
 * Omer Ansari
@@ -14,6 +14,9 @@ The purpose of our app is to provide an intuitive "look-ahead" tool which helps 
 [](https://github.com/rage-against-the-machine-learning/rent-v-buy/blob/master/reports/figures/app_arch.png)
 
 ### I. USING THIS REPOSITORY:
+> These instructions assume the user has a Linux or Mac OS. <br>
+> For Windows, different instructions are required.
+
 #### IA. Setting up a VirtualEnv & Flask
 1. Download the repository to your local machine.
 2. Change directories into the repository project folder
@@ -47,15 +50,15 @@ Note: we intentionall did not upload the virtual env directory to git. You are r
 For tips set up and run this in Pycharm, please [watch this video](https://www.youtube.com/watch?v=bZUokrYanFM&feature=youtu.be).
 
 #### IC. Running system online (Primary approach)
-- Database: We have hosted our databased on magenta.myhosted.com website which provides a paid mysql service
-    - recommended systems to create and populate the database are mysql workbench from Oracle
+- Database: We have hosted our database on magenta.myhosted.com website which provides a paid mysql service.
+    - Recommended systems to create and populate the database are mysql workbench from Oracle
 - Front-end: for the front-end we are using free online services from Heroku.
-    - we have integrated this github repo such that a change (merge, push etc) triggers an automated build in heroko and deploy to this end point.
+    - We have integrated this github repo such that a change (merge, push etc) triggers an automated build in heroko and deploy to this end point.
 
 #### Running system offline (Backup approach)
-- by simply updating `mydbconfig.py` you can specify the local data source
-- we have hosted the database on a LAMP or MAMP server downloaded from bitnami, with exactly the same data and schema as the online version.
-- for running the front-end, we do it directly through PyCharm, or from the CLI. the steps are listed above in the "How to run (in dev environment)" section.
+- By simply updating `mydbconfig.py` you can specify the local data source.
+- We have hosted the database on a LAMP or MAMP server downloaded from bitnami, with exactly the same data and schema as the online version.
+- For running the front-end, we do it directly through PyCharm, or from the CLI. the steps are listed above in the "How to run (in dev environment)" section.
 
 #### Bibliography
 - https://blog.miguelgrinberg.com/post/setting-up-a-flask-application-in-pycharm
