@@ -25,8 +25,8 @@ var colorZip;
 var projNew;
 var zipCityDict = {};   
 var selectedLocation;
-var buyPrice = "$0"
-var rentPrice = "$0"
+var buyPrice = "$0K"
+var rentPrice = "$0/month"
 var colorShade;
 var cleanedApprRate;
 var allCAData;
@@ -194,11 +194,10 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
                    lastSelectedObject = sel;
 
                    selectedLocation = titleCase(d.properties.name) + ", CA, " + d.properties.zip;
-                   console.log(selectedLocation);
 
                    if (buyRent[d.properties.zip] == undefined) {
-                        buyPrice = "$0";
-                        rentPrice = "$0";
+                        buyPrice = "$0K";
+                        rentPrice = "$0/month";
                         // Clean group before plotting
                         d3.select("#buildUp").remove();
                         d3.select("#selectedMonth").remove();
@@ -373,7 +372,6 @@ function ExecuteMeWhenDataIsLoaded([allCAData]) {
      
        }
 
-       console.log(buyPrice);
         // New zip code selection: Remove financial plot
         d3.select("#buildUp").remove();
         d3.select("#selectedMonth").remove();
