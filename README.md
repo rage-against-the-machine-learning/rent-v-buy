@@ -34,7 +34,7 @@ The purpose of our app is to provide an intuitive "look-ahead" tool that helps u
     ```
     (venv) [rent-v-buy]$ pip install -r requirements.txt
     ```
-Note: we intentionall did not upload the virtual env directory to git. You are required to create a fresh venv/ locally.
+Note: we intentionally did not upload the virtual env directory to git. You are required to create a fresh venv/ locally.
 
 #### IB. How to run (in dev environment)
 ```
