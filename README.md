@@ -51,17 +51,6 @@ Note: we intentionally did not upload the virtual env directory to git. You are 
 ```
 For tips set up and run this in Pycharm, please [watch this video](https://www.youtube.com/watch?v=bZUokrYanFM&feature=youtu.be).
 
-#### IC. Running system online (Primary approach)
-- Database: We have hosted our database on magenta.myhosted.com website which provides a paid mysql service.
-    - Recommended systems to create and populate the database are mysql workbench from Oracle
-- Front-end: for the front-end we are using free online services from Heroku.
-    - We have integrated this github repo such that a change (merge, push etc) triggers an automated build in heroko and deploy to this end point.
-
-#### Running system offline (Backup approach)
-- By simply updating `mydbconfig.py` you can specify the local data source.
-- We have hosted the database on a LAMP or MAMP server downloaded from bitnami, with exactly the same data and schema as the online version.
-- For running the front-end, we do it directly through PyCharm, or from the CLI. the steps are listed above in the "How to run (in dev environment)" section.
-
 #### Bibliography
 - https://blog.miguelgrinberg.com/post/setting-up-a-flask-application-in-pycharm
 - https://devcenter.heroku.com/articles/github-integration
