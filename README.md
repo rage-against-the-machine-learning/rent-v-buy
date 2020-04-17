@@ -14,6 +14,7 @@ The purpose of our app is to provide an intuitive "look-ahead" tool that helps u
 [](https://github.com/rage-against-the-machine-learning/rent-v-buy/blob/master/reports/figures/app_arch.png)
 
 ### I. USING THIS REPOSITORY:
+[Demo Video Link](https://youtu.be/Lw3U7w5Ds6E)
 > These instructions assume the user has a Linux or Mac OS. <br>
 > For Windows, different instructions are required.
 
