@@ -50,7 +50,7 @@ NOTE: Prior to executing code, ensure you have [activated your virtual environme
 #### TO DOWNLOAD DATA ONLY
 ```
 (venv) [rent-v-buy]$ cd src/
-(venv) [rent-v-buy/src]$ python main.py
+(venv) [rent-v-buy/src]$ python get_n_save_data.py
 ```
 
 #### TO RUN ENTIRE ETL INCL. TIME SERIES FORECASTING
