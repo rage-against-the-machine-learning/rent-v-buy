@@ -29,7 +29,7 @@ kiwisolver==1.2.0
 LunarCalendar==0.0.9
 MarkupSafe==1.1.1
 matplotlib==3.2.1
-numpy==1.18.2
+numpy==1.22.0
 pandas==1.0.3
 plotly==4.6.0
 PyMeeus==0.3.7
