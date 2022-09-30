@@ -23,7 +23,7 @@ holidays==0.10.1
 idna==2.9
 itsdangerous==1.1.0
 Jinja2==2.10
-joblib==0.14.1
+joblib==1.2.0
 kaggle==1.5.6
 kiwisolver==1.2.0
 LunarCalendar==0.0.9
